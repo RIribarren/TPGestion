@@ -30,16 +30,16 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.textBoxFechaNacimiento = new System.Windows.Forms.TextBox();
+            this.comboBoxNacionalidad = new System.Windows.Forms.ComboBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxPais = new System.Windows.Forms.ComboBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.comboBoxIdentificacion = new System.Windows.Forms.ComboBox();
+            this.textBoxNroIdentificacion = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -56,7 +56,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewRoles = new System.Windows.Forms.DataGridView();
+            this.Rol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Asignado = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
@@ -70,22 +72,22 @@
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRoles)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.textBox9);
-            this.groupBox1.Controls.Add(this.comboBox3);
+            this.groupBox1.Controls.Add(this.textBoxFechaNacimiento);
+            this.groupBox1.Controls.Add(this.comboBoxNacionalidad);
             this.groupBox1.Controls.Add(this.textBox8);
             this.groupBox1.Controls.Add(this.textBox7);
             this.groupBox1.Controls.Add(this.textBox6);
             this.groupBox1.Controls.Add(this.textBox5);
-            this.groupBox1.Controls.Add(this.comboBox2);
+            this.groupBox1.Controls.Add(this.comboBoxPais);
             this.groupBox1.Controls.Add(this.textBox3);
-            this.groupBox1.Controls.Add(this.comboBox1);
-            this.groupBox1.Controls.Add(this.textBox4);
+            this.groupBox1.Controls.Add(this.comboBoxIdentificacion);
+            this.groupBox1.Controls.Add(this.textBoxNroIdentificacion);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.textBox2);
             this.groupBox1.Controls.Add(this.textBox1);
@@ -115,21 +117,24 @@
             this.button1.TabIndex = 24;
             this.button1.Text = "Seleccionar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBox9
+            // textBoxFechaNacimiento
             // 
-            this.textBox9.Location = new System.Drawing.Point(365, 156);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(100, 20);
-            this.textBox9.TabIndex = 23;
+            this.textBoxFechaNacimiento.Enabled = false;
+            this.textBoxFechaNacimiento.Location = new System.Drawing.Point(365, 156);
+            this.textBoxFechaNacimiento.Name = "textBoxFechaNacimiento";
+            this.textBoxFechaNacimiento.Size = new System.Drawing.Size(100, 20);
+            this.textBoxFechaNacimiento.TabIndex = 23;
             // 
-            // comboBox3
+            // comboBoxNacionalidad
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(326, 129);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 21);
-            this.comboBox3.TabIndex = 22;
+            this.comboBoxNacionalidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxNacionalidad.FormattingEnabled = true;
+            this.comboBoxNacionalidad.Location = new System.Drawing.Point(326, 129);
+            this.comboBoxNacionalidad.Name = "comboBoxNacionalidad";
+            this.comboBoxNacionalidad.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxNacionalidad.TabIndex = 22;
             // 
             // textBox8
             // 
@@ -159,13 +164,14 @@
             this.textBox5.Size = new System.Drawing.Size(100, 20);
             this.textBox5.TabIndex = 18;
             // 
-            // comboBox2
+            // comboBoxPais
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(65, 156);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 17;
+            this.comboBoxPais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxPais.FormattingEnabled = true;
+            this.comboBoxPais.Location = new System.Drawing.Point(65, 156);
+            this.comboBoxPais.Name = "comboBoxPais";
+            this.comboBoxPais.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxPais.TabIndex = 17;
             // 
             // textBox3
             // 
@@ -174,20 +180,22 @@
             this.textBox3.Size = new System.Drawing.Size(100, 20);
             this.textBox3.TabIndex = 16;
             // 
-            // comboBox1
+            // comboBoxIdentificacion
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(115, 103);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 15;
+            this.comboBoxIdentificacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxIdentificacion.FormattingEnabled = true;
+            this.comboBoxIdentificacion.Location = new System.Drawing.Point(115, 103);
+            this.comboBoxIdentificacion.Name = "comboBoxIdentificacion";
+            this.comboBoxIdentificacion.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxIdentificacion.TabIndex = 15;
             // 
-            // textBox4
+            // textBoxNroIdentificacion
             // 
-            this.textBox4.Location = new System.Drawing.Point(115, 77);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 14;
+            this.textBoxNroIdentificacion.Location = new System.Drawing.Point(115, 77);
+            this.textBoxNroIdentificacion.Name = "textBoxNroIdentificacion";
+            this.textBoxNroIdentificacion.Size = new System.Drawing.Size(100, 20);
+            this.textBoxNroIdentificacion.TabIndex = 14;
+            this.textBoxNroIdentificacion.TextChanged += new System.EventHandler(this.textBoxNroIdentificacion_TextChanged);
             // 
             // label12
             // 
@@ -331,7 +339,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.dataGridView1);
+            this.groupBox3.Controls.Add(this.dataGridViewRoles);
             this.groupBox3.Location = new System.Drawing.Point(273, 19);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(279, 114);
@@ -339,13 +347,30 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Rol";
             // 
-            // dataGridView1
+            // dataGridViewRoles
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 19);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(267, 89);
-            this.dataGridView1.TabIndex = 0;
+            this.dataGridViewRoles.AllowUserToAddRows = false;
+            this.dataGridViewRoles.AllowUserToDeleteRows = false;
+            this.dataGridViewRoles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewRoles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewRoles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Rol,
+            this.Asignado});
+            this.dataGridViewRoles.Location = new System.Drawing.Point(6, 19);
+            this.dataGridViewRoles.Name = "dataGridViewRoles";
+            this.dataGridViewRoles.Size = new System.Drawing.Size(267, 89);
+            this.dataGridViewRoles.TabIndex = 0;
+            this.dataGridViewRoles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewRoles_CellContentClick);
+            // 
+            // Rol
+            // 
+            this.Rol.HeaderText = "Rol";
+            this.Rol.Name = "Rol";
+            // 
+            // Asignado
+            // 
+            this.Asignado.HeaderText = "Asignado";
+            this.Asignado.Name = "Asignado";
             // 
             // textBox13
             // 
@@ -353,6 +378,7 @@
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(150, 20);
             this.textBox13.TabIndex = 9;
+            this.textBox13.UseSystemPasswordChar = true;
             // 
             // textBox12
             // 
@@ -367,6 +393,7 @@
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(100, 20);
             this.textBox11.TabIndex = 6;
+            this.textBox11.UseSystemPasswordChar = true;
             // 
             // textBox10
             // 
@@ -440,13 +467,12 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "AltaCliente";
             this.Text = "Alta de Cliente";
-            this.Load += new System.EventHandler(this.ABMCliente_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRoles)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -460,8 +486,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.ComboBox comboBoxIdentificacion;
+        private System.Windows.Forms.TextBox textBoxNroIdentificacion;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
@@ -475,11 +501,11 @@
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBoxPais;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.TextBox textBoxFechaNacimiento;
+        private System.Windows.Forms.ComboBox comboBoxNacionalidad;
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.Label label17;
@@ -489,8 +515,10 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.TextBox textBox12;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridViewRoles;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Rol;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Asignado;
     }
 }

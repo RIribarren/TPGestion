@@ -11,6 +11,8 @@ namespace PagoElectronico.Modelo
 
         private List<Rol> roles = new List<Rol>();
         private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+        private List<Pais> paises = new List<Pais>();
+        private List<TipoIdentificacion> tiposIdentificacion = new List<TipoIdentificacion>();
 
         private RepositorioDeDatos()
         {
@@ -46,6 +48,17 @@ namespace PagoElectronico.Modelo
             roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(7));
             roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(8));
             roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(9));
+
+            // Paises
+            paises.Add(new Pais(1, "Argentina"));
+            paises.Add(new Pais(2, "Uruguay"));
+            paises.Add(new Pais(3, "Estados Unidos"));
+            paises.Add(new Pais(4, "España"));
+
+            // Tipo identificacion
+            tiposIdentificacion.Add(new TipoIdentificacion(1, "DNI"));
+            tiposIdentificacion.Add(new TipoIdentificacion(2, "Pasaporte"));
+            tiposIdentificacion.Add(new TipoIdentificacion(3, "Cedula"));
         }
 
         static public RepositorioDeDatos getInstance()
@@ -64,6 +77,11 @@ namespace PagoElectronico.Modelo
         public List<Rol> getRoles()
         {
             return roles;
+        }
+
+        public List<Rol> getRolesActivados()
+        {
+            return roles.FindAll(r => r.estaActivo);
         }
 
         public List<Funcionalidad> getFuncionalidades()
@@ -98,6 +116,16 @@ namespace PagoElectronico.Modelo
         {
             if (roles.Any(r => r.nombre == rol.nombre && r.id != rol.id))
                 throw new ErrorEnRepositorioException("El nombre " + rol.nombre + " ya esta en uso");
+        }
+
+        public List<Pais> getPaises()
+        {
+            return paises;
+        }
+
+        internal List<TipoIdentificacion> getTiposIdentificacion()
+        {
+            return tiposIdentificacion;
         }
     }
 }

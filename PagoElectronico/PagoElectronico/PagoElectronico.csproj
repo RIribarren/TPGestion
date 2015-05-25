@@ -60,6 +60,12 @@
     <Compile Include="ABM Cliente\AltaCliente.Designer.cs">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Cliente\VentanaFecha.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\VentanaFecha.Designer.cs">
+      <DependentUpon>VentanaFecha.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Cuenta\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,8 +146,10 @@
     </Compile>
     <Compile Include="Modelo\ErrorEnRepositorioException.cs" />
     <Compile Include="Modelo\Funcionalidad.cs" />
+    <Compile Include="Modelo\Pais.cs" />
     <Compile Include="Modelo\RepositorioDeDatos.cs" />
     <Compile Include="Modelo\Rol.cs" />
+    <Compile Include="Modelo\TipoIdentificacion.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ABM Cliente\ABMCliente.resx">
@@ -149,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\AltaCliente.resx">
       <DependentUpon>AltaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\VentanaFecha.resx">
+      <DependentUpon>VentanaFecha.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Rol\ABMRol.resx">
       <DependentUpon>ABMRol.cs</DependentUpon>
