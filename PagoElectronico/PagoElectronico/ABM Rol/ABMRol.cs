@@ -62,7 +62,7 @@ namespace PagoElectronico.ABM_Rol
             if (confirmacion == DialogResult.Yes)
                 RepositorioDeDatos.getInstance().bajaRol(rol);
 
-            operacionTerminada();
+            volver();
         }
 
         private void buttonModificacion_Click(object sender, EventArgs e)

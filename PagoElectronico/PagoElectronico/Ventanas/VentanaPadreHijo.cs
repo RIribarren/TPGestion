@@ -11,8 +11,6 @@ namespace PagoElectronico.Ventanas
 {
     public partial class VentanaPadreHijo : VentanaPadre
     {
-        private VentanaPadre ventanaPadre;
-
         protected virtual void cargarDatos() { }
 
         public VentanaPadreHijo()
@@ -22,9 +20,8 @@ namespace PagoElectronico.Ventanas
 
         public void ejecutar(VentanaPadre ventanaPadre)
         {
-            this.ventanaPadre = ventanaPadre;
             cargarDatos();
-            Show();
+            ShowDialog(ventanaPadre);
         }
 
         protected void volverConMensaje(String titulo, String mensaje)
@@ -36,12 +33,6 @@ namespace PagoElectronico.Ventanas
         protected void volver()
         {
             Hide();
-            ventanaPadre.operacionTerminada();
-        }
-
-        protected void VentanaPadreHijo_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            volver();
         }
     }
 }

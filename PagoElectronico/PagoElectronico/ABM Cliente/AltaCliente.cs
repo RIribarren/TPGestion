@@ -114,5 +114,100 @@ namespace PagoElectronico.ABM_Cliente
             if (indiceRolSeleccionado != -1)
                 dataGridViewRoles.Rows[indiceRolSeleccionado].Cells[1].Value = false;
         }
+
+        private void buttonGuardar_Click(object sender, EventArgs e)
+        {
+            if (! sonDatosValidos())
+                return;
+
+            Cliente nuevoCliente = new Cliente(
+                -1,
+                textBoxNombre.Text,
+                textBoxApellido.Text,
+                textBoxNroIdentificacion.Text,
+                tiposIdentificacion.ElementAt(comboBoxIdentificacion.SelectedIndex),
+                textBoxEmail.Text,
+                paises.ElementAt(comboBoxPais.SelectedIndex),
+                textBoxDomicilio.Text,
+                textBoxCalle.Text,
+                textBoxDepto.Text,
+                textBoxLocalidad.Text,
+                paises.ElementAt(comboBoxNacionalidad.SelectedIndex),
+                textBoxFechaNacimiento.Text);
+
+            Usuario nuevoUsuario= new Usuario(
+                -1,
+                textBoxUsername.Text,
+                textBoxPassword.Text,
+                textBoxPreguntaSecreta.Text,
+                textBoxRespuestaSecreta.Text,
+                obtenerListaDeRol());
+        }
+
+        private bool sonDatosValidos()
+        {
+            String mensajeDeError = "";
+
+            if (textBoxNombre.Text == "")
+                mensajeDeError += "El campo nombre no puede estar vacío\n";
+            if (textBoxApellido.Text == "")
+                mensajeDeError += "El campo apellido no puede estar vacío\n";
+            if (textBoxNroIdentificacion.Text == "")
+                mensajeDeError += "El campo Nro de identificación no puede estar vacío\n";
+            if (comboBoxIdentificacion.SelectedIndex == -1)
+                mensajeDeError += "Debe seleccionar un tipo de identificación\n";
+            if (textBoxEmail.Text == "")
+                mensajeDeError += "El campo e-Mail no puede estar vacío\n";
+            if (comboBoxPais.SelectedIndex == -1)
+                mensajeDeError += "Debe seleccionar un país\n";
+            if (textBoxDomicilio.Text == "")
+                mensajeDeError += "El campo domicilio no puede estar vacío\n";
+            if (textBoxCalle.Text == "")
+                mensajeDeError += "El campo calle no puede estar vacío\n";
+            if (textBoxLocalidad.Text == "")
+                mensajeDeError += "El campo localidad no puede estar vacío\n";
+            if (comboBoxNacionalidad.SelectedIndex == -1)
+                mensajeDeError += "Debe seleccionar un país\n";
+            if (textBoxFechaNacimiento.Text == "")
+                mensajeDeError += "El campo fecha de nacimiento no puede estar vacío\n";
+            if (textBoxUsername.Text == "")
+                mensajeDeError += "El campo username no puede estar vacío\n";
+            if (textBoxPassword.Text == "")
+                mensajeDeError += "El campo password no puede estar vacío\n";
+            if (textBoxPreguntaSecreta.Text == "")
+                mensajeDeError += "El campo pregunta secreta no puede estar vacío\n";
+            if (textBoxRespuestaSecreta.Text == "")
+                mensajeDeError += "El campo respuesta secreta no puede estar vacío\n";
+            if (cantidadRolesSeleccionados() != 1)
+                mensajeDeError += "Debe seleccionar un rol\n";
+
+            if (mensajeDeError != "")
+            {
+                MessageBox.Show(mensajeDeError, "Datos invalidos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+
+        private int cantidadRolesSeleccionados()
+        {
+            int cantidad = 0;
+
+            foreach (DataGridViewRow row in dataGridViewRoles.Rows)
+                if (Convert.ToBoolean(row.Cells[1].FormattedValue) == true)
+                    cantidad++;
+
+            return cantidad;
+        }
+
+        private Rol obtenerListaDeRol()
+        {
+            foreach (DataGridViewRow row in dataGridViewRoles.Rows)
+                if (Convert.ToBoolean(row.Cells[1].FormattedValue) == true)
+                    return roles.ElementAt(row.Index);
+
+            return null;
+        }
     }
 }

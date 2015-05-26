@@ -23,7 +23,7 @@ namespace PagoElectronico.ABM_Rol
             InitializeComponent();
         }
 
-        public DataRol()
+        public DataRol(): base()
         {
             InitializeComponent();
         }

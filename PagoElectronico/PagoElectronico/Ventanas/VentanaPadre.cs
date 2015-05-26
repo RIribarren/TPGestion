@@ -20,10 +20,6 @@ namespace PagoElectronico.Ventanas
         {
             this.Hide();
             ventana.ejecutar(this);
-        }
-
-        public void operacionTerminada()
-        {
             this.Show();
         }
     }

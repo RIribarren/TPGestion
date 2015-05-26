@@ -37,7 +37,6 @@
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Name = "VentanaPadreHijo";
             this.Text = "VentanaPadreHijo";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VentanaPadreHijo_FormClosing);
             this.ResumeLayout(false);
 
         }
