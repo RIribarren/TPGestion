@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonSeleccionarFecha = new System.Windows.Forms.Button();
             this.textBoxFechaNacimiento = new System.Windows.Forms.TextBox();
             this.comboBoxNacionalidad = new System.Windows.Forms.ComboBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBoxLocalidad = new System.Windows.Forms.TextBox();
+            this.textBoxDepto = new System.Windows.Forms.TextBox();
+            this.textBoxCalle = new System.Windows.Forms.TextBox();
+            this.textBoxDomicilio = new System.Windows.Forms.TextBox();
             this.comboBoxPais = new System.Windows.Forms.ComboBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBoxEmail = new System.Windows.Forms.TextBox();
             this.comboBoxIdentificacion = new System.Windows.Forms.ComboBox();
             this.textBoxNroIdentificacion = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxApellido = new System.Windows.Forms.TextBox();
+            this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -59,15 +59,15 @@
             this.dataGridViewRoles = new System.Windows.Forms.DataGridView();
             this.Rol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Asignado = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.textBox13 = new System.Windows.Forms.TextBox();
-            this.textBox12 = new System.Windows.Forms.TextBox();
-            this.textBox11 = new System.Windows.Forms.TextBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.textBoxRespuestaSecreta = new System.Windows.Forms.TextBox();
+            this.textBoxPreguntaSecreta = new System.Windows.Forms.TextBox();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonLimpiar = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -77,20 +77,20 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.buttonSeleccionarFecha);
             this.groupBox1.Controls.Add(this.textBoxFechaNacimiento);
             this.groupBox1.Controls.Add(this.comboBoxNacionalidad);
-            this.groupBox1.Controls.Add(this.textBox8);
-            this.groupBox1.Controls.Add(this.textBox7);
-            this.groupBox1.Controls.Add(this.textBox6);
-            this.groupBox1.Controls.Add(this.textBox5);
+            this.groupBox1.Controls.Add(this.textBoxLocalidad);
+            this.groupBox1.Controls.Add(this.textBoxDepto);
+            this.groupBox1.Controls.Add(this.textBoxCalle);
+            this.groupBox1.Controls.Add(this.textBoxDomicilio);
             this.groupBox1.Controls.Add(this.comboBoxPais);
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.textBoxEmail);
             this.groupBox1.Controls.Add(this.comboBoxIdentificacion);
             this.groupBox1.Controls.Add(this.textBoxNroIdentificacion);
             this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.textBox2);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.textBoxApellido);
+            this.groupBox1.Controls.Add(this.textBoxNombre);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label9);
@@ -109,15 +109,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Campos de Cliente";
             // 
-            // button1
+            // buttonSeleccionarFecha
             // 
-            this.button1.Location = new System.Drawing.Point(471, 154);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 24;
-            this.button1.Text = "Seleccionar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonSeleccionarFecha.Location = new System.Drawing.Point(471, 154);
+            this.buttonSeleccionarFecha.Name = "buttonSeleccionarFecha";
+            this.buttonSeleccionarFecha.Size = new System.Drawing.Size(75, 23);
+            this.buttonSeleccionarFecha.TabIndex = 24;
+            this.buttonSeleccionarFecha.Text = "Seleccionar";
+            this.buttonSeleccionarFecha.UseVisualStyleBackColor = true;
+            this.buttonSeleccionarFecha.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBoxFechaNacimiento
             // 
@@ -136,33 +136,33 @@
             this.comboBoxNacionalidad.Size = new System.Drawing.Size(121, 21);
             this.comboBoxNacionalidad.TabIndex = 22;
             // 
-            // textBox8
+            // textBoxLocalidad
             // 
-            this.textBox8.Location = new System.Drawing.Point(306, 103);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(100, 20);
-            this.textBox8.TabIndex = 21;
+            this.textBoxLocalidad.Location = new System.Drawing.Point(306, 103);
+            this.textBoxLocalidad.Name = "textBoxLocalidad";
+            this.textBoxLocalidad.Size = new System.Drawing.Size(100, 20);
+            this.textBoxLocalidad.TabIndex = 21;
             // 
-            // textBox7
+            // textBoxDepto
             // 
-            this.textBox7.Location = new System.Drawing.Point(306, 77);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(100, 20);
-            this.textBox7.TabIndex = 20;
+            this.textBoxDepto.Location = new System.Drawing.Point(306, 77);
+            this.textBoxDepto.Name = "textBoxDepto";
+            this.textBoxDepto.Size = new System.Drawing.Size(100, 20);
+            this.textBoxDepto.TabIndex = 20;
             // 
-            // textBox6
+            // textBoxCalle
             // 
-            this.textBox6.Location = new System.Drawing.Point(306, 51);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 19;
+            this.textBoxCalle.Location = new System.Drawing.Point(306, 51);
+            this.textBoxCalle.Name = "textBoxCalle";
+            this.textBoxCalle.Size = new System.Drawing.Size(100, 20);
+            this.textBoxCalle.TabIndex = 19;
             // 
-            // textBox5
+            // textBoxDomicilio
             // 
-            this.textBox5.Location = new System.Drawing.Point(306, 25);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 18;
+            this.textBoxDomicilio.Location = new System.Drawing.Point(306, 25);
+            this.textBoxDomicilio.Name = "textBoxDomicilio";
+            this.textBoxDomicilio.Size = new System.Drawing.Size(100, 20);
+            this.textBoxDomicilio.TabIndex = 18;
             // 
             // comboBoxPais
             // 
@@ -173,12 +173,12 @@
             this.comboBoxPais.Size = new System.Drawing.Size(121, 21);
             this.comboBoxPais.TabIndex = 17;
             // 
-            // textBox3
+            // textBoxEmail
             // 
-            this.textBox3.Location = new System.Drawing.Point(65, 130);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 16;
+            this.textBoxEmail.Location = new System.Drawing.Point(65, 130);
+            this.textBoxEmail.Name = "textBoxEmail";
+            this.textBoxEmail.Size = new System.Drawing.Size(100, 20);
+            this.textBoxEmail.TabIndex = 16;
             // 
             // comboBoxIdentificacion
             // 
@@ -206,19 +206,19 @@
             this.label12.TabIndex = 13;
             this.label12.Text = "Tipo Identificación";
             // 
-            // textBox2
+            // textBoxApellido
             // 
-            this.textBox2.Location = new System.Drawing.Point(65, 51);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 12;
+            this.textBoxApellido.Location = new System.Drawing.Point(65, 51);
+            this.textBoxApellido.Name = "textBoxApellido";
+            this.textBoxApellido.Size = new System.Drawing.Size(100, 20);
+            this.textBoxApellido.TabIndex = 12;
             // 
-            // textBox1
+            // textBoxNombre
             // 
-            this.textBox1.Location = new System.Drawing.Point(65, 25);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 11;
+            this.textBoxNombre.Location = new System.Drawing.Point(65, 25);
+            this.textBoxNombre.Name = "textBoxNombre";
+            this.textBoxNombre.Size = new System.Drawing.Size(100, 20);
+            this.textBoxNombre.TabIndex = 11;
             // 
             // label11
             // 
@@ -322,10 +322,10 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.groupBox3);
-            this.groupBox2.Controls.Add(this.textBox13);
-            this.groupBox2.Controls.Add(this.textBox12);
-            this.groupBox2.Controls.Add(this.textBox11);
-            this.groupBox2.Controls.Add(this.textBox10);
+            this.groupBox2.Controls.Add(this.textBoxRespuestaSecreta);
+            this.groupBox2.Controls.Add(this.textBoxPreguntaSecreta);
+            this.groupBox2.Controls.Add(this.textBoxPassword);
+            this.groupBox2.Controls.Add(this.textBoxUsername);
             this.groupBox2.Controls.Add(this.label17);
             this.groupBox2.Controls.Add(this.label16);
             this.groupBox2.Controls.Add(this.label14);
@@ -372,35 +372,35 @@
             this.Asignado.HeaderText = "Asignado";
             this.Asignado.Name = "Asignado";
             // 
-            // textBox13
+            // textBoxRespuestaSecreta
             // 
-            this.textBox13.Location = new System.Drawing.Point(117, 104);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(150, 20);
-            this.textBox13.TabIndex = 9;
-            this.textBox13.UseSystemPasswordChar = true;
+            this.textBoxRespuestaSecreta.Location = new System.Drawing.Point(117, 104);
+            this.textBoxRespuestaSecreta.Name = "textBoxRespuestaSecreta";
+            this.textBoxRespuestaSecreta.Size = new System.Drawing.Size(150, 20);
+            this.textBoxRespuestaSecreta.TabIndex = 9;
+            this.textBoxRespuestaSecreta.UseSystemPasswordChar = true;
             // 
-            // textBox12
+            // textBoxPreguntaSecreta
             // 
-            this.textBox12.Location = new System.Drawing.Point(117, 78);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(150, 20);
-            this.textBox12.TabIndex = 8;
+            this.textBoxPreguntaSecreta.Location = new System.Drawing.Point(117, 78);
+            this.textBoxPreguntaSecreta.Name = "textBoxPreguntaSecreta";
+            this.textBoxPreguntaSecreta.Size = new System.Drawing.Size(150, 20);
+            this.textBoxPreguntaSecreta.TabIndex = 8;
             // 
-            // textBox11
+            // textBoxPassword
             // 
-            this.textBox11.Location = new System.Drawing.Point(76, 52);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(100, 20);
-            this.textBox11.TabIndex = 6;
-            this.textBox11.UseSystemPasswordChar = true;
+            this.textBoxPassword.Location = new System.Drawing.Point(76, 52);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.Size = new System.Drawing.Size(100, 20);
+            this.textBoxPassword.TabIndex = 6;
+            this.textBoxPassword.UseSystemPasswordChar = true;
             // 
-            // textBox10
+            // textBoxUsername
             // 
-            this.textBox10.Location = new System.Drawing.Point(76, 26);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(100, 20);
-            this.textBox10.TabIndex = 5;
+            this.textBoxUsername.Location = new System.Drawing.Point(76, 26);
+            this.textBoxUsername.Name = "textBoxUsername";
+            this.textBoxUsername.Size = new System.Drawing.Size(100, 20);
+            this.textBoxUsername.TabIndex = 5;
             // 
             // label17
             // 
@@ -438,14 +438,15 @@
             this.label13.TabIndex = 0;
             this.label13.Text = "Username";
             // 
-            // button2
+            // buttonLimpiar
             // 
-            this.button2.Location = new System.Drawing.Point(12, 358);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Limpiar";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonLimpiar.Location = new System.Drawing.Point(12, 358);
+            this.buttonLimpiar.Name = "buttonLimpiar";
+            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.buttonLimpiar.TabIndex = 2;
+            this.buttonLimpiar.Text = "Limpiar";
+            this.buttonLimpiar.UseVisualStyleBackColor = true;
+            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
             // 
             // button3
             // 
@@ -462,7 +463,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 393);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "AltaCliente";
@@ -489,34 +490,34 @@
         private System.Windows.Forms.ComboBox comboBoxIdentificacion;
         private System.Windows.Forms.TextBox textBoxNroIdentificacion;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxApellido;
+        private System.Windows.Forms.TextBox textBoxNombre;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBoxLocalidad;
+        private System.Windows.Forms.TextBox textBoxDepto;
+        private System.Windows.Forms.TextBox textBoxCalle;
+        private System.Windows.Forms.TextBox textBoxDomicilio;
         private System.Windows.Forms.ComboBox comboBoxPais;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBoxEmail;
+        private System.Windows.Forms.Button buttonSeleccionarFecha;
         private System.Windows.Forms.TextBox textBoxFechaNacimiento;
         private System.Windows.Forms.ComboBox comboBoxNacionalidad;
-        private System.Windows.Forms.TextBox textBox11;
-        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox textBoxPassword;
+        private System.Windows.Forms.TextBox textBoxUsername;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox textBox13;
-        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.TextBox textBoxRespuestaSecreta;
+        private System.Windows.Forms.TextBox textBoxPreguntaSecreta;
         private System.Windows.Forms.DataGridView dataGridViewRoles;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Rol;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Asignado;

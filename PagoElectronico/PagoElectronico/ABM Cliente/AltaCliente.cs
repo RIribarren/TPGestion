@@ -90,5 +90,29 @@ namespace PagoElectronico.ABM_Cliente
             ventanaFecha.ShowDialog(this);
             textBoxFechaNacimiento.Text = ventanaFecha.fecha;
         }
+
+        private void buttonLimpiar_Click(object sender, EventArgs e)
+        {
+            textBoxNombre.Clear();
+            textBoxApellido.Clear();
+            textBoxNroIdentificacion.Clear();
+            comboBoxIdentificacion.SelectedIndex = -1;
+            textBoxEmail.Clear();
+            comboBoxPais.SelectedIndex = -1;
+            textBoxDomicilio.Clear();
+            textBoxCalle.Clear();
+            textBoxDepto.Clear();
+            textBoxLocalidad.Clear();
+            comboBoxNacionalidad.SelectedIndex = -1;
+            textBoxFechaNacimiento.Clear();
+
+            textBoxUsername.Clear();
+            textBoxPassword.Clear();
+            textBoxPreguntaSecreta.Clear();
+            textBoxRespuestaSecreta.Clear();
+
+            if (indiceRolSeleccionado != -1)
+                dataGridViewRoles.Rows[indiceRolSeleccionado].Cells[1].Value = false;
+        }
     }
 }
