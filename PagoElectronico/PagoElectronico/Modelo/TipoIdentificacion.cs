@@ -15,5 +15,10 @@ namespace PagoElectronico.Modelo
             this.id = id;
             this.nombre = nombre;
         }
+
+        public bool esIgualA(TipoIdentificacion tipoIdentificacion)
+        {
+            return id == tipoIdentificacion.id;
+        }
     }
 }

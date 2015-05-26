@@ -50,5 +50,11 @@ namespace PagoElectronico.Modelo
             this.nacionalidad = nacionalidad;
             this.fechaNacimiento = fechaNacimiento;
         }
+
+        public bool tieneMismaIdentificacionQue(Cliente nuevoCliente)
+        {
+            return nuevoCliente.nroIdentificacion == nroIdentificacion &&
+                tipoIdentificacion.esIgualA(nuevoCliente.tipoIdentificacion);
+        }
     }
 }

@@ -29,5 +29,10 @@ namespace PagoElectronico.Modelo
             this.respuestaSecreta = respuestaSecreta;
             this.rol = rol;
         }
+
+        public bool tieneMismoUsernameQue(Usuario usuario)
+        {
+            return username == usuario.username;
+        }
     }
 }

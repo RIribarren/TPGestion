@@ -149,6 +149,7 @@
     <Compile Include="Modelo\Funcionalidad.cs" />
     <Compile Include="Modelo\Pais.cs" />
     <Compile Include="Modelo\RepositorioDeDatos.cs" />
+    <Compile Include="Modelo\RepositorioEnMemoria.cs" />
     <Compile Include="Modelo\Rol.cs" />
     <Compile Include="Modelo\TipoIdentificacion.cs" />
     <Compile Include="Modelo\Usuario.cs" />
@@ -180,7 +181,22 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ventanas\VentanaPadreHijo.resx">
+    <EmbeddedResource Include="WidgetsGUI\ComboValidable.resx">
+      <DependentUpon>ComboValidable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WidgetsGUI\TextoPasswordValidable.resx">
+      <DependentUpon>TextoPasswordValidable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WidgetsGUI\TextoValidable.resx">
+      <DependentUpon>TextoValidable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WidgetsGUI\TextoNumerico.resx">
+      <DependentUpon>TextoNumerico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WidgetsGUI\VentanaPadre.resx">
+      <DependentUpon>VentanaPadre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WidgetsGUI\VentanaPadreHijo.resx">
       <DependentUpon>VentanaPadreHijo.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -208,16 +224,47 @@
     <Compile Include="Transferencias\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ventanas\VentanaPadre.cs">
+    <Compile Include="WidgetsGUI\ComboValidable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\ComboValidable.Designer.cs">
+      <DependentUpon>ComboValidable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\TextoNumericoValidable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\TextoNumericoValidable.Designer.cs">
+      <DependentUpon>TextoNumericoValidable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\TextoPasswordValidable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\TextoPasswordValidable.Designer.cs">
+      <DependentUpon>TextoPasswordValidable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\TextoValidable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\TextoValidable.Designer.cs">
+      <DependentUpon>TextoValidable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\TextoNumerico.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\TextoNumerico.Designer.cs">
+      <DependentUpon>TextoNumerico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\Validable.cs" />
+    <Compile Include="WidgetsGUI\VentanaPadre.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ventanas\VentanaPadre.Designer.cs">
+    <Compile Include="WidgetsGUI\VentanaPadre.Designer.cs">
       <DependentUpon>VentanaPadre.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ventanas\VentanaPadreHijo.cs">
+    <Compile Include="WidgetsGUI\VentanaPadreHijo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ventanas\VentanaPadreHijo.Designer.cs">
+    <Compile Include="WidgetsGUI\VentanaPadreHijo.Designer.cs">
       <DependentUpon>VentanaPadreHijo.cs</DependentUpon>
     </Compile>
   </ItemGroup>

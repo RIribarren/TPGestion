@@ -5,127 +5,95 @@ using System.Text;
 
 namespace PagoElectronico.Modelo
 {
-    class RepositorioDeDatos
+    public abstract class RepositorioDeDatos
     {
         static RepositorioDeDatos Instancia;
 
-        private List<Rol> roles = new List<Rol>();
-        private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
-        private List<Pais> paises = new List<Pais>();
-        private List<TipoIdentificacion> tiposIdentificacion = new List<TipoIdentificacion>();
-
-        private RepositorioDeDatos()
-        {
-            // Funcionalidades
-            funcionalidades.Add(new Funcionalidad(0, "ABM Roles"));
-            funcionalidades.Add(new Funcionalidad(1, "ABM Clientes"));
-            funcionalidades.Add(new Funcionalidad(2, "ABM Usuarios"));
-            funcionalidades.Add(new Funcionalidad(3, "ABM Cuenta"));
-            funcionalidades.Add(new Funcionalidad(4, "Depositos"));
-            funcionalidades.Add(new Funcionalidad(5, "Retiro de efectivo"));
-            funcionalidades.Add(new Funcionalidad(6, "Transferencias entre cuentas"));
-            funcionalidades.Add(new Funcionalidad(7, "Facturacion de costos"));
-            funcionalidades.Add(new Funcionalidad(8, "Consulta de saldos"));
-            funcionalidades.Add(new Funcionalidad(9, "Listado estadistico"));
-
-            // ROLES
-            roles.Add(new Rol(0, "Administrador", new List<Funcionalidad>(), true));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(0));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(1));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(2));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(3));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(4));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(5));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(6));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(7));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(8));
-            roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(9));
-
-            roles.Add(new Rol(1, "Cliente", new List<Funcionalidad>(), true));
-            roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(4));
-            roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(5));
-            roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(6));
-            roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(7));
-            roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(8));
-            roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(9));
-
-            // Paises
-            paises.Add(new Pais(1, "Argentina"));
-            paises.Add(new Pais(2, "Uruguay"));
-            paises.Add(new Pais(3, "Estados Unidos"));
-            paises.Add(new Pais(4, "España"));
-
-            // Tipo identificacion
-            tiposIdentificacion.Add(new TipoIdentificacion(1, "DNI"));
-            tiposIdentificacion.Add(new TipoIdentificacion(2, "Pasaporte"));
-            tiposIdentificacion.Add(new TipoIdentificacion(3, "Cedula"));
-        }
+        protected RepositorioDeDatos() {}
 
         static public RepositorioDeDatos getInstance()
         {
             if (Instancia == null)
-                Instancia = new RepositorioDeDatos();
+                throw new NotSupportedException("No se puede instanciar un Repositorio de datos");
 
             return Instancia;               
         }
 
-        public void bajaRol(Rol rol)
+        static public void setInstance(RepositorioDeDatos repositorio)
         {
-            rol.estaActivo = false;
+            Instancia = repositorio;
         }
 
-        public List<Rol> getRoles()
-        {
-            return roles;
-        }
 
-        public List<Rol> getRolesActivados()
-        {
-            return roles.FindAll(r => r.estaActivo);
-        }
+        /*
+         * ROLES 
+         */
+        abstract public void bajaRol(Rol rol);
 
-        public List<Funcionalidad> getFuncionalidades()
-        {
-            return funcionalidades;
-        }
+        abstract public List<Rol> getRoles();
 
-        public List<Rol> getRolesFiltrados(Predicate<Rol> filtro)
-        {
-            return roles.FindAll(filtro);
-        }
+        abstract public List<Rol> getRolesActivados();
+
+        abstract public List<Rol> getRolesFiltrados(Predicate<Rol> filtro);
 
         public void guardarRol(Rol rolModificado)
         {
             validarRol(rolModificado);
-
-            Rol rol = roles.Find(r => r.id == rolModificado.id);
-
-            roles.Remove(rol);
-            roles.Add(rolModificado);
+            guardarRolModificado(rolModificado);
         }
 
         public void crearRol(Rol rol)
         {
-            validarRol(rol); 
-
-            rol.id = roles.OrderBy(r => r.id).Last().id + 1;
-            roles.Add(rol);
+            validarRol(rol);
+            agregarRol(rol);
         }
 
-        private void validarRol(Rol rol)
+        abstract protected void guardarRolModificado(Rol rol);
+
+        abstract protected void agregarRol(Rol rol);
+
+        abstract public void validarRol(Rol rol);
+
+
+        /*
+         * FUNCIONALIDADES
+         */
+
+        abstract public List<Funcionalidad> getFuncionalidades();
+
+
+        /*
+         * PAISES
+         */
+        abstract public List<Pais> getPaises();
+
+
+        /*
+         * TIPOS IDENTIFICACION
+         */
+        abstract public List<TipoIdentificacion> getTiposIdentificacion();
+
+
+        /*
+         * CLIENTES
+         */
+        public void crearCliente(Cliente nuevoCliente, Usuario nuevoUsuario)
         {
-            if (roles.Any(r => r.nombre == rol.nombre && r.id != rol.id))
-                throw new ErrorEnRepositorioException("El nombre " + rol.nombre + " ya esta en uso");
+            validarCliente(nuevoCliente);
+
+            validarUsuario(nuevoUsuario);
+
+            agregarCliente(nuevoCliente);
+
+            agregarUsuario(nuevoUsuario);
         }
 
-        public List<Pais> getPaises()
-        {
-            return paises;
-        }
+        abstract protected void validarCliente(Cliente nuevoCliente);
 
-        internal List<TipoIdentificacion> getTiposIdentificacion()
-        {
-            return tiposIdentificacion;
-        }
+        abstract protected void agregarCliente(Cliente nuevoCliente);
+
+        abstract protected void validarUsuario(Usuario nuevoUsuario);
+
+        abstract protected void agregarUsuario(Usuario nuevoUsuario);
     }
 }

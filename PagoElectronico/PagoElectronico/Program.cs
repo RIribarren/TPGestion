@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using PagoElectronico.Modelo;
 
 namespace PagoElectronico
 {
@@ -13,6 +14,7 @@ namespace PagoElectronico
         [STAThread]
         static void Main()
         {
+            RepositorioDeDatos.setInstance(new RepositorioEnMemoria());
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MenuPrincipal());

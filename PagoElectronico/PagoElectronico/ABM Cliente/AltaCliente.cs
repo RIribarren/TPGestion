@@ -141,7 +141,19 @@ namespace PagoElectronico.ABM_Cliente
                 textBoxPassword.Text,
                 textBoxPreguntaSecreta.Text,
                 textBoxRespuestaSecreta.Text,
-                obtenerListaDeRol());
+                obtenerRol());
+
+            try
+            {
+                RepositorioDeDatos.getInstance().crearCliente(nuevoCliente, nuevoUsuario);
+                volverConMensaje("Operacion exitosa", "El cliente fue creado");
+            }
+            catch (ErrorEnRepositorioException excepcion)
+            {
+                MessageBox.Show(excepcion.mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
         }
 
         private bool sonDatosValidos()
@@ -201,7 +213,7 @@ namespace PagoElectronico.ABM_Cliente
             return cantidad;
         }
 
-        private Rol obtenerListaDeRol()
+        private Rol obtenerRol()
         {
             foreach (DataGridViewRow row in dataGridViewRoles.Rows)
                 if (Convert.ToBoolean(row.Cells[1].FormattedValue) == true)
