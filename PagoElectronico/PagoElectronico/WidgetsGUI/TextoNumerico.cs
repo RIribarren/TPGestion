@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace PagoElectronico.WidgetsGUI
 {
-    public partial class TextoNumerico : UserControl
+    public partial class TextoNumerico : UserControl, Limpiable
     {
         private String contenidoAnterior = "";
 
@@ -35,6 +35,11 @@ namespace PagoElectronico.WidgetsGUI
                 Text = contenidoAnterior;
                 textBoxTextoNumerico.SelectionStart = Text.Length + 1;
             }
+        }
+
+        public void limpiar()
+        {
+            textBoxTextoNumerico.Clear();
         }
     }
 }

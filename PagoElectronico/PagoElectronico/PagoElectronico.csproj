@@ -60,11 +60,11 @@
     <Compile Include="ABM Cliente\AltaCliente.Designer.cs">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABM Cliente\VentanaFecha.cs">
-      <SubType>Form</SubType>
+    <Compile Include="ABM Cliente\SelectorDeRol.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ABM Cliente\VentanaFecha.Designer.cs">
-      <DependentUpon>VentanaFecha.cs</DependentUpon>
+    <Compile Include="ABM Cliente\SelectorDeRol.Designer.cs">
+      <DependentUpon>SelectorDeRol.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cuenta\Form1.cs">
       <SubType>Form</SubType>
@@ -161,8 +161,8 @@
     <EmbeddedResource Include="ABM Cliente\AltaCliente.resx">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABM Cliente\VentanaFecha.resx">
-      <DependentUpon>VentanaFecha.cs</DependentUpon>
+    <EmbeddedResource Include="ABM Cliente\SelectorDeRol.resx">
+      <DependentUpon>SelectorDeRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Rol\ABMRol.resx">
       <DependentUpon>ABMRol.cs</DependentUpon>
@@ -184,6 +184,12 @@
     <EmbeddedResource Include="WidgetsGUI\ComboValidable.resx">
       <DependentUpon>ComboValidable.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WidgetsGUI\Fecha.resx">
+      <DependentUpon>Fecha.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WidgetsGUI\Texto.resx">
+      <DependentUpon>Texto.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WidgetsGUI\TextoPasswordValidable.resx">
       <DependentUpon>TextoPasswordValidable.cs</DependentUpon>
     </EmbeddedResource>
@@ -193,11 +199,11 @@
     <EmbeddedResource Include="WidgetsGUI\TextoNumerico.resx">
       <DependentUpon>TextoNumerico.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WidgetsGUI\VentanaPadre.resx">
-      <DependentUpon>VentanaPadre.cs</DependentUpon>
+    <EmbeddedResource Include="WidgetsGUI\VentanaFecha.resx">
+      <DependentUpon>VentanaFecha.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WidgetsGUI\VentanaPadreHijo.resx">
-      <DependentUpon>VentanaPadreHijo.cs</DependentUpon>
+    <EmbeddedResource Include="WidgetsGUI\Ventana.resx">
+      <DependentUpon>Ventana.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -230,6 +236,19 @@
     <Compile Include="WidgetsGUI\ComboValidable.Designer.cs">
       <DependentUpon>ComboValidable.cs</DependentUpon>
     </Compile>
+    <Compile Include="WidgetsGUI\Fecha.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\Fecha.Designer.cs">
+      <DependentUpon>Fecha.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\Limpiable.cs" />
+    <Compile Include="WidgetsGUI\Texto.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\Texto.Designer.cs">
+      <DependentUpon>Texto.cs</DependentUpon>
+    </Compile>
     <Compile Include="WidgetsGUI\TextoNumericoValidable.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -255,17 +274,18 @@
       <DependentUpon>TextoNumerico.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\Validable.cs" />
-    <Compile Include="WidgetsGUI\VentanaPadre.cs">
+    <Compile Include="WidgetsGUI\Validador.cs" />
+    <Compile Include="WidgetsGUI\VentanaFecha.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WidgetsGUI\VentanaPadre.Designer.cs">
-      <DependentUpon>VentanaPadre.cs</DependentUpon>
+    <Compile Include="WidgetsGUI\VentanaFecha.Designer.cs">
+      <DependentUpon>VentanaFecha.cs</DependentUpon>
     </Compile>
-    <Compile Include="WidgetsGUI\VentanaPadreHijo.cs">
+    <Compile Include="WidgetsGUI\Ventana.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WidgetsGUI\VentanaPadreHijo.Designer.cs">
-      <DependentUpon>VentanaPadreHijo.cs</DependentUpon>
+    <Compile Include="WidgetsGUI\Ventana.Designer.cs">
+      <DependentUpon>Ventana.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

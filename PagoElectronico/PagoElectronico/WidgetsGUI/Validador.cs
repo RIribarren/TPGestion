@@ -7,21 +7,32 @@ namespace PagoElectronico.WidgetsGUI
 {
     public class Validador
     {
-        private List<Validable> listaDeValidables;
+        private List<Validable> listaDeValidables = new List<Validable>();
 
         public Validador(params Validable[] listaDeValidables)
         {
             this.listaDeValidables = new List<Validable>(listaDeValidables);
         }
 
-        bool sonValidos()
+        public Validador()
+        {}
+
+        public void agregarValidable(Validable validable)
+        {
+            listaDeValidables.Add(validable);
+        }
+
+        public bool sonValoresValidos()
         {
             return listaDeValidables.All(v => v.esValido());
         }
 
-        String obtenerMensajeDeError()
+        public String obtenerMensajeDeError()
         {
-            return listaDeValidables.Aggregate("", (mensaje, v) => mensaje + "\n" + v.obtenerMensajeDeError());
+            return listaDeValidables.Aggregate("", (mensaje, v) =>
+                v.esValido() ?
+                    mensaje
+                    : mensaje + v.obtenerMensajeDeError() + "\n");
         }
     }
 }

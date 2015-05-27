@@ -9,11 +9,17 @@ using System.Windows.Forms;
 
 namespace PagoElectronico.WidgetsGUI
 {
-    public partial class ComboValidable : UserControl, Validable
+    public partial class ComboValidable : UserControl, Validable, Limpiable
     {
         public ComboBox.ObjectCollection Items
         {
             get { return comboBoxCombo.Items; }
+        }
+
+        public int SelectedIndex
+        {
+            get { return comboBoxCombo.SelectedIndex; }
+            set { comboBoxCombo.SelectedIndex = value; }
         }
 
         public bool esValido()
@@ -29,6 +35,11 @@ namespace PagoElectronico.WidgetsGUI
         public ComboValidable()
         {
             InitializeComponent();
+        }
+
+        public void limpiar()
+        {
+            SelectedIndex = -1;
         }
     }
 }

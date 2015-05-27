@@ -19,7 +19,7 @@ namespace PagoElectronico.ABM_Rol
         MODIFICACION
     };
 
-    public partial class ABMRol : VentanaPadreHijo
+    public partial class ABMRol : VentanaPadre
     {
         private Operacion operacion;
 

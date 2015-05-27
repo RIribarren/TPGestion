@@ -7,12 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PagoElectronico.ABM_Cliente
+namespace PagoElectronico.WidgetsGUI
 {
     public partial class VentanaFecha : Form
     {
-        public String fecha;
-
+        public DateTime fecha;
         public VentanaFecha()
         {
             InitializeComponent();
@@ -20,8 +19,13 @@ namespace PagoElectronico.ABM_Cliente
 
         private void monthCalendar1_DateSelected(object sender, DateRangeEventArgs e)
         {
-            fecha = monthCalendar1.SelectionStart.ToString().Split(' ')[0];
+            fecha = monthCalendar1.SelectionStart;
             this.Hide();
+        }
+
+        public DateTime getFecha()
+        {
+            return fecha;
         }
     }
 }

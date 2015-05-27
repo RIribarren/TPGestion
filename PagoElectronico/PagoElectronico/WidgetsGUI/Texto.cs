@@ -9,27 +9,23 @@ using System.Windows.Forms;
 
 namespace PagoElectronico.WidgetsGUI
 {
-    public partial class TextoValidable : Texto, Validable
+    public partial class Texto : UserControl, Limpiable
     {
         public override String Text
         {
-            get {return textBoxTexto.Text;}
+            get { return textBoxTexto.Text; }
             set { textBoxTexto.Text = value; }
         }
 
-        public TextoValidable()
+        public Texto()
         {
             InitializeComponent();
         }
 
-        public bool esValido()
-        {
-            return Text != "";
-        }
 
-        public String obtenerMensajeDeError()
+        public void limpiar()
         {
-            return "El campo " + Name + " no puede estar vacío";
+            textBoxTexto.Clear();
         }
     }
 }

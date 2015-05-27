@@ -1,4 +1,4 @@
-﻿namespace PagoElectronico.ABM_Cliente
+﻿namespace PagoElectronico.WidgetsGUI
 {
     partial class VentanaFecha
     {
@@ -42,9 +42,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(227, 162);
+            this.ClientSize = new System.Drawing.Size(226, 160);
             this.Controls.Add(this.monthCalendar1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "VentanaFecha";
             this.Text = "VentanaFecha";
             this.ResumeLayout(false);

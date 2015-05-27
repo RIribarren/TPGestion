@@ -10,7 +10,7 @@ using PagoElectronico.Ventanas;
 
 namespace PagoElectronico.ABM_Cliente
 {
-    public partial class ABMCliente : VentanaPadreHijo
+    public partial class ABMCliente : VentanaPadre
     {
         public ABMCliente()
         {

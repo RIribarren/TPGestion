@@ -1,13 +1,13 @@
-﻿namespace PagoElectronico.Ventanas
+﻿namespace PagoElectronico.WidgetsGUI
 {
-    partial class VentanaPadreHijo
+    partial class Texto
     {
-        /// <summary>
+        /// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -20,28 +20,40 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Component Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
+            this.textBoxTexto = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // VentanaPadreHijo
+            // textBoxTexto
+            // 
+            this.textBoxTexto.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxTexto.Location = new System.Drawing.Point(0, 0);
+            this.textBoxTexto.Name = "textBoxTexto";
+            this.textBoxTexto.Size = new System.Drawing.Size(100, 20);
+            this.textBoxTexto.TabIndex = 0;
+            // 
+            // Texto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "VentanaPadreHijo";
-            this.Text = "VentanaPadreHijo";
+            this.Controls.Add(this.textBoxTexto);
+            this.Name = "Texto";
+            this.Size = new System.Drawing.Size(100, 20);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        protected System.Windows.Forms.TextBox textBoxTexto;
+
     }
 }

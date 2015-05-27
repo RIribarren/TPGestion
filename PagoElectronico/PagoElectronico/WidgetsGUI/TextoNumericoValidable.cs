@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace PagoElectronico.WidgetsGUI
 {
-    public partial class TextoNumericoValidable : TextoNumerico, Validable
+    public partial class TextoNumericoValidable : TextoNumerico, Validable, Limpiable
     {
         public TextoNumericoValidable()
         {

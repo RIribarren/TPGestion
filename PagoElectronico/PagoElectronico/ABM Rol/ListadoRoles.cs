@@ -12,7 +12,7 @@ using PagoElectronico.Ventanas;
 
 namespace PagoElectronico.ABM_Rol
 {
-    public partial class ListadoRoles : VentanaPadreHijo
+    public partial class ListadoRoles : VentanaPadre
     {
         private ABMRol abmRol;
         private List<Rol> roles;
