@@ -63,7 +63,8 @@ namespace PagoElectronico.ABM_Cliente
                 textBoxDepto.Text,
                 Localidad.Text,
                 paises.ElementAt(Nacionalidad.SelectedIndex),
-                FechaNacimiento.Text);
+                FechaNacimiento.Text,
+                true);
 
             Usuario nuevoUsuario = new Usuario(
                 -1,

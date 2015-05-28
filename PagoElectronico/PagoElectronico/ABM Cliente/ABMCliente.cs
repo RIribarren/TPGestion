@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using PagoElectronico.Ventanas;
+using PagoElectronico.Modelo;
+
 
 namespace PagoElectronico.ABM_Cliente
 {
@@ -24,7 +26,8 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button2_Click(object sender, EventArgs e)
         {
-            abrirVentanaHija(new FiltroCliente());
+            FiltroCliente filtro = new FiltroCliente(true);
+            abrirVentanaHija(filtro);
         }
     }
 }

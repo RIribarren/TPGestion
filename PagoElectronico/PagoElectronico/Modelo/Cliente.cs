@@ -20,6 +20,7 @@ namespace PagoElectronico.Modelo
             public String localidad;
             public Pais nacionalidad;
             public String fechaNacimiento;
+            public Boolean habilitado;
 
         public Cliente(
             int id,
@@ -34,7 +35,8 @@ namespace PagoElectronico.Modelo
             String depto,
             String localidad,
             Pais nacionalidad,
-            String fechaNacimiento)
+            String fechaNacimiento,
+            Boolean habilitado)
         {
             this.id = id;
             this.nombre = nombre;
@@ -49,6 +51,7 @@ namespace PagoElectronico.Modelo
             this.localidad = localidad;
             this.nacionalidad = nacionalidad;
             this.fechaNacimiento = fechaNacimiento;
+            this.habilitado = habilitado;
         }
 
         public bool tieneMismaIdentificacionQue(Cliente nuevoCliente)

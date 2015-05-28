@@ -72,11 +72,11 @@ namespace PagoElectronico.Modelo
 
             // Clientes
             clientes.Add(new Cliente(2, "cliente2", "ap2", "1234", tiposIdentificacion.ElementAt(0), "c2@a.com",
-                paises.ElementAt(0), "1234", "una calle", "1B", "CABA", paises.ElementAt(0), "1/1/1990"));
+                paises.ElementAt(0), "1234", "una calle", "1B", "CABA", paises.ElementAt(0), "1/1/1990", true));
             clientes.Add(new Cliente(3, "cliente3", "ap2", "1234", tiposIdentificacion.ElementAt(1), "c3@a.com",
-                paises.ElementAt(1), "1234", "una calle", "1B", "CABA", paises.ElementAt(1), "1/1/1990"));
+                paises.ElementAt(1), "1234", "una calle", "1B", "CABA", paises.ElementAt(1), "1/1/1990", true));
             clientes.Add(new Cliente(4, "cliente4", "ap2", "1234", tiposIdentificacion.ElementAt(2), "c4@a.com",
-                paises.ElementAt(2), "1234", "una calle", "1B", "CABA", paises.ElementAt(2), "1/1/1990"));
+                paises.ElementAt(2), "1234", "una calle", "1B", "CABA", paises.ElementAt(2), "1/1/1990", true));
         }
 
         public override void bajaRol(Rol rol)
@@ -169,6 +169,17 @@ namespace PagoElectronico.Modelo
         public override List<Cliente> obtenerClientes()
         {
             return clientes;
+        }
+
+        public override void borrarCliente(Cliente clienteABorrar)
+        {
+            Cliente cliente = clientes.Find(c => c.id == clienteABorrar.id);
+            cliente.habilitado = false;
+        }
+
+        public override List<Cliente> obtenerClientesHabilitados()
+        {
+            return clientes.FindAll(c => c.habilitado);
         }
     }
 }

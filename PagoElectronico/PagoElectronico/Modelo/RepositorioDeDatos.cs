@@ -97,5 +97,9 @@ namespace PagoElectronico.Modelo
         abstract protected void agregarUsuario(Usuario nuevoUsuario);
 
         abstract public List<Cliente> obtenerClientes();
+
+        abstract public void borrarCliente(Cliente clienteABorrar);
+
+        abstract public List<Cliente> obtenerClientesHabilitados();
     }
 }
