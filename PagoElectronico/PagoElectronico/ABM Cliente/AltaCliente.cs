@@ -12,10 +12,9 @@ using PagoElectronico.WidgetsGUI;
 
 namespace PagoElectronico.ABM_Cliente
 {
-    public partial class AltaCliente : VentanaPadre
+    public partial class AltaCliente : Ventana
     {
         protected List<Pais> paises;
-        protected List<TipoIdentificacion> tiposIdentificacion;
         protected int indiceRolSeleccionado = -1;
         protected String idAnterior = "";
 
@@ -28,13 +27,6 @@ namespace PagoElectronico.ABM_Cliente
         {
             selectorDeRol1.cargarRoles();
             cargarPaises();
-            cargarTiposIdentificacion();
-        }
-
-        protected void cargarTiposIdentificacion()
-        {
-            tiposIdentificacion = RepositorioDeDatos.getInstance().getTiposIdentificacion();
-            TipoIdentificacion.Items.AddRange(tiposIdentificacion.Select(i => i.nombre).ToArray());
         }
 
         protected void cargarPaises()
@@ -52,15 +44,18 @@ namespace PagoElectronico.ABM_Cliente
 
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            if (! tieneDatosValidos())
+            if (!this.esValido())
+            {
+                informarDatosInvalidos();
                 return;
+            }
 
             Cliente nuevoCliente = new Cliente(
                 -1,
                 Nombre.Text,
                 Apellido.Text,
                 NroIdentificacion.Text,
-                tiposIdentificacion.ElementAt(TipoIdentificacion.SelectedIndex),
+                TipoIdentificacion.obtenerTipoIdentificacion(),
                 Email.Text,
                 paises.ElementAt(Pais.SelectedIndex),
                 Domicilio.Text,
@@ -70,7 +65,7 @@ namespace PagoElectronico.ABM_Cliente
                 paises.ElementAt(Nacionalidad.SelectedIndex),
                 FechaNacimiento.Text);
 
-            Usuario nuevoUsuario= new Usuario(
+            Usuario nuevoUsuario = new Usuario(
                 -1,
                 Username.Text,
                 Password.Text,
@@ -87,8 +82,6 @@ namespace PagoElectronico.ABM_Cliente
             {
                 MessageBox.Show(excepcion.mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
         }
     }
 }

@@ -10,14 +10,14 @@ using PagoElectronico.WidgetsGUI;
 
 namespace PagoElectronico.Ventanas
 {
-    public partial class VentanaPadre : Form, Limpiable
+    public partial class Ventana : Form, Limpiable, Validable
     {
-        public VentanaPadre()
+        public Ventana()
         {
             InitializeComponent();
         }
 
-        public void abrirVentanaHija(VentanaPadre ventanaHija)
+        public void abrirVentanaHija(Ventana ventanaHija)
         {
             this.Hide();
             ventanaHija.ejecutar(this);
@@ -25,7 +25,7 @@ namespace PagoElectronico.Ventanas
         }
         protected virtual void cargarDatos() { }
 
-        public void ejecutar(VentanaPadre ventanaPadre)
+        public void ejecutar(Ventana ventanaPadre)
         {
             cargarDatos();
             ShowDialog(ventanaPadre);
@@ -42,52 +42,40 @@ namespace PagoElectronico.Ventanas
             Hide();
         }
 
-        protected bool tieneDatosValidos()
+        public void informarDatosInvalidos()
+        {
+            if (! this.esValido())
+                MessageBox.Show(
+                    this.obtenerMensajeDeError(),
+                    "Datos inválidos",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+        }
+
+        public bool esValido()
         {
             Validador validador = new Validador();
 
             foreach (var validable in this.Controls.OfType<Validable>())
                 validador.agregarValidable(validable);
-            
-            foreach (var groupBox in this.Controls.OfType<GroupBox>())
-                agregarValidablesDeGroupBox(groupBox, validador);
 
-            if (!validador.sonValoresValidos())
-            {
-                MessageBox.Show(validador.obtenerMensajeDeError(),
-                    "Datos invalidos", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
-                return false;
-            }
-
-            return true;
+            return validador.sonValoresValidos();
         }
 
-        private void agregarValidablesDeGroupBox(GroupBox groupBox, Validador validador)
+        public String obtenerMensajeDeError()
         {
-            foreach (var validable in groupBox.Controls.OfType<Validable>())
+            Validador validador = new Validador();
+
+            foreach (var validable in this.Controls.OfType<Validable>())
                 validador.agregarValidable(validable);
 
-            foreach (var gb in groupBox.Controls.OfType<GroupBox>())
-                agregarValidablesDeGroupBox(gb, validador);
+            return validador.obtenerMensajeDeError();
         }
 
         public void limpiar()
         {
             foreach (var limpiable in this.Controls.OfType<Limpiable>())
                 limpiable.limpiar();
-
-            foreach (var groupBox in this.Controls.OfType<GroupBox>())
-                limpiarGroupBox(groupBox);
-        }
-
-        private void limpiarGroupBox(GroupBox groupBox)
-        {
-            foreach (var limpiable in groupBox.Controls.OfType<Limpiable>())
-                limpiable.limpiar();
-
-            foreach (var gb in groupBox.Controls.OfType<GroupBox>())
-                limpiarGroupBox(gb);
         }
     }
 }

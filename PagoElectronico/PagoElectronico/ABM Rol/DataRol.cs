@@ -11,7 +11,7 @@ using PagoElectronico.Modelo;
 
 namespace PagoElectronico.ABM_Rol
 {
-    public partial class DataRol : VentanaPadre
+    public partial class DataRol : Ventana
     {
         protected ABMRol abmRol;
         protected List<Funcionalidad> todasLasFuncionalidades;

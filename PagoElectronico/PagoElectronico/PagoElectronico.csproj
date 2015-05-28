@@ -60,6 +60,18 @@
     <Compile Include="ABM Cliente\AltaCliente.Designer.cs">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Cliente\ComboIdentificacion.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\ComboIdentificacion.Designer.cs">
+      <DependentUpon>ComboIdentificacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\FiltroCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\FiltroCliente.Designer.cs">
+      <DependentUpon>FiltroCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Cliente\SelectorDeRol.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -161,6 +173,9 @@
     <EmbeddedResource Include="ABM Cliente\AltaCliente.resx">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\FiltroCliente.resx">
+      <DependentUpon>FiltroCliente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\SelectorDeRol.resx">
       <DependentUpon>SelectorDeRol.cs</DependentUpon>
     </EmbeddedResource>
@@ -241,6 +256,12 @@
     </Compile>
     <Compile Include="WidgetsGUI\Fecha.Designer.cs">
       <DependentUpon>Fecha.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\GBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\GBox.Designer.cs">
+      <DependentUpon>GBox.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\Limpiable.cs" />
     <Compile Include="WidgetsGUI\Texto.cs">

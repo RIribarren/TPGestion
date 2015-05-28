@@ -14,7 +14,7 @@ namespace PagoElectronico.Modelo
         static public RepositorioDeDatos getInstance()
         {
             if (Instancia == null)
-                throw new NotSupportedException("No se puede instanciar un Repositorio de datos");
+                Instancia = new RepositorioEnMemoria();
 
             return Instancia;               
         }
@@ -95,5 +95,7 @@ namespace PagoElectronico.Modelo
         abstract protected void validarUsuario(Usuario nuevoUsuario);
 
         abstract protected void agregarUsuario(Usuario nuevoUsuario);
+
+        abstract public List<Cliente> obtenerClientes();
     }
 }

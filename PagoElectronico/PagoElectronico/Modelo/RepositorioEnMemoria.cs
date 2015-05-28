@@ -63,6 +63,20 @@ namespace PagoElectronico.Modelo
             tiposIdentificacion.Add(new TipoIdentificacion(1, "DNI"));
             tiposIdentificacion.Add(new TipoIdentificacion(2, "Pasaporte"));
             tiposIdentificacion.Add(new TipoIdentificacion(3, "Cedula"));
+
+            // Usuarios
+            usuarios.Add(new Usuario(1, "administrador", "password", "a", "a", roles.ElementAt(0)));
+            usuarios.Add(new Usuario(2, "usuario2", "password", "a", "a", roles.ElementAt(1)));
+            usuarios.Add(new Usuario(3, "usuario3", "password", "a", "a", roles.ElementAt(1)));
+            usuarios.Add(new Usuario(4, "usuario4", "password", "a", "a", roles.ElementAt(1)));
+
+            // Clientes
+            clientes.Add(new Cliente(2, "cliente2", "ap2", "1234", tiposIdentificacion.ElementAt(0), "c2@a.com",
+                paises.ElementAt(0), "1234", "una calle", "1B", "CABA", paises.ElementAt(0), "1/1/1990"));
+            clientes.Add(new Cliente(3, "cliente3", "ap2", "1234", tiposIdentificacion.ElementAt(1), "c3@a.com",
+                paises.ElementAt(1), "1234", "una calle", "1B", "CABA", paises.ElementAt(1), "1/1/1990"));
+            clientes.Add(new Cliente(4, "cliente4", "ap2", "1234", tiposIdentificacion.ElementAt(2), "c4@a.com",
+                paises.ElementAt(2), "1234", "una calle", "1B", "CABA", paises.ElementAt(2), "1/1/1990"));
         }
 
         public override void bajaRol(Rol rol)
@@ -150,6 +164,11 @@ namespace PagoElectronico.Modelo
                 nuevoCliente.id = 1;
 
             clientes.Add(nuevoCliente); 
+        }
+
+        public override List<Cliente> obtenerClientes()
+        {
+            return clientes;
         }
     }
 }

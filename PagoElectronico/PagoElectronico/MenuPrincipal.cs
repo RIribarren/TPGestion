@@ -12,7 +12,7 @@ using PagoElectronico.ABM_Cliente;
 
 namespace PagoElectronico
 {
-    public partial class MenuPrincipal : VentanaPadre
+    public partial class MenuPrincipal : Ventana
     {
         public MenuPrincipal()
         {

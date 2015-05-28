@@ -10,7 +10,7 @@ using PagoElectronico.Ventanas;
 
 namespace PagoElectronico.ABM_Cliente
 {
-    public partial class ABMCliente : VentanaPadre
+    public partial class ABMCliente : Ventana
     {
         public ABMCliente()
         {
@@ -20,6 +20,11 @@ namespace PagoElectronico.ABM_Cliente
         private void button1_Click(object sender, EventArgs e)
         {
             abrirVentanaHija(new AltaCliente());
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            abrirVentanaHija(new FiltroCliente());
         }
     }
 }
