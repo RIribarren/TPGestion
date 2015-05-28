@@ -19,7 +19,7 @@ namespace PagoElectronico.Modelo
             public String depto;
             public String localidad;
             public Pais nacionalidad;
-            public String fechaNacimiento;
+            public DateTime fechaNacimiento;
             public Boolean habilitado;
 
         public Cliente(
@@ -35,7 +35,7 @@ namespace PagoElectronico.Modelo
             String depto,
             String localidad,
             Pais nacionalidad,
-            String fechaNacimiento,
+            DateTime fechaNacimiento,
             Boolean habilitado)
         {
             this.id = id;

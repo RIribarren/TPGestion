@@ -26,8 +26,14 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FiltroCliente filtro = new FiltroCliente(true);
-            abrirVentanaHija(filtro);
+            BajaCliente bajaCliente = new BajaCliente();
+            abrirVentanaHija(bajaCliente);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            FiltroModificacionCliente filtoModificacion = new FiltroModificacionCliente();
+            abrirVentanaHija(filtoModificacion);
         }
     }
 }

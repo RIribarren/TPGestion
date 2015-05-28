@@ -22,13 +22,18 @@ namespace PagoElectronico.WidgetsGUI
         {
             VentanaFecha ventanaFecha = new VentanaFecha();
             ventanaFecha.ShowDialog(this);
-            fecha = ventanaFecha.getFecha();
-            textBoxFecha.Text = fecha.ToString().Split(' ')[0];
+            setFecha(ventanaFecha.getFecha());
         }
 
         public DateTime getFecha()
         {
             return fecha;
+        }
+
+        public void setFecha(DateTime fecha)
+        {
+            this.fecha = fecha;
+            textBoxFecha.Text = fecha.ToString().Split(' ')[0];
         }
 
         public void limpiar()

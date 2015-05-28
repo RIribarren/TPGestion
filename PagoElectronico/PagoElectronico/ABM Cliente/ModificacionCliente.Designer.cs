@@ -1,6 +1,6 @@
 ﻿namespace PagoElectronico.ABM_Cliente
 {
-    partial class AltaCliente
+    partial class ModificacionCliente
     {
         /// <summary>
         /// Required designer variable.
@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.buttonLimpiar = new System.Windows.Forms.Button();
-            this.buttonGuardar = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
-            this.TipoIdentificacion = new PagoElectronico.ABM_Cliente.ComboIdentificacion();
+            this.Habilitado = new PagoElectronico.WidgetsGUI.CBox();
+            this.Nacionalidad = new PagoElectronico.ABM_Cliente.ComboPais();
+            this.pais = new PagoElectronico.ABM_Cliente.ComboPais();
+            this.TipoDeIdentificacion = new PagoElectronico.ABM_Cliente.ComboIdentificacion();
             this.textBoxDepto = new PagoElectronico.WidgetsGUI.Texto();
             this.FechaNacimiento = new PagoElectronico.WidgetsGUI.Fecha();
             this.Localidad = new PagoElectronico.WidgetsGUI.TextoValidable();
@@ -53,49 +56,35 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.gBox2 = new PagoElectronico.WidgetsGUI.GBox();
-            this.gBox3 = new PagoElectronico.WidgetsGUI.GBox();
-            this.selectorDeRol1 = new PagoElectronico.ABM_Cliente.SelectorDeRol();
-            this.RespuestaSecreta = new PagoElectronico.WidgetsGUI.TextoPasswordValidable();
-            this.PreguntaSecreta = new PagoElectronico.WidgetsGUI.TextoValidable();
-            this.Password = new PagoElectronico.WidgetsGUI.TextoPasswordValidable();
-            this.Username = new PagoElectronico.WidgetsGUI.TextoValidable();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.pais = new PagoElectronico.ABM_Cliente.ComboPais();
-            this.Nacionalidad = new PagoElectronico.ABM_Cliente.ComboPais();
             this.gBox1.SuspendLayout();
-            this.gBox2.SuspendLayout();
-            this.gBox3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // buttonLimpiar
+            // button1
             // 
-            this.buttonLimpiar.Location = new System.Drawing.Point(12, 358);
-            this.buttonLimpiar.Name = "buttonLimpiar";
-            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
-            this.buttonLimpiar.TabIndex = 2;
-            this.buttonLimpiar.Text = "Limpiar";
-            this.buttonLimpiar.UseVisualStyleBackColor = true;
-            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
+            this.button1.Location = new System.Drawing.Point(12, 230);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Limpiar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // buttonGuardar
+            // button2
             // 
-            this.buttonGuardar.Location = new System.Drawing.Point(495, 358);
-            this.buttonGuardar.Name = "buttonGuardar";
-            this.buttonGuardar.Size = new System.Drawing.Size(75, 23);
-            this.buttonGuardar.TabIndex = 3;
-            this.buttonGuardar.Text = "Guardar";
-            this.buttonGuardar.UseVisualStyleBackColor = true;
-            this.buttonGuardar.Click += new System.EventHandler(this.buttonGuardar_Click);
+            this.button2.Location = new System.Drawing.Point(496, 230);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 7;
+            this.button2.Text = "Guardar";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // gBox1
             // 
+            this.gBox1.Controls.Add(this.Habilitado);
             this.gBox1.Controls.Add(this.Nacionalidad);
             this.gBox1.Controls.Add(this.pais);
-            this.gBox1.Controls.Add(this.TipoIdentificacion);
+            this.gBox1.Controls.Add(this.TipoDeIdentificacion);
             this.gBox1.Controls.Add(this.textBoxDepto);
             this.gBox1.Controls.Add(this.FechaNacimiento);
             this.gBox1.Controls.Add(this.Localidad);
@@ -117,20 +106,46 @@
             this.gBox1.Controls.Add(this.label3);
             this.gBox1.Controls.Add(this.label2);
             this.gBox1.Controls.Add(this.label1);
-            this.gBox1.Location = new System.Drawing.Point(12, 12);
+            this.gBox1.Location = new System.Drawing.Point(10, 12);
             this.gBox1.Name = "gBox1";
-            this.gBox1.Size = new System.Drawing.Size(558, 193);
-            this.gBox1.TabIndex = 4;
+            this.gBox1.Size = new System.Drawing.Size(558, 212);
+            this.gBox1.TabIndex = 8;
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Campos de Cliente";
             // 
-            // TipoIdentificacion
+            // cBox1
             // 
-            this.TipoIdentificacion.Location = new System.Drawing.Point(113, 96);
-            this.TipoIdentificacion.Name = "TipoIdentificacion";
-            this.TipoIdentificacion.SelectedIndex = -1;
-            this.TipoIdentificacion.Size = new System.Drawing.Size(121, 21);
-            this.TipoIdentificacion.TabIndex = 109;
+            this.Habilitado.AutoSize = true;
+            this.Habilitado.Location = new System.Drawing.Point(17, 189);
+            this.Habilitado.Name = "cBox1";
+            this.Habilitado.Size = new System.Drawing.Size(73, 17);
+            this.Habilitado.TabIndex = 112;
+            this.Habilitado.Text = "Habilitado";
+            this.Habilitado.UseVisualStyleBackColor = true;
+            // 
+            // Nacionalidad
+            // 
+            this.Nacionalidad.Location = new System.Drawing.Point(325, 122);
+            this.Nacionalidad.Name = "Nacionalidad";
+            this.Nacionalidad.SelectedIndex = -1;
+            this.Nacionalidad.Size = new System.Drawing.Size(121, 21);
+            this.Nacionalidad.TabIndex = 111;
+            // 
+            // pais
+            // 
+            this.pais.Location = new System.Drawing.Point(64, 148);
+            this.pais.Name = "pais";
+            this.pais.SelectedIndex = -1;
+            this.pais.Size = new System.Drawing.Size(121, 21);
+            this.pais.TabIndex = 110;
+            // 
+            // TipoDeIdentificacion
+            // 
+            this.TipoDeIdentificacion.Location = new System.Drawing.Point(113, 96);
+            this.TipoDeIdentificacion.Name = "TipoDeIdentificacion";
+            this.TipoDeIdentificacion.SelectedIndex = -1;
+            this.TipoDeIdentificacion.Size = new System.Drawing.Size(121, 21);
+            this.TipoDeIdentificacion.TabIndex = 109;
             // 
             // textBoxDepto
             // 
@@ -303,146 +318,30 @@
             this.label1.TabIndex = 85;
             this.label1.Text = "Nombre";
             // 
-            // gBox2
-            // 
-            this.gBox2.Controls.Add(this.gBox3);
-            this.gBox2.Controls.Add(this.RespuestaSecreta);
-            this.gBox2.Controls.Add(this.PreguntaSecreta);
-            this.gBox2.Controls.Add(this.Password);
-            this.gBox2.Controls.Add(this.Username);
-            this.gBox2.Controls.Add(this.label17);
-            this.gBox2.Controls.Add(this.label16);
-            this.gBox2.Controls.Add(this.label14);
-            this.gBox2.Controls.Add(this.label13);
-            this.gBox2.Location = new System.Drawing.Point(12, 213);
-            this.gBox2.Name = "gBox2";
-            this.gBox2.Size = new System.Drawing.Size(558, 139);
-            this.gBox2.TabIndex = 5;
-            this.gBox2.TabStop = false;
-            this.gBox2.Text = "Campos de Usuario";
-            // 
-            // gBox3
-            // 
-            this.gBox3.Controls.Add(this.selectorDeRol1);
-            this.gBox3.Location = new System.Drawing.Point(271, 16);
-            this.gBox3.Name = "gBox3";
-            this.gBox3.Size = new System.Drawing.Size(279, 114);
-            this.gBox3.TabIndex = 24;
-            this.gBox3.TabStop = false;
-            this.gBox3.Text = "Rol";
-            // 
-            // selectorDeRol1
-            // 
-            this.selectorDeRol1.Location = new System.Drawing.Point(6, 19);
-            this.selectorDeRol1.Name = "selectorDeRol1";
-            this.selectorDeRol1.Size = new System.Drawing.Size(267, 89);
-            this.selectorDeRol1.TabIndex = 1;
-            // 
-            // RespuestaSecreta
-            // 
-            this.RespuestaSecreta.Location = new System.Drawing.Point(113, 97);
-            this.RespuestaSecreta.Name = "RespuestaSecreta";
-            this.RespuestaSecreta.Size = new System.Drawing.Size(150, 20);
-            this.RespuestaSecreta.TabIndex = 23;
-            // 
-            // PreguntaSecreta
-            // 
-            this.PreguntaSecreta.Location = new System.Drawing.Point(113, 71);
-            this.PreguntaSecreta.Name = "PreguntaSecreta";
-            this.PreguntaSecreta.Size = new System.Drawing.Size(150, 20);
-            this.PreguntaSecreta.TabIndex = 22;
-            // 
-            // Password
-            // 
-            this.Password.Location = new System.Drawing.Point(72, 45);
-            this.Password.Name = "Password";
-            this.Password.Size = new System.Drawing.Size(100, 20);
-            this.Password.TabIndex = 21;
-            // 
-            // Username
-            // 
-            this.Username.Location = new System.Drawing.Point(72, 19);
-            this.Username.Name = "Username";
-            this.Username.Size = new System.Drawing.Size(100, 20);
-            this.Username.TabIndex = 20;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(11, 100);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(96, 13);
-            this.label17.TabIndex = 18;
-            this.label17.Text = "Respuesta secreta";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(11, 74);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(88, 13);
-            this.label16.TabIndex = 17;
-            this.label16.Text = "Pregunta secreta";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(11, 48);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(53, 13);
-            this.label14.TabIndex = 16;
-            this.label14.Text = "Password";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(11, 22);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(55, 13);
-            this.label13.TabIndex = 15;
-            this.label13.Text = "Username";
-            // 
-            // pais
-            // 
-            this.pais.Location = new System.Drawing.Point(64, 148);
-            this.pais.Name = "pais";
-            this.pais.SelectedIndex = -1;
-            this.pais.Size = new System.Drawing.Size(121, 21);
-            this.pais.TabIndex = 110;
-            // 
-            // Nacionalidad
-            // 
-            this.Nacionalidad.Location = new System.Drawing.Point(325, 122);
-            this.Nacionalidad.Name = "Nacionalidad";
-            this.Nacionalidad.SelectedIndex = -1;
-            this.Nacionalidad.Size = new System.Drawing.Size(121, 21);
-            this.Nacionalidad.TabIndex = 111;
-            // 
-            // AltaCliente
+            // ModificacionCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(582, 393);
-            this.Controls.Add(this.gBox2);
+            this.ClientSize = new System.Drawing.Size(580, 261);
             this.Controls.Add(this.gBox1);
-            this.Controls.Add(this.buttonGuardar);
-            this.Controls.Add(this.buttonLimpiar);
-            this.Name = "AltaCliente";
-            this.Text = "Alta de Cliente";
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Name = "ModificacionCliente";
+            this.Text = "ModificacionCliente";
             this.gBox1.ResumeLayout(false);
             this.gBox1.PerformLayout();
-            this.gBox2.ResumeLayout(false);
-            this.gBox2.PerformLayout();
-            this.gBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button buttonLimpiar;
-        private System.Windows.Forms.Button buttonGuardar;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
         private PagoElectronico.WidgetsGUI.GBox gBox1;
+        private ComboPais Nacionalidad;
+        private ComboPais pais;
+        private ComboIdentificacion TipoDeIdentificacion;
         private PagoElectronico.WidgetsGUI.Texto textBoxDepto;
         private PagoElectronico.WidgetsGUI.Fecha FechaNacimiento;
         private PagoElectronico.WidgetsGUI.TextoValidable Localidad;
@@ -464,19 +363,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private PagoElectronico.WidgetsGUI.GBox gBox2;
-        private PagoElectronico.WidgetsGUI.TextoPasswordValidable RespuestaSecreta;
-        private PagoElectronico.WidgetsGUI.TextoValidable PreguntaSecreta;
-        private PagoElectronico.WidgetsGUI.TextoPasswordValidable Password;
-        private PagoElectronico.WidgetsGUI.TextoValidable Username;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
-        private PagoElectronico.WidgetsGUI.GBox gBox3;
-        private SelectorDeRol selectorDeRol1;
-        private ComboIdentificacion TipoIdentificacion;
-        private ComboPais Nacionalidad;
-        private ComboPais pais;
+        private PagoElectronico.WidgetsGUI.CBox Habilitado;
     }
 }

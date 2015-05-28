@@ -26,15 +26,6 @@ namespace PagoElectronico.ABM_Cliente
         protected override void cargarDatos()
         {
             selectorDeRol1.cargarRoles();
-            cargarPaises();
-        }
-
-        protected void cargarPaises()
-        {
-            paises = RepositorioDeDatos.getInstance().getPaises();
-            var nombrePaises = paises.Select(p => p.nombre).ToArray();
-            Pais.Items.AddRange(nombrePaises);
-            Nacionalidad.Items.AddRange(nombrePaises);
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
@@ -57,13 +48,13 @@ namespace PagoElectronico.ABM_Cliente
                 NroIdentificacion.Text,
                 TipoIdentificacion.obtenerTipoIdentificacion(),
                 Email.Text,
-                paises.ElementAt(Pais.SelectedIndex),
+                pais.obtenerPais(),
                 Domicilio.Text,
                 Calle.Text,
                 textBoxDepto.Text,
                 Localidad.Text,
-                paises.ElementAt(Nacionalidad.SelectedIndex),
-                FechaNacimiento.Text,
+                Nacionalidad.obtenerPais(),
+                FechaNacimiento.getFecha(),
                 true);
 
             Usuario nuevoUsuario = new Usuario(

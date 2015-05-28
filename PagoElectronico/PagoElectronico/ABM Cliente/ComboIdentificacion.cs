@@ -26,5 +26,11 @@ namespace PagoElectronico.ABM_Cliente
         {
             return tiposIdentificacion.ElementAt(SelectedIndex);
         }
+
+        public void setTipoIdentificacion(TipoIdentificacion tipoIdentificacion)
+        {
+            int indice = tiposIdentificacion.FindIndex(ti => ti.id == tipoIdentificacion.id);
+            SelectedIndex = indice;
+        }
     }
 }

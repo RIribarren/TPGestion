@@ -98,8 +98,11 @@ namespace PagoElectronico.Modelo
 
         abstract public List<Cliente> obtenerClientes();
 
-        abstract public void borrarCliente(Cliente clienteABorrar);
+        abstract public void bajaCliente(Cliente clienteABorrar);
 
         abstract public List<Cliente> obtenerClientesHabilitados();
+
+        abstract public void guardarCliente(Cliente cliente);
+        
     }
 }

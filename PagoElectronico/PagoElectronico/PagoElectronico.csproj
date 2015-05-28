@@ -60,17 +60,41 @@
     <Compile Include="ABM Cliente\AltaCliente.Designer.cs">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Cliente\BajaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\BajaCliente.Designer.cs">
+      <DependentUpon>BajaCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Cliente\ComboIdentificacion.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ABM Cliente\ComboIdentificacion.Designer.cs">
       <DependentUpon>ComboIdentificacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Cliente\ComboPais.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\ComboPais.Designer.cs">
+      <DependentUpon>ComboPais.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Cliente\FiltroCliente.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ABM Cliente\FiltroCliente.Designer.cs">
       <DependentUpon>FiltroCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\FiltroModificacionCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\FiltroModificacionCliente.Designer.cs">
+      <DependentUpon>FiltroModificacionCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\ModificacionCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\ModificacionCliente.Designer.cs">
+      <DependentUpon>ModificacionCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cliente\SelectorDeRol.cs">
       <SubType>UserControl</SubType>
@@ -176,6 +200,12 @@
     <EmbeddedResource Include="ABM Cliente\FiltroCliente.resx">
       <DependentUpon>FiltroCliente.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\FiltroModificacionCliente.resx">
+      <DependentUpon>FiltroModificacionCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\ModificacionCliente.resx">
+      <DependentUpon>ModificacionCliente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\SelectorDeRol.resx">
       <DependentUpon>SelectorDeRol.cs</DependentUpon>
     </EmbeddedResource>
@@ -244,6 +274,12 @@
     </Compile>
     <Compile Include="Transferencias\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\CBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\CBox.Designer.cs">
+      <DependentUpon>CBox.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\ComboValidable.cs">
       <SubType>UserControl</SubType>

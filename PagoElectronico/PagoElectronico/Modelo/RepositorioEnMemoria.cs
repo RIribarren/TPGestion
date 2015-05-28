@@ -72,11 +72,11 @@ namespace PagoElectronico.Modelo
 
             // Clientes
             clientes.Add(new Cliente(2, "cliente2", "ap2", "1234", tiposIdentificacion.ElementAt(0), "c2@a.com",
-                paises.ElementAt(0), "1234", "una calle", "1B", "CABA", paises.ElementAt(0), "1/1/1990", true));
+                paises.ElementAt(0), "1234", "una calle", "1B", "CABA", paises.ElementAt(0), new DateTime(), true));
             clientes.Add(new Cliente(3, "cliente3", "ap2", "1234", tiposIdentificacion.ElementAt(1), "c3@a.com",
-                paises.ElementAt(1), "1234", "una calle", "1B", "CABA", paises.ElementAt(1), "1/1/1990", true));
+                paises.ElementAt(1), "1234", "una calle", "1B", "CABA", paises.ElementAt(1), new DateTime(), true));
             clientes.Add(new Cliente(4, "cliente4", "ap2", "1234", tiposIdentificacion.ElementAt(2), "c4@a.com",
-                paises.ElementAt(2), "1234", "una calle", "1B", "CABA", paises.ElementAt(2), "1/1/1990", true));
+                paises.ElementAt(2), "1234", "una calle", "1B", "CABA", paises.ElementAt(2), new DateTime(), true));
         }
 
         public override void bajaRol(Rol rol)
@@ -142,7 +142,7 @@ namespace PagoElectronico.Modelo
 
         protected override void validarCliente(Cliente nuevoCliente)
         {
-            if (clientes.Any(c => c.tieneMismaIdentificacionQue(nuevoCliente)))
+            if (clientes.Any(c => c.id != nuevoCliente.id && c.tieneMismaIdentificacionQue(nuevoCliente)))
                 throw new ErrorEnRepositorioException("El cliente ya existe");
         }
 
@@ -171,7 +171,7 @@ namespace PagoElectronico.Modelo
             return clientes;
         }
 
-        public override void borrarCliente(Cliente clienteABorrar)
+        public override void bajaCliente(Cliente clienteABorrar)
         {
             Cliente cliente = clientes.Find(c => c.id == clienteABorrar.id);
             cliente.habilitado = false;
@@ -180,6 +180,14 @@ namespace PagoElectronico.Modelo
         public override List<Cliente> obtenerClientesHabilitados()
         {
             return clientes.FindAll(c => c.habilitado);
+        }
+
+        public override void guardarCliente(Cliente cliente)
+        {
+            validarCliente(cliente);
+            Cliente viejo = clientes.Find(c => c.id == cliente.id);
+            clientes.Remove(viejo);
+            clientes.Add(cliente);
         }
     }
 }

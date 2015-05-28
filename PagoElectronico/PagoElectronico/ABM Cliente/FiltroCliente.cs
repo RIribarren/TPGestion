@@ -15,13 +15,10 @@ namespace PagoElectronico.ABM_Cliente
     public partial class FiltroCliente : Ventana
     {
         List<Cliente> clientes = new List<Cliente>();
-        Cliente clienteSeleccionado = null;
-        Boolean soloHabilitados;
 
-        public FiltroCliente(Boolean soloHabilitados)
+        public FiltroCliente()
         {
             InitializeComponent();
-            this.soloHabilitados = soloHabilitados;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -34,10 +31,7 @@ namespace PagoElectronico.ABM_Cliente
             dataGridView1.Rows.Clear();
             dataGridView1.Refresh();
 
-            if (soloHabilitados)
-                clientes = RepositorioDeDatos.getInstance().obtenerClientesHabilitados();
-            else
-                clientes = RepositorioDeDatos.getInstance().obtenerClientes();
+            clientes = obtenerClientes();
 
             foreach (Cliente cliente in clientes)
             {
@@ -53,14 +47,14 @@ namespace PagoElectronico.ABM_Cliente
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
                 e.RowIndex >= 0)
             {
-                clienteSeleccionado = clientes.ElementAt(e.RowIndex);
+                tomarAccion(clientes.ElementAt(e.RowIndex));
                 volver();
             }
         }
 
-        public Cliente obtenerCliente()
-        {
-            return clienteSeleccionado;
-        }
+        protected virtual void tomarAccion(Cliente cliente) { throw new NotImplementedException(); }
+
+        protected virtual List<Cliente> obtenerClientes() { throw new NotImplementedException(); }
+
     }
 }
