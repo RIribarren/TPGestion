@@ -60,6 +60,18 @@
     <Compile Include="ABM Cliente\AltaCliente.Designer.cs">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="ABM Cliente\AltaTarjeta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\AltaTarjeta.Designer.cs">
+      <DependentUpon>AltaTarjeta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\DatosTarjeta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\DatosTarjeta.Designer.cs">
+      <DependentUpon>DatosTarjeta.cs</DependentUpon>
+    </Compile>
     <Compile Include="ABM Cliente\BajaCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +101,12 @@
     </Compile>
     <Compile Include="ABM Cliente\FiltroModificacionCliente.Designer.cs">
       <DependentUpon>FiltroModificacionCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ABM Cliente\ListadoTarjetas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ABM Cliente\ListadoTarjetas.Designer.cs">
+      <DependentUpon>ListadoTarjetas.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cliente\ModificacionCliente.cs">
       <SubType>Form</SubType>
@@ -187,6 +205,7 @@
     <Compile Include="Modelo\RepositorioDeDatos.cs" />
     <Compile Include="Modelo\RepositorioEnMemoria.cs" />
     <Compile Include="Modelo\Rol.cs" />
+    <Compile Include="Modelo\Tarjeta.cs" />
     <Compile Include="Modelo\TipoIdentificacion.cs" />
     <Compile Include="Modelo\Usuario.cs" />
     <Compile Include="Program.cs" />
@@ -197,11 +216,17 @@
     <EmbeddedResource Include="ABM Cliente\AltaCliente.resx">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\DatosTarjeta.resx">
+      <DependentUpon>DatosTarjeta.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\FiltroCliente.resx">
       <DependentUpon>FiltroCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\FiltroModificacionCliente.resx">
       <DependentUpon>FiltroModificacionCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\ListadoTarjetas.resx">
+      <DependentUpon>ListadoTarjetas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\ModificacionCliente.resx">
       <DependentUpon>ModificacionCliente.cs</DependentUpon>

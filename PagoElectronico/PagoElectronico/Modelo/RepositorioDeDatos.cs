@@ -103,6 +103,24 @@ namespace PagoElectronico.Modelo
         abstract public List<Cliente> obtenerClientesHabilitados();
 
         abstract public void guardarCliente(Cliente cliente);
+
+        abstract public List<Tarjeta> obtenerTarjetasDeCliente(Cliente cliente);
+
+
         
+        /*
+         * TARJETAS
+         */
+
+        public void crearTarjeta(Tarjeta nuevaTarjeta)
+        {
+            validarTarjeta(nuevaTarjeta);
+
+            agregarTarjeta(nuevaTarjeta);
+        }
+
+        protected abstract void agregarTarjeta(Tarjeta nuevaTarjeta);
+
+        protected abstract void validarTarjeta(Tarjeta nuevaTarjeta);
     }
 }

@@ -31,6 +31,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.Habilitado = new PagoElectronico.WidgetsGUI.CBox();
             this.Nacionalidad = new PagoElectronico.ABM_Cliente.ComboPais();
             this.pais = new PagoElectronico.ABM_Cliente.ComboPais();
@@ -71,7 +72,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(496, 230);
+            this.button2.Location = new System.Drawing.Point(493, 230);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 7;
@@ -81,6 +82,7 @@
             // 
             // gBox1
             // 
+            this.gBox1.Controls.Add(this.button3);
             this.gBox1.Controls.Add(this.Habilitado);
             this.gBox1.Controls.Add(this.Nacionalidad);
             this.gBox1.Controls.Add(this.pais);
@@ -113,11 +115,21 @@
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Campos de Cliente";
             // 
-            // cBox1
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(363, 180);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(182, 23);
+            this.button3.TabIndex = 113;
+            this.button3.Text = "Administrar tarjetas";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // Habilitado
             // 
             this.Habilitado.AutoSize = true;
             this.Habilitado.Location = new System.Drawing.Point(17, 189);
-            this.Habilitado.Name = "cBox1";
+            this.Habilitado.Name = "Habilitado";
             this.Habilitado.Size = new System.Drawing.Size(73, 17);
             this.Habilitado.TabIndex = 112;
             this.Habilitado.Text = "Habilitado";
@@ -322,7 +334,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 261);
+            this.ClientSize = new System.Drawing.Size(577, 261);
             this.Controls.Add(this.gBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -364,5 +376,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private PagoElectronico.WidgetsGUI.CBox Habilitado;
+        private System.Windows.Forms.Button button3;
     }
 }

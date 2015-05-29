@@ -80,5 +80,11 @@ namespace PagoElectronico.ABM_Cliente
                 MessageBox.Show(excepcion.mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ListadoTarjetas listadoTarjeta = new ListadoTarjetas(cliente);
+            abrirVentanaHija(listadoTarjeta);
+        }
     }
 }
