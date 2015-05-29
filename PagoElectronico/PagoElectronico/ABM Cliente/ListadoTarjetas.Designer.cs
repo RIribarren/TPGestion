@@ -29,24 +29,24 @@
         private void InitializeComponent()
         {
             this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FechaEmision = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FechaVencimiento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CodigoSeguridad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Emisor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Seleccionar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.TarjetasDeCliente = new PagoElectronico.WidgetsGUI.GridCheckBox();
+            this.N = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FV = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CS = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Em = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.S = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.gBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TarjetasDeCliente)).BeginInit();
             this.SuspendLayout();
             // 
             // gBox1
             // 
-            this.gBox1.Controls.Add(this.dataGridView1);
+            this.gBox1.Controls.Add(this.TarjetasDeCliente);
             this.gBox1.Location = new System.Drawing.Point(12, 12);
             this.gBox1.Name = "gBox1";
             this.gBox1.Size = new System.Drawing.Size(658, 181);
@@ -54,57 +54,60 @@
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Tarjetas de cliente";
             // 
-            // dataGridView1
+            // TarjetasDeCliente
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Numero,
-            this.FechaEmision,
-            this.FechaVencimiento,
-            this.CodigoSeguridad,
-            this.Emisor,
-            this.Seleccionar});
-            this.dataGridView1.Location = new System.Drawing.Point(6, 19);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(643, 150);
-            this.dataGridView1.TabIndex = 1;
+            this.TarjetasDeCliente.AllowUserToAddRows = false;
+            this.TarjetasDeCliente.AllowUserToDeleteRows = false;
+            this.TarjetasDeCliente.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.TarjetasDeCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TarjetasDeCliente.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.N,
+            this.FE,
+            this.FV,
+            this.CS,
+            this.Em,
+            this.S});
+            this.TarjetasDeCliente.Location = new System.Drawing.Point(9, 19);
+            this.TarjetasDeCliente.Name = "TarjetasDeCliente";
+            this.TarjetasDeCliente.Size = new System.Drawing.Size(643, 150);
+            this.TarjetasDeCliente.TabIndex = 7;
             // 
-            // Numero
+            // N
             // 
-            this.Numero.HeaderText = "Numero";
-            this.Numero.Name = "Numero";
-            this.Numero.ReadOnly = true;
+            this.N.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.N.HeaderText = "Numero";
+            this.N.Name = "N";
+            this.N.ReadOnly = true;
+            this.N.Width = 69;
             // 
-            // FechaEmision
+            // FE
             // 
-            this.FechaEmision.HeaderText = "Fecha de emisión";
-            this.FechaEmision.Name = "FechaEmision";
-            this.FechaEmision.ReadOnly = true;
+            this.FE.HeaderText = "Fecha de emisión";
+            this.FE.Name = "FE";
+            this.FE.ReadOnly = true;
             // 
-            // FechaVencimiento
+            // FV
             // 
-            this.FechaVencimiento.HeaderText = "Fecha de vencimiento";
-            this.FechaVencimiento.Name = "FechaVencimiento";
-            this.FechaVencimiento.ReadOnly = true;
+            this.FV.HeaderText = "Fecha de vencimiento";
+            this.FV.Name = "FV";
+            this.FV.ReadOnly = true;
             // 
-            // CodigoSeguridad
+            // CS
             // 
-            this.CodigoSeguridad.HeaderText = "Código de seguridad";
-            this.CodigoSeguridad.Name = "CodigoSeguridad";
-            this.CodigoSeguridad.ReadOnly = true;
+            this.CS.HeaderText = "Código de seguridad";
+            this.CS.Name = "CS";
+            this.CS.ReadOnly = true;
             // 
-            // Emisor
+            // Em
             // 
-            this.Emisor.HeaderText = "Emisor";
-            this.Emisor.Name = "Emisor";
-            this.Emisor.ReadOnly = true;
+            this.Em.HeaderText = "Emisor";
+            this.Em.Name = "Em";
+            this.Em.ReadOnly = true;
             // 
-            // Seleccionar
+            // S
             // 
-            this.Seleccionar.HeaderText = "Seleccionar";
-            this.Seleccionar.Name = "Seleccionar";
+            this.S.HeaderText = "Seleccionar";
+            this.S.Name = "S";
             // 
             // button1
             // 
@@ -150,7 +153,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(681, 232);
+            this.ClientSize = new System.Drawing.Size(681, 233);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -159,7 +162,7 @@
             this.Name = "ListadoTarjetas";
             this.Text = "ListadoTarjetas";
             this.gBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TarjetasDeCliente)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -167,17 +170,17 @@
         #endregion
 
         private PagoElectronico.WidgetsGUI.GBox gBox1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Numero;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FechaEmision;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FechaVencimiento;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CodigoSeguridad;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Emisor;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Seleccionar;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private PagoElectronico.WidgetsGUI.GridCheckBox TarjetasDeCliente;
+        private System.Windows.Forms.DataGridViewTextBoxColumn N;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FE;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CS;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Em;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn S;
 
     }
 }

@@ -121,7 +121,7 @@
       <DependentUpon>ModificarTarjeta.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cliente\SelectorDeRol.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ABM Cliente\SelectorDeRol.Designer.cs">
       <DependentUpon>SelectorDeRol.cs</DependentUpon>
@@ -263,6 +263,9 @@
     <EmbeddedResource Include="WidgetsGUI\Fecha.resx">
       <DependentUpon>Fecha.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WidgetsGUI\GridCheckBox.resx">
+      <DependentUpon>GridCheckBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WidgetsGUI\Texto.resx">
       <DependentUpon>Texto.cs</DependentUpon>
     </EmbeddedResource>
@@ -329,6 +332,12 @@
     </Compile>
     <Compile Include="WidgetsGUI\GBox.Designer.cs">
       <DependentUpon>GBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\GridCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\GridCheckBox.Designer.cs">
+      <DependentUpon>GridCheckBox.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\Limpiable.cs" />
     <Compile Include="WidgetsGUI\Texto.cs">

@@ -25,7 +25,7 @@ namespace PagoElectronico.ABM_Cliente
 
         protected override void cargarDatos()
         {
-            selectorDeRol1.cargarRoles();
+            Roles.cargarRoles();
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
@@ -63,7 +63,7 @@ namespace PagoElectronico.ABM_Cliente
                 Password.Text,
                 PreguntaSecreta.Text,
                 RespuestaSecreta.Text,
-                selectorDeRol1.obtenerRol());
+                Roles.obtenerRol());
 
             try
             {

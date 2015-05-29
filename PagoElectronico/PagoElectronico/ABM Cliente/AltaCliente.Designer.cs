@@ -31,6 +31,8 @@
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonGuardar = new System.Windows.Forms.Button();
             this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
+            this.Nacionalidad = new PagoElectronico.ABM_Cliente.ComboPais();
+            this.pais = new PagoElectronico.ABM_Cliente.ComboPais();
             this.TipoIdentificacion = new PagoElectronico.ABM_Cliente.ComboIdentificacion();
             this.textBoxDepto = new PagoElectronico.WidgetsGUI.Texto();
             this.FechaNacimiento = new PagoElectronico.WidgetsGUI.Fecha();
@@ -55,7 +57,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.gBox2 = new PagoElectronico.WidgetsGUI.GBox();
             this.gBox3 = new PagoElectronico.WidgetsGUI.GBox();
-            this.selectorDeRol1 = new PagoElectronico.ABM_Cliente.SelectorDeRol();
+            this.Roles = new PagoElectronico.ABM_Cliente.SelectorDeRol();
+            this.Rol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Seleccionar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.RespuestaSecreta = new PagoElectronico.WidgetsGUI.TextoPasswordValidable();
             this.PreguntaSecreta = new PagoElectronico.WidgetsGUI.TextoValidable();
             this.Password = new PagoElectronico.WidgetsGUI.TextoPasswordValidable();
@@ -64,11 +68,10 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.pais = new PagoElectronico.ABM_Cliente.ComboPais();
-            this.Nacionalidad = new PagoElectronico.ABM_Cliente.ComboPais();
             this.gBox1.SuspendLayout();
             this.gBox2.SuspendLayout();
             this.gBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Roles)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonLimpiar
@@ -123,6 +126,22 @@
             this.gBox1.TabIndex = 4;
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Campos de Cliente";
+            // 
+            // Nacionalidad
+            // 
+            this.Nacionalidad.Location = new System.Drawing.Point(325, 122);
+            this.Nacionalidad.Name = "Nacionalidad";
+            this.Nacionalidad.SelectedIndex = -1;
+            this.Nacionalidad.Size = new System.Drawing.Size(121, 21);
+            this.Nacionalidad.TabIndex = 111;
+            // 
+            // pais
+            // 
+            this.pais.Location = new System.Drawing.Point(64, 148);
+            this.pais.Name = "pais";
+            this.pais.SelectedIndex = -1;
+            this.pais.Size = new System.Drawing.Size(121, 21);
+            this.pais.TabIndex = 110;
             // 
             // TipoIdentificacion
             // 
@@ -323,7 +342,7 @@
             // 
             // gBox3
             // 
-            this.gBox3.Controls.Add(this.selectorDeRol1);
+            this.gBox3.Controls.Add(this.Roles);
             this.gBox3.Location = new System.Drawing.Point(271, 16);
             this.gBox3.Name = "gBox3";
             this.gBox3.Size = new System.Drawing.Size(279, 114);
@@ -331,12 +350,29 @@
             this.gBox3.TabStop = false;
             this.gBox3.Text = "Rol";
             // 
-            // selectorDeRol1
+            // Roles
             // 
-            this.selectorDeRol1.Location = new System.Drawing.Point(6, 19);
-            this.selectorDeRol1.Name = "selectorDeRol1";
-            this.selectorDeRol1.Size = new System.Drawing.Size(267, 89);
-            this.selectorDeRol1.TabIndex = 1;
+            this.Roles.AllowUserToAddRows = false;
+            this.Roles.AllowUserToDeleteRows = false;
+            this.Roles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.Roles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Rol,
+            this.Seleccionar});
+            this.Roles.Location = new System.Drawing.Point(6, 19);
+            this.Roles.Name = "Roles";
+            this.Roles.Size = new System.Drawing.Size(267, 89);
+            this.Roles.TabIndex = 1;
+            // 
+            // Rol
+            // 
+            this.Rol.HeaderText = "Rol";
+            this.Rol.Name = "Rol";
+            this.Rol.ReadOnly = true;
+            // 
+            // Seleccionar
+            // 
+            this.Seleccionar.HeaderText = "Seleccionar";
+            this.Seleccionar.Name = "Seleccionar";
             // 
             // RespuestaSecreta
             // 
@@ -402,22 +438,6 @@
             this.label13.TabIndex = 15;
             this.label13.Text = "Username";
             // 
-            // pais
-            // 
-            this.pais.Location = new System.Drawing.Point(64, 148);
-            this.pais.Name = "pais";
-            this.pais.SelectedIndex = -1;
-            this.pais.Size = new System.Drawing.Size(121, 21);
-            this.pais.TabIndex = 110;
-            // 
-            // Nacionalidad
-            // 
-            this.Nacionalidad.Location = new System.Drawing.Point(325, 122);
-            this.Nacionalidad.Name = "Nacionalidad";
-            this.Nacionalidad.SelectedIndex = -1;
-            this.Nacionalidad.Size = new System.Drawing.Size(121, 21);
-            this.Nacionalidad.TabIndex = 111;
-            // 
             // AltaCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -434,6 +454,7 @@
             this.gBox2.ResumeLayout(false);
             this.gBox2.PerformLayout();
             this.gBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Roles)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -474,9 +495,11 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private PagoElectronico.WidgetsGUI.GBox gBox3;
-        private SelectorDeRol selectorDeRol1;
+        private SelectorDeRol Roles;
         private ComboIdentificacion TipoIdentificacion;
         private ComboPais Nacionalidad;
         private ComboPais pais;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Rol;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Seleccionar;
     }
 }

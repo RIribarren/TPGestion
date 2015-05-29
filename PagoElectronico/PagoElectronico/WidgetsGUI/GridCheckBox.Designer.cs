@@ -1,6 +1,6 @@
-﻿namespace PagoElectronico.ABM_Cliente
+﻿namespace PagoElectronico.WidgetsGUI
 {
-    partial class SelectorDeRol
+    partial class GridCheckBox
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,17 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             this.SuspendLayout();
             // 
-            // SelectorDeRol
+            // GridCheckBox
             // 
-            this.Name = "SelectorDeRol";
-            this.Size = new System.Drawing.Size(267, 89);
+            this.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridCheckBox_CellContentClick);
+            ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
     }
 }

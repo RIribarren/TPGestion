@@ -24,25 +24,32 @@ namespace PagoElectronico.ABM_Cliente
 
         protected override void cargarDatos()
         {
-            dataGridView1.Rows.Clear();
+            TarjetasDeCliente.Rows.Clear();
 
             tarjetas = RepositorioDeDatos.getInstance().obtenerTarjetasHabilitadasDeCliente(cliente);
 
             foreach (var tarjeta in tarjetas)
             {
-                dataGridView1.Rows.Add(
-                    tarjeta.numero,
-                    tarjeta.fechaEmision,
-                    tarjeta.fechaVencimiento,
+                TarjetasDeCliente.Rows.Add(
+                    soloLos4UltimosNumeros(tarjeta.numero),
+                    tarjeta.fechaEmision.ToShortDateString(),
+                    tarjeta.fechaVencimiento.ToShortDateString(),
                     tarjeta.codigoSeguridad,
                     tarjeta.emisor,
                     false);
             }
         }
 
+        private String soloLos4UltimosNumeros(decimal p)
+        {
+            String numeroTarjeta = p.ToString();
+            return "******************".Substring(0, numeroTarjeta.Length -4) +
+                numeroTarjeta.Substring(numeroTarjeta.Length - 4);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            cargarDatos();
+            limpiar();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -54,10 +61,14 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Tarjeta tarjeta = obtenerTarjeta();
-            if (tarjeta == null)
+            if (!esValido())
+            {
+                MessageBox.Show(obtenerMensajeDeError(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-
+            }
+            
+            Tarjeta tarjeta = obtenerTarjeta();
+            
             ModificarTarjeta modificarTarjeta = new ModificarTarjeta(tarjeta);
             abrirVentanaHija(modificarTarjeta);
             cargarDatos();
@@ -65,7 +76,7 @@ namespace PagoElectronico.ABM_Cliente
 
         private Tarjeta obtenerTarjeta()
         {
-            foreach (DataGridViewRow fila in dataGridView1.Rows)
+            foreach (DataGridViewRow fila in TarjetasDeCliente.Rows)
             {
                 if (Convert.ToBoolean(fila.Cells[5].Value) == true)
                     return tarjetas.ElementAt(fila.Index);
@@ -76,10 +87,14 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Tarjeta tarjeta = obtenerTarjeta();
-            if (tarjeta == null)
+            if (!esValido())
+            {
+                MessageBox.Show(obtenerMensajeDeError(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
 
+            Tarjeta tarjeta = obtenerTarjeta();
+            
             DialogResult confirmado = MessageBox.Show("¿Está seguro que desea dar de baja la tarjeta?",
                 "Confirmar operacion",
                 MessageBoxButtons.YesNo,
