@@ -210,11 +210,18 @@ namespace PagoElectronico.Modelo
         protected override void validarTarjeta(Tarjeta nuevaTarjeta)
         {
             bool hayTarjetaConMismoNumeroYEmisor = 
-                tarjetas.Any(t => t.numero == nuevaTarjeta.numero && t.emisor == nuevaTarjeta.emisor);
+                tarjetas.Any(t => t.numero == nuevaTarjeta.numero && t.emisor == nuevaTarjeta.emisor && t.id != nuevaTarjeta.id);
 
             if (hayTarjetaConMismoNumeroYEmisor)
                 throw new ErrorEnRepositorioException("Ya existe una tarjeta emitida por " + nuevaTarjeta.emisor +
                     " con el numero " + nuevaTarjeta.numero.ToString());
+        }
+
+        protected override void guardarTarjetaModificada(Tarjeta tarjetaModificada)
+        {
+            Tarjeta tarjetaVieja = tarjetas.Find(t => t.id == tarjetaModificada.id);
+            tarjetas.Remove(tarjetaVieja);
+            tarjetas.Add(tarjetaModificada);
         }
     }
 }

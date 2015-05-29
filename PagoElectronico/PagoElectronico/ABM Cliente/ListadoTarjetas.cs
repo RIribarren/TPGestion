@@ -51,5 +51,27 @@ namespace PagoElectronico.ABM_Cliente
             abrirVentanaHija(altaTarjeta);
             cargarDatos();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Tarjeta tarjeta = obtenerTarjeta();
+            if (tarjeta == null)
+                return;
+
+            ModificarTarjeta modificarTarjeta = new ModificarTarjeta(tarjeta);
+            abrirVentanaHija(modificarTarjeta);
+            cargarDatos();
+        }
+
+        private Tarjeta obtenerTarjeta()
+        {
+            foreach (DataGridViewRow fila in dataGridView1.Rows)
+            {
+                if (Convert.ToBoolean(fila.Cells[5].Value) == true)
+                    return tarjetas.ElementAt(fila.Index);
+            }
+
+            return null;
+        }
     }
 }
