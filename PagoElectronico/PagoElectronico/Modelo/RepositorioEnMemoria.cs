@@ -80,10 +80,10 @@ namespace PagoElectronico.Modelo
                 paises.ElementAt(2), "1234", "una calle", "1B", "CABA", paises.ElementAt(2), new DateTime(), true));
 
             // Tarjetas
-            tarjetas.Add(new Tarjeta(1, clientes.ElementAt(0), 123456789123456789, new DateTime(), new DateTime(), "123", "Visa"));
-            tarjetas.Add(new Tarjeta(2, clientes.ElementAt(0), 234567891234567891, new DateTime(), new DateTime(), "456", "MasterCard"));
-            tarjetas.Add(new Tarjeta(3, clientes.ElementAt(0), 345678912345678912, new DateTime(), new DateTime(), "789", "Visa"));
-            tarjetas.Add(new Tarjeta(4, clientes.ElementAt(1), 111222333444555666, new DateTime(), new DateTime(), "666", "Tarjeta Naranja"));
+            tarjetas.Add(new Tarjeta(1, clientes.ElementAt(0), 123456789123456789, new DateTime(), new DateTime(), "123", "Visa", true));
+            tarjetas.Add(new Tarjeta(2, clientes.ElementAt(0), 234567891234567891, new DateTime(), new DateTime(), "456", "MasterCard", true));
+            tarjetas.Add(new Tarjeta(3, clientes.ElementAt(0), 345678912345678912, new DateTime(), new DateTime(), "789", "Visa", true));
+            tarjetas.Add(new Tarjeta(4, clientes.ElementAt(1), 111222333444555666, new DateTime(), new DateTime(), "666", "Tarjeta Naranja", true));
         }
 
         public override void bajaRol(Rol rol)
@@ -197,9 +197,9 @@ namespace PagoElectronico.Modelo
             clientes.Add(cliente);
         }
 
-        public override List<Tarjeta> obtenerTarjetasDeCliente(Cliente cliente)
+        public override List<Tarjeta> obtenerTarjetasHabilitadasDeCliente(Cliente cliente)
         {
-            return tarjetas.FindAll(t => t.cliente.id == cliente.id);
+            return tarjetas.FindAll(t => t.cliente.id == cliente.id && t.habilitada);
         }
 
         protected override void agregarTarjeta(Tarjeta nuevaTarjeta)
@@ -222,6 +222,11 @@ namespace PagoElectronico.Modelo
             Tarjeta tarjetaVieja = tarjetas.Find(t => t.id == tarjetaModificada.id);
             tarjetas.Remove(tarjetaVieja);
             tarjetas.Add(tarjetaModificada);
+        }
+
+        public override void bajaTarjeta(Tarjeta tarjeta)
+        {
+            tarjeta.habilitada = false;
         }
     }
 }

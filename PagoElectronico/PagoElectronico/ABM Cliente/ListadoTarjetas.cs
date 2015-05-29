@@ -26,7 +26,7 @@ namespace PagoElectronico.ABM_Cliente
         {
             dataGridView1.Rows.Clear();
 
-            tarjetas = RepositorioDeDatos.getInstance().obtenerTarjetasDeCliente(cliente);
+            tarjetas = RepositorioDeDatos.getInstance().obtenerTarjetasHabilitadasDeCliente(cliente);
 
             foreach (var tarjeta in tarjetas)
             {
@@ -72,6 +72,32 @@ namespace PagoElectronico.ABM_Cliente
             }
 
             return null;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Tarjeta tarjeta = obtenerTarjeta();
+            if (tarjeta == null)
+                return;
+
+            DialogResult confirmado = MessageBox.Show("¿Está seguro que desea dar de baja la tarjeta?",
+                "Confirmar operacion",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirmado == DialogResult.Yes)
+                try
+                {
+                    RepositorioDeDatos.getInstance().bajaTarjeta(tarjeta);
+                    MessageBox.Show("La tarjeta fue dada de baja", "Operación exitosa",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    cargarDatos();
+                }
+                catch (ErrorEnRepositorioException excepcion)
+                {
+                    MessageBox.Show(excepcion.mensaje, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
         }
     }
 }

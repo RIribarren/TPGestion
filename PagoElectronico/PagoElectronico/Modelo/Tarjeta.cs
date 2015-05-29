@@ -14,6 +14,7 @@ namespace PagoElectronico.Modelo
         public DateTime fechaVencimiento;
         public String codigoSeguridad;
         public String emisor;
+        public Boolean habilitada;
 
         public Tarjeta(int id,
             Cliente cliente,
@@ -21,7 +22,8 @@ namespace PagoElectronico.Modelo
             DateTime fechaEmision,
             DateTime fechaVencimiento,
             String codigoSeguridad,
-            String emisor)
+            String emisor,
+            Boolean habilitada)
         {
             this.id = id;
             this.cliente = cliente;
@@ -30,6 +32,7 @@ namespace PagoElectronico.Modelo
             this.fechaVencimiento = fechaVencimiento;
             this.codigoSeguridad = codigoSeguridad;
             this.emisor = emisor;
+            this.habilitada = habilitada;
         }
     }
 }
