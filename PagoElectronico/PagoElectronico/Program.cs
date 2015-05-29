@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using PagoElectronico.Modelo;
+using PagoElectronico.Menu;
 
 namespace PagoElectronico
 {
@@ -17,7 +18,7 @@ namespace PagoElectronico
             RepositorioDeDatos.setInstance(new RepositorioEnMemoria());
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MenuPrincipal());
+            Application.Run(new PantallaLogin());
         }
     }
 }

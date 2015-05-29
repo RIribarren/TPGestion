@@ -77,5 +77,26 @@ namespace PagoElectronico.Ventanas
             foreach (var limpiable in this.Controls.OfType<Limpiable>())
                 limpiable.limpiar();
         }
+
+        protected bool noEsValidoYMuestraMensaje()
+        {
+            if (!esValido())
+            {
+                mostrarError(obtenerMensajeDeError());
+                return true;
+            }
+
+            return false;
+        }
+
+        protected void volverDeOperacionExitosa(String mensaje)
+        {
+            volverConMensaje("Operacion exitosa", mensaje);
+        }
+
+        protected void mostrarError(String mensaje)
+        {
+            MessageBox.Show(mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

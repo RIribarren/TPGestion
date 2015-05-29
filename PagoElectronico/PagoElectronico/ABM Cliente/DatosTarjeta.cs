@@ -24,11 +24,8 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!esValido())
-            {
-                informarDatosInvalidos();
+            if (noEsValidoYMuestraMensaje())
                 return;
-            }
 
             tomarAccion();
         }

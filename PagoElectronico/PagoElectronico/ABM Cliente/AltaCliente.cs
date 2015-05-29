@@ -35,11 +35,8 @@ namespace PagoElectronico.ABM_Cliente
 
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            if (!this.esValido())
-            {
-                informarDatosInvalidos();
+            if (noEsValidoYMuestraMensaje())
                 return;
-            }
 
             Cliente nuevoCliente = new Cliente(
                 -1,
@@ -68,11 +65,11 @@ namespace PagoElectronico.ABM_Cliente
             try
             {
                 RepositorioDeDatos.getInstance().crearCliente(nuevoCliente, nuevoUsuario);
-                volverConMensaje("Operacion exitosa", "El cliente fue creado");
+                volverDeOperacionExitosa("El cliente fue creado");
             }
             catch (ErrorEnRepositorioException excepcion)
             {
-                MessageBox.Show(excepcion.mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mostrarError(excepcion.mensaje);
             }
         }
     }

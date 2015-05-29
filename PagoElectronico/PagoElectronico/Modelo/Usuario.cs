@@ -9,10 +9,15 @@ namespace PagoElectronico.Modelo
     {
         public int id;
         public String username;
-        public String password;
         public String preguntaSecreta;
         public String respuestaSecreta;
         public Rol rol;
+        private String passwordEncriptado;
+        public String password
+        {
+            set { passwordEncriptado = SHA256.GetSHA256(value); }
+            get { return passwordEncriptado; }
+        }
 
         public Usuario(
             int id,
@@ -33,6 +38,11 @@ namespace PagoElectronico.Modelo
         public bool tieneMismoUsernameQue(Usuario usuario)
         {
             return username == usuario.username;
+        }
+
+        internal bool laPasswordEs(String password)
+        {
+            return this.password == SHA256.GetSHA256(password);
         }
     }
 }

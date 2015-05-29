@@ -87,11 +87,8 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!esValido())
-            {
-                MessageBox.Show(obtenerMensajeDeError(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (noEsValidoYMuestraMensaje())
                 return;
-            }
 
             Tarjeta tarjeta = obtenerTarjeta();
             
@@ -110,8 +107,7 @@ namespace PagoElectronico.ABM_Cliente
                 }
                 catch (ErrorEnRepositorioException excepcion)
                 {
-                    MessageBox.Show(excepcion.mensaje, "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    mostrarError(excepcion.mensaje);
                 }
         }
     }

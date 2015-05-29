@@ -132,5 +132,30 @@ namespace PagoElectronico.Modelo
         protected abstract void guardarTarjetaModificada(Tarjeta tarjetaModificada);
 
         public abstract void bajaTarjeta(Tarjeta tarjeta);
+
+
+        /*
+         * USUARIOS
+         */ 
+
+        public Usuario login(String username, String password)
+        {
+            Usuario usuario = this.obtenerUsuario(username);
+
+            if (usuario == null)
+                throw new ErrorEnRepositorioException("El usuario y/o la contraseña son incorrectos");
+
+            if (! usuario.laPasswordEs(password))
+            {
+                //aumentar intentos fallidos
+                throw new ErrorEnRepositorioException("El usuario y/o la contraseña son incorrectos");
+            }
+
+            //if usuario esta bloqueado...
+
+            return usuario;
+        }
+
+        protected abstract Usuario obtenerUsuario(String username);
     }
 }

@@ -44,11 +44,11 @@ namespace PagoElectronico.ABM_Cliente
             try
             {
                 RepositorioDeDatos.getInstance().guardarTarjeta(tarjetaModificada);
-                volverConMensaje("Operación exitosa", "La tarjeta fue modificada");
+                volverDeOperacionExitosa("La tarjeta fue modificada");
             }
             catch (ErrorEnRepositorioException excepcion)
             {
-                MessageBox.Show(excepcion.mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mostrarError(excepcion.mensaje);
             }
         }
     }

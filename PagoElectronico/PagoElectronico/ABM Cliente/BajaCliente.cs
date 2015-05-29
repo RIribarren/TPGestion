@@ -34,12 +34,11 @@ namespace PagoElectronico.ABM_Cliente
                 try
                 {
                     RepositorioDeDatos.getInstance().bajaCliente(cliente);
-                    volverConMensaje("Operación exitosa", "El cliente fue dado de baja");
+                    volverDeOperacionExitosa("El cliente fue dado de baja");
                 }
                 catch (ErrorEnRepositorioException excepcion)
                 {
-                    MessageBox.Show(excepcion.mensaje, "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    mostrarError(excepcion.mensaje);
                 }
         }
     }

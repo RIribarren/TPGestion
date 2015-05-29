@@ -186,12 +186,6 @@
     <Compile Include="Facturacion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="MenuPrincipal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MenuPrincipal.Designer.cs">
-      <DependentUpon>MenuPrincipal.cs</DependentUpon>
-    </Compile>
     <Compile Include="Listados\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -204,6 +198,18 @@
     <Compile Include="Login\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Menu\ListaValidable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Menu\ListaValidable.Designer.cs">
+      <DependentUpon>ListaValidable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Menu\MenuPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Menu\MenuPrincipal.Designer.cs">
+      <DependentUpon>MenuPrincipal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modelo\Cliente.cs" />
     <Compile Include="Modelo\ErrorEnRepositorioException.cs" />
     <Compile Include="Modelo\Funcionalidad.cs" />
@@ -211,9 +217,16 @@
     <Compile Include="Modelo\RepositorioDeDatos.cs" />
     <Compile Include="Modelo\RepositorioEnMemoria.cs" />
     <Compile Include="Modelo\Rol.cs" />
+    <Compile Include="Modelo\SHA256.cs" />
     <Compile Include="Modelo\Tarjeta.cs" />
     <Compile Include="Modelo\TipoIdentificacion.cs" />
     <Compile Include="Modelo\Usuario.cs" />
+    <Compile Include="PantallaLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PantallaLogin.Designer.cs">
+      <DependentUpon>PantallaLogin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ABM Cliente\ABMCliente.resx">
@@ -249,8 +262,14 @@
     <EmbeddedResource Include="ABM Rol\ListadoRoles.resx">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MenuPrincipal.resx">
+    <EmbeddedResource Include="Menu\ListaValidable.resx">
+      <DependentUpon>ListaValidable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu\MenuPrincipal.resx">
       <DependentUpon>MenuPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PantallaLogin.resx">
+      <DependentUpon>PantallaLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

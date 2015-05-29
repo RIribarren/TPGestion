@@ -35,11 +35,11 @@ namespace PagoElectronico.ABM_Cliente
             try
             {
                 RepositorioDeDatos.getInstance().crearTarjeta(nuevaTarjeta);
-                volverConMensaje("Operacion exitosa", "La tarjeta fue vinculada con el cliente");
+                volverDeOperacionExitosa("La tarjeta fue vinculada con el cliente");
             }
             catch (ErrorEnRepositorioException excepcion)
             {
-                MessageBox.Show(excepcion.mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mostrarError(excepcion.mensaje);
             }
         }
     }

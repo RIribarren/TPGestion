@@ -85,12 +85,11 @@ namespace PagoElectronico.ABM_Rol
             try
             {
                 operacionSobreRol(rolModificado);
-                volverConMensaje("Operacion exitosa", "El rol fue " + operacionMensaje);
+                volverDeOperacionExitosa("El rol fue " + operacionMensaje);
             }
             catch (ErrorEnRepositorioException excepcion)
             {
-                MessageBox.Show(excepcion.mensaje, "Error durante la modificacion",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mostrarError(excepcion.mensaje);
             }
         }
 

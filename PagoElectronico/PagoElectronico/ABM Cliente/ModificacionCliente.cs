@@ -45,11 +45,8 @@ namespace PagoElectronico.ABM_Cliente
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!this.esValido())
-            {
-                informarDatosInvalidos();
+            if (noEsValidoYMuestraMensaje())
                 return;
-            }
 
             guardarCliente();
         }
@@ -73,11 +70,11 @@ namespace PagoElectronico.ABM_Cliente
                         Nacionalidad.obtenerPais(),
                         FechaNacimiento.getFecha(),
                         Habilitado.Checked));
-                volverConMensaje("Operacion exitosa", "El cliente fue actualizado");
+                volverDeOperacionExitosa("El cliente fue actualizado");
             }
             catch (ErrorEnRepositorioException excepcion)
             {
-                MessageBox.Show(excepcion.mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mostrarError(excepcion.mensaje);
             }
         }
 

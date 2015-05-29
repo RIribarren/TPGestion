@@ -228,5 +228,13 @@ namespace PagoElectronico.Modelo
         {
             tarjeta.habilitada = false;
         }
+
+        protected override Usuario obtenerUsuario(String username)
+        {
+            if (usuarios.Any(u => u.username == username))
+                return usuarios.Find(u => u.username == username);
+
+            return null;
+        }
     }
 }
