@@ -155,7 +155,7 @@ GO
 --						CLIENTES
 /****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Clientes](
-	[Id_Cliente] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Cliente] [int] IDENTITY(1,1) PRIMARY KEY,
 	[Cli_Nombre] [varchar](255) NOT NULL,
 	[Cli_Apellido] [varchar](255) NOT NULL,
 	[Cli_Nro_Doc] [numeric](18,0) UNIQUE NOT NULL,
@@ -223,3 +223,135 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Auditoria](
 	[Resultado][varchar](255) NOT NULL,
 	[Nro_Intento][int] NOT NULL
 )
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta](
+[Id_Tipo_Cuenta][int] PRIMARY KEY IDENTITY (1,1),
+[Duracion][int],
+[Costo_Apertura][numeric] (18,2),
+[Costo_Tranferencia][numeric] (18,2),
+[Descripcion][varchar](255)
+)
+
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (90,100,8,'ORO')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (60,70,10,'PLATA')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (30,50,12,'BRONCE')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (15,0,20,'GRATUITA')
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Moneda](
+[Id_Moneda][int] PRIMARY KEY IDENTITY (1,1),
+[Descripcion][varchar](255)
+)
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Moneda] values ('DOLAR')
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Cuenta](
+[Cuenta_Numero][numeric] (18,0) PRIMARY KEY,
+[Cuenta_Pais][numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Pais(Pais_Codigo),
+[Id_Moneda][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Moneda(Id_Moneda),
+[Fecha_Creacion][datetime],
+[Id_Cliente][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Clientes(Id_Cliente),
+[Id_Tipo_Cuenta][int]FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Tipo_Cuenta(Id_Tipo_Cuenta),
+[Estado][varchar](15),
+[Fecha_Cierre][datetime],
+)
+
+INSERT INTO LA_MAQUINA_DE_HUMO.Cuenta(
+[Cuenta_Numero],
+[Cuenta_Pais],
+[Id_Moneda],
+[Fecha_Creacion],
+[Id_Cliente],
+[Id_Tipo_Cuenta],
+[Estado],
+[Fecha_Cierre]
+)
+select distinct
+	M.Cuenta_Numero,
+	M.Cuenta_Pais_Codigo,
+	1,
+	M.Cuenta_Fecha_Creacion, 
+	(select Id_Cliente
+		from LA_MAQUINA_DE_HUMO.Clientes as C 
+		where M.Cli_Nro_Doc = C.Cli_Nro_Doc),
+	4,
+	'habilitado',
+	null			
+ From gd_esquema.Maestra as M
+
+
+
+
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Tarjeta](
+	[Id_Tarjeta][int] PRIMARY KEY IDENTITY (1,1),
+	[Id_Cliente][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Clientes(Id_Cliente),
+	[Tarjeta_Numero] [varchar](16),
+	[Tarjeta_Emisor_Descripcion] [varchar](35),
+	[Tarjeta_Fecha_Emision] [datetime],
+	[Tarjeta_Fecha_Vencimiento] [datetime],
+	[Tarjeta_Codigo_Seg] [varchar](3),
+	[Habilitado] [char](1)
+)
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tarjeta] (
+	[Id_Cliente],
+	[Tarjeta_Numero],
+	[Tarjeta_Emisor_Descripcion],
+	[Tarjeta_Fecha_Emision],
+	[Tarjeta_Fecha_Vencimiento],
+	[Tarjeta_Codigo_Seg],
+	[Habilitado]
+)
+	SELECT DISTINCT
+			(select Id_Cliente
+				from LA_MAQUINA_DE_HUMO.Clientes as C 
+				where M.Cli_Nro_Doc = C.Cli_Nro_Doc),
+			M.Tarjeta_Numero,
+			M.Tarjeta_Emisor_Descripcion,
+			M.Tarjeta_Fecha_Emision,
+			M.Tarjeta_Fecha_Vencimiento,
+			M.Tarjeta_Codigo_Seg,
+			's'
+		FROM gd_esquema.Maestra as M
+		WHERE M.Tarjeta_Numero IS NOT NULL
+
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Deposito](
+	[Deposito_Codigo][numeric] (18,0) PRIMARY KEY ,
+	[Numero_Cuenta][numeric](18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero),
+	[Deposito_importe] [numeric](18,2),
+	[Id_Moneda] [int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Moneda(Id_Moneda),
+	[Id_Tarjeta][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Tarjeta(Id_Tarjeta),
+	[Deposito_Fecha] [datetime],
+)
+
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Deposito](
+	[Deposito_Codigo],
+	[Numero_Cuenta],
+	[Deposito_importe],
+	[Id_Moneda],
+	[Id_Tarjeta],
+	[Deposito_Fecha]
+	)
+
+select Deposito_Codigo,Cuenta_Numero,Deposito_Importe,1,
+( select Id_Tarjeta from LA_MAQUINA_DE_HUMO.Tarjeta as T where M.Tarjeta_Numero = T.Tarjeta_Numero and M.Tarjeta_Emisor_Descripcion = T.Tarjeta_Emisor_Descripcion),
+Deposito_Fecha
+from gd_esquema.Maestra as M where Deposito_Codigo IS NOT NULL
+
+GO
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Retiro](
+	[Retiro_Codigo][numeric] (18,0) PRIMARY KEY ,
+	[Numero_Cuenta][numeric](18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero),
+	[Retiro_Fecha] [datetime],
+	[Retiro_Importa] [numeric](18,2),
+	[Id_Moneda][int]
+)
+
+INSERT INTO LA_MAQUINA_DE_HUMO.Retiro(
+	[Retiro_Codigo],
+	[Numero_Cuenta],
+	[Retiro_Fecha],
+	[Retiro_Importe],
+	[Id_Moneda],
+)
+Select distinct Retiro_Codigo, Numero_Cuenta,Retiro_Fecha,Retiro_Importe,1 from gd_esquema.maestra
