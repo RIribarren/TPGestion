@@ -250,7 +250,7 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Cuenta](
 [Fecha_Creacion][datetime],
 [Id_Cliente][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Clientes(Id_Cliente),
 [Id_Tipo_Cuenta][int]FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Tipo_Cuenta(Id_Tipo_Cuenta),
-[Estado][varchar](15),
+[Estado][varchar](255),
 [Fecha_Cierre][datetime],
 )
 
@@ -343,8 +343,8 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Retiro](
 	[Retiro_Codigo][numeric] (18,0) PRIMARY KEY ,
 	[Numero_Cuenta][numeric](18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero),
 	[Retiro_Fecha] [datetime],
-	[Retiro_Importa] [numeric](18,2),
-	[Id_Moneda][int]
+	[Retiro_Importe] [numeric](18,2),
+	[Id_Moneda][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Moneda(Id_Moneda)
 )
 
 INSERT INTO LA_MAQUINA_DE_HUMO.Retiro(
@@ -352,6 +352,131 @@ INSERT INTO LA_MAQUINA_DE_HUMO.Retiro(
 	[Numero_Cuenta],
 	[Retiro_Fecha],
 	[Retiro_Importe],
-	[Id_Moneda],
+	[Id_Moneda]
 )
-Select distinct Retiro_Codigo, Numero_Cuenta,Retiro_Fecha,Retiro_Importe,1 from gd_esquema.maestra
+Select distinct Retiro_Codigo, Cuenta_Numero,Retiro_Fecha,Retiro_Importe,1 from gd_esquema.maestra where Retiro_Codigo IS NOT NULL
+
+
+
+
+
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Banco](
+	[Banco_Codigo] [numeric] (18,0) PRIMARY KEY ,
+	[Banco_Nomber] [varchar](255),
+	[Banco_Direccion] [varchar](255)
+)
+
+INSERT INTO LA_MAQUINA_DE_HUMO.Banco(
+	[Banco_Codigo],
+	[Banco_Nomber],
+	[Banco_Direccion]
+)
+Select distinct Banco_Cogido, Banco_Nombre, Banco_Direccion From gd_esquema.Maestra WHERE Banco_Cogido is not null
+
+
+
+
+
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Cheque](
+	[Cheque_Numero] [numeric] (18,0) PRIMARY KEY ,
+	[Retiro_Codigo] [numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Retiro(Retiro_Codigo),
+	[Banco_Codigo]  [numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Banco(Banco_Codigo),
+)
+
+INSERT INTO LA_MAQUINA_DE_HUMO.Cheque(
+	[Cheque_Numero],
+	[Retiro_Codigo],
+	[Banco_Codigo]  
+)
+Select distinct Cheque_Numero, Retiro_Codigo, Banco_Cogido From gd_esquema.Maestra WHERE Cheque_Numero is not null
+
+
+
+
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Transferencia](
+	[Id_Transferencia] [int] PRIMARY KEY IDENTITY (1,1),
+	[Tranf_Cuenta_Dest_Numero] [numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero),
+	[Tranf_Cuenta_Origen_Numero] [numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero),
+	[Tranf_Importe] [numeric] (18,2),
+	[Tranf_Fecha] [datetime],
+	[Tranf_Estado_Cuenta_Dest] [varchar](255)
+)
+
+INSERT INTO LA_MAQUINA_DE_HUMO.Transferencia(
+	[Tranf_Cuenta_Dest_Numero],
+	[Tranf_Cuenta_Origen_Numero],
+	[Tranf_Importe],
+	[Tranf_Fecha],
+	[Tranf_Estado_Cuenta_Dest]
+)
+SELECT Cuenta_Dest_Numero,
+		Cuenta_Numero,
+		0,
+		Transf_Fecha,
+		Cuenta_Dest_Estado
+	FROM gd_esquema.Maestra
+	WHERE Cuenta_Dest_Numero IS NOT NULL
+		AND Cuenta_Numero IS NOT NULL
+		
+		
+
+
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Item](
+	[Id_Item] [int] PRIMARY KEY IDENTITY (1,1),
+	[Item_Descripcion] [varchar](255)
+)
+
+INSERT INTO LA_MAQUINA_DE_HUMO.Item values ('Comisión por transferencia.')
+INSERT INTO LA_MAQUINA_DE_HUMO.Item values ('Comisión por alta de cuenta.')
+INSERT INTO LA_MAQUINA_DE_HUMO.Item values ('Comisión por modificacion de cuenta.')
+
+
+
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Factura] (
+	[Factura_Numero] [numeric](18,0) PRIMARY KEY,
+	[Factura_Fecha] [datetime]
+)
+
+INSERT INTO  [LA_MAQUINA_DE_HUMO].[Factura] (
+	[Factura_Numero],
+	[Factura_Fecha]
+)
+SELECT DISTINCT Factura_Numero, Factura_Fecha
+	FROM gd_esquema.Maestra
+	WHERE Factura_Numero IS NOT NULL
+
+
+
+
+
+
+
+
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Transaccion] (
+	[Id_Transaccion] [int] PRIMARY KEY IDENTITY (1,1),
+	[Factura_Numero] [numeric](18,0) FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].[Factura](Factura_Numero), 
+	[Id_Item] [int] FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].[Item](Id_Item),
+	[Id_Cliente] [int]  FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].[Clientes](Id_Cliente),
+	[Importe] [numeric](18,2)
+)
+
+INSERT INTO  [LA_MAQUINA_DE_HUMO].[Transaccion] (
+	[Factura_Numero],
+	[Id_Item],
+	[Id_Cliente],
+	[Importe]
+)
+SELECT DISTINCT
+	Factura_Numero,
+	1,
+	(Select Id_Cliente
+		FROM LA_MAQUINA_DE_HUMO.Clientes as C
+		WHERE C.Cli_Nro_Doc = M.Cli_Nro_Doc),
+	Trans_Importe
+	FROM gd_esquema.Maestra as M
+	WHERE Factura_Numero IS NOT NULL
