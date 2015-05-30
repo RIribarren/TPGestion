@@ -6,19 +6,29 @@
 CREATE SCHEMA [LA_MAQUINA_DE_HUMO] AUTHORIZATION [gd]
 GO
 
+
+/****************************************************************/
+--						ROLES
+/****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Rol](
-[Id_Rol][int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
-[Rol_Nombre] [varchar](255),
-[Habilitado][char](1)
+	[Id_Rol][int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[Rol_Nombre] [varchar](255),
+	[Habilitado][char](1)
 )
+
 INSERT INTO LA_MAQUINA_DE_HUMO.Rol Values('Administrador','s')
 INSERT INTO LA_MAQUINA_DE_HUMO.Rol Values('Ciente','s')
 GO
 
+
+/****************************************************************/
+--						FUNCIONALIDADES
+/****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Funcionalidad](
-[Id_Funcionalidad][int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
-[Func_Nombre] [varchar](255),
+	[Id_Funcionalidad][int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[Func_Nombre] [varchar](255),
 )
+
 INSERT INTO LA_MAQUINA_DE_HUMO.Funcionalidad Values('ABM de Rol')
 INSERT INTO LA_MAQUINA_DE_HUMO.Funcionalidad Values('Login y seguridad')
 INSERT INTO LA_MAQUINA_DE_HUMO.Funcionalidad Values('ABM de Usuario')
@@ -32,47 +42,69 @@ INSERT INTO LA_MAQUINA_DE_HUMO.Funcionalidad Values('Consulta de saldos')
 INSERT INTO LA_MAQUINA_DE_HUMO.Funcionalidad Values('Listado Estadístico')
 GO
 
+
+/****************************************************************/
+--						ROL_FUNCIONALIDAD
+/****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Rol_Funcionalidad](
-[Id_Rol][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Rol(Id_Rol) NOT NULL,
-[Id_Funcionalidad][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Funcionalidad(Id_Funcionalidad)  NOT NULL,
-CONSTRAINT [PK_Rol_Funcionalidad] PRIMARY KEY CLUSTERED 
-(
-	[Id_Rol],
-	[Id_Funcionalidad] 
+	[Id_Rol][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Rol(Id_Rol) NOT NULL,
+	[Id_Funcionalidad][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Funcionalidad(Id_Funcionalidad)  NOT NULL,
+	CONSTRAINT [PK_Rol_Funcionalidad] PRIMARY KEY CLUSTERED 
+	(
+		[Id_Rol],
+		[Id_Funcionalidad] 
+	)
 )
-)
+
 INSERT INTO LA_MAQUINA_DE_HUMO.Rol_Funcionalidad(Id_Rol , Id_Funcionalidad) 
 select 1,Id_Funcionalidad from LA_MAQUINA_DE_HUMO.Funcionalidad
 
 INSERT INTO LA_MAQUINA_DE_HUMO.Rol_Funcionalidad(Id_Rol , Id_Funcionalidad) 
 select 2,Id_Funcionalidad from LA_MAQUINA_DE_HUMO.Funcionalidad WHERE Id_Funcionalidad IN (1,2,3,4,5,6,7) /** Cargar con las correspondientes funcionalidades **/
-
-
 GO
+
+/****************************************************************/
+--						PAISES
+/****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Pais](
 	[Pais_Codigo][numeric](18,0) PRIMARY KEY,
 	[Pais_Desc][varchar](250)
 )
 GO
 
-
-insert into [LA_MAQUINA_DE_HUMO].[Pais] (
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Pais] (
 	[Pais_Codigo],
 	[Pais_Desc]
 )
-	select distinct Cli_Pais_Codigo, Cli_Pais_Desc
-		from gd_esquema.Maestra
+SELECT DISTINCT Cuenta_Pais_Codigo, Cuenta_Pais_Desc
+	FROM gd_esquema.Maestra
+UNION
+SELECT DISTINCT Cli_Pais_Codigo, Cli_Pais_Desc
+	FROM gd_esquema.Maestra
+	WHERE Cli_Pais_Codigo NOT IN (SELECT Cuenta_Pais_Codigo
+									FROM gd_esquema.Maestra)
+
+/*
+	SELECT DISTINCT Cli_Pais_Codigo, Cli_Pais_Desc
+		FROM gd_esquema.Maestra
+*/
 GO
+
+
+/****************************************************************/
+--						DOCUMENTO
+/****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Documento](
 	[Doc_Codigo][numeric](18,0) PRIMARY KEY,
 	[Doc_Desc][varchar](255)
 )
-insert into [LA_MAQUINA_DE_HUMO].[Documento](
-[Doc_Codigo],
-[Doc_Desc]
+
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Documento](
+	[Doc_Codigo],
+	[Doc_Desc]
 )
-select distinct Cli_Tipo_Doc_Cod, Cli_Tipo_Doc_Desc
-		from gd_esquema.Maestra
+SELECT DISTINCT Cli_Tipo_Doc_Cod, Cli_Tipo_Doc_Desc
+		FROM gd_esquema.Maestra
 GO
 
 
