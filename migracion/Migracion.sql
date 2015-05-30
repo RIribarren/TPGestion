@@ -166,7 +166,7 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Clientes](
 	[Cli_Dom_Calle] [varchar](255) NOT NULL,
 	[Cli_Dom_Piso] [numeric](18,0),
 	[Cli_Dom_Depto] [varchar](10),
-	[Cli_Dom_Localidad][varchar](255), /* Hay localidades que son NULL, ojo aca */
+	[Cli_Dom_Localidad][varchar](255),
 	[Cli_Nacionalidad_Codigo][numeric](18,0) FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].Pais(Pais_Codigo), /** Es el mismo para [Cli_Pais_Codigo] **/
 	[Cli_Fecha_Nac][datetime] NOT NULL,
 	[Cli_Habilitado][char](1) NOT NULL,
