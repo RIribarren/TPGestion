@@ -26,11 +26,12 @@ namespace PagoElectronico.ABM_Cliente
             Nombre.Text = cliente.nombre;
             Apellido.Text = cliente.Apellido;
             NroIdentificacion.Text = cliente.nroIdentificacion;
-            TipoDeIdentificacion.setTipoIdentificacion(cliente.tipoIdentificacion);
+            TipoIdentificacion.setTipoIdentificacion(cliente.tipoIdentificacion);
             Email.Text = cliente.email;
             pais.setPais(cliente.pais);
-            Domicilio.Text = cliente.domicilio;
+            Altura.Text = cliente.altura;
             Calle.Text = cliente.calle;
+            Piso.Text = cliente.piso;
             textBoxDepto.Text = cliente.depto;
             Localidad.Text = cliente.localidad;
             Nacionalidad.setPais(cliente.nacionalidad);
@@ -60,11 +61,12 @@ namespace PagoElectronico.ABM_Cliente
                         Nombre.Text,
                         Apellido.Text,
                         NroIdentificacion.Text,
-                        TipoDeIdentificacion.obtenerTipoIdentificacion(),
+                        TipoIdentificacion.obtenerTipoIdentificacion(),
                         Email.Text,
                         pais.obtenerPais(),
-                        Domicilio.Text,
+                        Altura.Text,
                         Calle.Text,
+                        Piso.Text,
                         textBoxDepto.Text,
                         Localidad.Text,
                         Nacionalidad.obtenerPais(),

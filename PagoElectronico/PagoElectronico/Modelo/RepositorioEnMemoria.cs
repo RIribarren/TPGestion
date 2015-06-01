@@ -73,11 +73,11 @@ namespace PagoElectronico.Modelo
 
             // Clientes
             clientes.Add(new Cliente(2, "cliente2", "ap2", "1234", tiposIdentificacion.ElementAt(0), "c2@a.com",
-                paises.ElementAt(0), "1234", "una calle", "1B", "CABA", paises.ElementAt(0), new DateTime(), true));
+                paises.ElementAt(0), "1234", "una calle", "1", "B", "CABA", paises.ElementAt(0), new DateTime(), true));
             clientes.Add(new Cliente(3, "cliente3", "ap2", "1234", tiposIdentificacion.ElementAt(1), "c3@a.com",
-                paises.ElementAt(1), "1234", "una calle", "1B", "CABA", paises.ElementAt(1), new DateTime(), true));
+                paises.ElementAt(1), "1234", "una calle", "1", "C", "CABA", paises.ElementAt(1), new DateTime(), true));
             clientes.Add(new Cliente(4, "cliente4", "ap2", "1234", tiposIdentificacion.ElementAt(2), "c4@a.com",
-                paises.ElementAt(2), "1234", "una calle", "1B", "CABA", paises.ElementAt(2), new DateTime(), true));
+                paises.ElementAt(2), "1234", "una calle", "", "", "CABA", paises.ElementAt(2), new DateTime(), true));
 
             // Tarjetas
             tarjetas.Add(new Tarjeta(1, clientes.ElementAt(0), 123456789123456789, new DateTime(), new DateTime(), "123", "Visa", true));

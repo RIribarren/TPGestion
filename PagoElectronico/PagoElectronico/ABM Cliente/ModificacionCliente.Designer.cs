@@ -30,17 +30,18 @@
         {
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
             this.button3 = new System.Windows.Forms.Button();
             this.Habilitado = new PagoElectronico.WidgetsGUI.CBox();
+            this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
+            this.Piso = new PagoElectronico.WidgetsGUI.TextoNumerico();
+            this.label15 = new System.Windows.Forms.Label();
             this.Nacionalidad = new PagoElectronico.ABM_Cliente.ComboPais();
             this.pais = new PagoElectronico.ABM_Cliente.ComboPais();
-            this.TipoDeIdentificacion = new PagoElectronico.ABM_Cliente.ComboIdentificacion();
+            this.TipoIdentificacion = new PagoElectronico.ABM_Cliente.ComboIdentificacion();
             this.textBoxDepto = new PagoElectronico.WidgetsGUI.Texto();
             this.FechaNacimiento = new PagoElectronico.WidgetsGUI.Fecha();
             this.Localidad = new PagoElectronico.WidgetsGUI.TextoValidable();
             this.Calle = new PagoElectronico.WidgetsGUI.TextoValidable();
-            this.Domicilio = new PagoElectronico.WidgetsGUI.TextoValidable();
             this.Email = new PagoElectronico.WidgetsGUI.TextoValidable();
             this.NroIdentificacion = new PagoElectronico.WidgetsGUI.TextoNumericoValidable();
             this.Apellido = new PagoElectronico.WidgetsGUI.TextoValidable();
@@ -57,6 +58,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.Altura = new PagoElectronico.WidgetsGUI.TextoNumericoValidable();
             this.gBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,18 +82,40 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(363, 183);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(182, 23);
+            this.button3.TabIndex = 113;
+            this.button3.Text = "Administrar tarjetas";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // Habilitado
+            // 
+            this.Habilitado.AutoSize = true;
+            this.Habilitado.Location = new System.Drawing.Point(17, 189);
+            this.Habilitado.Name = "Habilitado";
+            this.Habilitado.Size = new System.Drawing.Size(73, 17);
+            this.Habilitado.TabIndex = 112;
+            this.Habilitado.Text = "Habilitado";
+            this.Habilitado.UseVisualStyleBackColor = true;
+            // 
             // gBox1
             // 
-            this.gBox1.Controls.Add(this.button3);
+            this.gBox1.Controls.Add(this.Altura);
+            this.gBox1.Controls.Add(this.Piso);
             this.gBox1.Controls.Add(this.Habilitado);
+            this.gBox1.Controls.Add(this.label15);
+            this.gBox1.Controls.Add(this.button3);
             this.gBox1.Controls.Add(this.Nacionalidad);
             this.gBox1.Controls.Add(this.pais);
-            this.gBox1.Controls.Add(this.TipoDeIdentificacion);
+            this.gBox1.Controls.Add(this.TipoIdentificacion);
             this.gBox1.Controls.Add(this.textBoxDepto);
             this.gBox1.Controls.Add(this.FechaNacimiento);
             this.gBox1.Controls.Add(this.Localidad);
             this.gBox1.Controls.Add(this.Calle);
-            this.gBox1.Controls.Add(this.Domicilio);
             this.gBox1.Controls.Add(this.Email);
             this.gBox1.Controls.Add(this.NroIdentificacion);
             this.gBox1.Controls.Add(this.Apellido);
@@ -111,29 +135,25 @@
             this.gBox1.Location = new System.Drawing.Point(10, 12);
             this.gBox1.Name = "gBox1";
             this.gBox1.Size = new System.Drawing.Size(558, 212);
-            this.gBox1.TabIndex = 8;
+            this.gBox1.TabIndex = 114;
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Campos de Cliente";
             // 
-            // button3
+            // Piso
             // 
-            this.button3.Location = new System.Drawing.Point(363, 180);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(182, 23);
-            this.button3.TabIndex = 113;
-            this.button3.Text = "Administrar tarjetas";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.Piso.Location = new System.Drawing.Point(305, 70);
+            this.Piso.Name = "Piso";
+            this.Piso.Size = new System.Drawing.Size(30, 20);
+            this.Piso.TabIndex = 113;
             // 
-            // Habilitado
+            // label15
             // 
-            this.Habilitado.AutoSize = true;
-            this.Habilitado.Location = new System.Drawing.Point(17, 189);
-            this.Habilitado.Name = "Habilitado";
-            this.Habilitado.Size = new System.Drawing.Size(73, 17);
-            this.Habilitado.TabIndex = 112;
-            this.Habilitado.Text = "Habilitado";
-            this.Habilitado.UseVisualStyleBackColor = true;
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(250, 73);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(27, 13);
+            this.label15.TabIndex = 112;
+            this.label15.Text = "Piso";
             // 
             // Nacionalidad
             // 
@@ -151,19 +171,19 @@
             this.pais.Size = new System.Drawing.Size(121, 21);
             this.pais.TabIndex = 110;
             // 
-            // TipoDeIdentificacion
+            // TipoIdentificacion
             // 
-            this.TipoDeIdentificacion.Location = new System.Drawing.Point(113, 96);
-            this.TipoDeIdentificacion.Name = "TipoDeIdentificacion";
-            this.TipoDeIdentificacion.SelectedIndex = -1;
-            this.TipoDeIdentificacion.Size = new System.Drawing.Size(121, 21);
-            this.TipoDeIdentificacion.TabIndex = 109;
+            this.TipoIdentificacion.Location = new System.Drawing.Point(113, 96);
+            this.TipoIdentificacion.Name = "TipoIdentificacion";
+            this.TipoIdentificacion.SelectedIndex = -1;
+            this.TipoIdentificacion.Size = new System.Drawing.Size(121, 21);
+            this.TipoIdentificacion.TabIndex = 109;
             // 
             // textBoxDepto
             // 
-            this.textBoxDepto.Location = new System.Drawing.Point(305, 70);
+            this.textBoxDepto.Location = new System.Drawing.Point(375, 70);
             this.textBoxDepto.Name = "textBoxDepto";
-            this.textBoxDepto.Size = new System.Drawing.Size(100, 20);
+            this.textBoxDepto.Size = new System.Drawing.Size(30, 20);
             this.textBoxDepto.TabIndex = 108;
             // 
             // FechaNacimiento
@@ -182,17 +202,10 @@
             // 
             // Calle
             // 
-            this.Calle.Location = new System.Drawing.Point(305, 44);
+            this.Calle.Location = new System.Drawing.Point(305, 18);
             this.Calle.Name = "Calle";
             this.Calle.Size = new System.Drawing.Size(100, 20);
             this.Calle.TabIndex = 102;
-            // 
-            // Domicilio
-            // 
-            this.Domicilio.Location = new System.Drawing.Point(305, 18);
-            this.Domicilio.Name = "Domicilio";
-            this.Domicilio.Size = new System.Drawing.Size(100, 20);
-            this.Domicilio.TabIndex = 101;
             // 
             // Email
             // 
@@ -261,7 +274,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(250, 73);
+            this.label8.Location = new System.Drawing.Point(338, 73);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(36, 13);
             this.label8.TabIndex = 92;
@@ -270,7 +283,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(250, 47);
+            this.label7.Location = new System.Drawing.Point(250, 21);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(30, 13);
             this.label7.TabIndex = 91;
@@ -279,11 +292,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(250, 21);
+            this.label6.Location = new System.Drawing.Point(250, 47);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(49, 13);
+            this.label6.Size = new System.Drawing.Size(34, 13);
             this.label6.TabIndex = 90;
-            this.label6.Text = "Domicilio";
+            this.label6.Text = "Altura";
             // 
             // label5
             // 
@@ -330,6 +343,13 @@
             this.label1.TabIndex = 85;
             this.label1.Text = "Nombre";
             // 
+            // Altura
+            // 
+            this.Altura.Location = new System.Drawing.Point(305, 44);
+            this.Altura.Name = "Altura";
+            this.Altura.Size = new System.Drawing.Size(100, 20);
+            this.Altura.TabIndex = 114;
+            // 
             // ModificacionCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -350,15 +370,18 @@
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private PagoElectronico.WidgetsGUI.CBox Habilitado;
+        private System.Windows.Forms.Button button3;
         private PagoElectronico.WidgetsGUI.GBox gBox1;
+        private PagoElectronico.WidgetsGUI.TextoNumerico Piso;
+        private System.Windows.Forms.Label label15;
         private ComboPais Nacionalidad;
         private ComboPais pais;
-        private ComboIdentificacion TipoDeIdentificacion;
+        private ComboIdentificacion TipoIdentificacion;
         private PagoElectronico.WidgetsGUI.Texto textBoxDepto;
         private PagoElectronico.WidgetsGUI.Fecha FechaNacimiento;
         private PagoElectronico.WidgetsGUI.TextoValidable Localidad;
         private PagoElectronico.WidgetsGUI.TextoValidable Calle;
-        private PagoElectronico.WidgetsGUI.TextoValidable Domicilio;
         private PagoElectronico.WidgetsGUI.TextoValidable Email;
         private PagoElectronico.WidgetsGUI.TextoNumericoValidable NroIdentificacion;
         private PagoElectronico.WidgetsGUI.TextoValidable Apellido;
@@ -375,7 +398,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private PagoElectronico.WidgetsGUI.CBox Habilitado;
-        private System.Windows.Forms.Button button3;
+        private PagoElectronico.WidgetsGUI.TextoNumericoValidable Altura;
     }
 }

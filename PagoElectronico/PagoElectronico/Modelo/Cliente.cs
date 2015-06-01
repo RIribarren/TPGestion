@@ -14,8 +14,9 @@ namespace PagoElectronico.Modelo
             public TipoIdentificacion tipoIdentificacion;
             public String email;
             public Pais pais;
-            public String domicilio;
+            public String altura;
             public String calle;
+            public String piso;
             public String depto;
             public String localidad;
             public Pais nacionalidad;
@@ -30,8 +31,9 @@ namespace PagoElectronico.Modelo
             TipoIdentificacion tipoIdentificacion,
             String email,
             Pais pais,
-            String domicilio,
+            String altura,
             String calle,
+            String piso,
             String depto,
             String localidad,
             Pais nacionalidad,
@@ -45,8 +47,9 @@ namespace PagoElectronico.Modelo
             this.tipoIdentificacion = tipoIdentificacion;
             this.email = email;
             this.pais = pais;
-            this.domicilio = domicilio;
+            this.altura = altura;
             this.calle = calle;
+            this.piso = piso;
             this.depto = depto;
             this.localidad = localidad;
             this.nacionalidad = nacionalidad;
