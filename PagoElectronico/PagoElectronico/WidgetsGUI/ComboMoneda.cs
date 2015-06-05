@@ -31,5 +31,10 @@ namespace PagoElectronico.WidgetsGUI
         {
             return monedas.ElementAt(SelectedIndex);
         }
+
+        public void setMoneda(Moneda moneda)
+        {
+            SelectedIndex = monedas.IndexOf(monedas.Find(m => m.id == moneda.id));
+        }
     }
 }

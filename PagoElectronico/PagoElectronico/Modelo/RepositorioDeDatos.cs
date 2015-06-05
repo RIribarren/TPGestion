@@ -175,5 +175,11 @@ namespace PagoElectronico.Modelo
          * CUENTAS
          */
         public abstract void crearCuenta(Cuenta nuevaCuenta);
+
+        public abstract List<Cuenta> obtenerCuentasDeCliente(Cliente cliente);
+
+        public abstract void bajaCuenta(Cuenta cuenta);
+
+        public abstract void guardarCuenta(Cuenta cuentaModificada);
     }
 }

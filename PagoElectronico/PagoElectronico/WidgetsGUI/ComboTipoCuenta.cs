@@ -31,5 +31,10 @@ namespace PagoElectronico.WidgetsGUI
         {
             return tiposCuenta.ElementAt(SelectedIndex);
         }
+
+        public void setTipoCuenta(TipoCuenta tipoCuenta)
+        {
+            SelectedIndex = tiposCuenta.IndexOf(tiposCuenta.Find(t => t.id == tipoCuenta.id));
+        }
     }
 }

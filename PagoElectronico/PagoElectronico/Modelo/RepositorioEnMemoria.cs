@@ -266,5 +266,24 @@ namespace PagoElectronico.Modelo
             nuevaCuenta.estado = "pendiente";
             cuentas.Add(nuevaCuenta);
         }
+
+        public override List<Cuenta> obtenerCuentasDeCliente(Cliente cliente)
+        {
+            return cuentas.FindAll(c => c.cliente.tieneMismaIdentificacionQue(cliente)
+                && c.estado != "cerrada");
+        }
+
+        public override void bajaCuenta(Cuenta cuenta)
+        {
+            Cuenta cuentaParaBajar = cuentas.Find(c => c.Numero == cuenta.Numero);
+            cuentaParaBajar.estado = "cerrada";
+        }
+
+        public override void guardarCuenta(Cuenta cuentaModificada)
+        {
+            Cuenta cuenta = cuentas.Find(c => c.Numero == cuentaModificada.Numero);
+            cuentas.Remove(cuenta);
+            cuentas.Add(cuentaModificada);
+        }
     }
 }

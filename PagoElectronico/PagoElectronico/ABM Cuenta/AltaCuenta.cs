@@ -42,7 +42,7 @@ namespace PagoElectronico.ABM_Cuenta
                 RepositorioDeDatos.getInstance().crearCuenta(nuevaCuenta);
                 volverDeOperacionExitosa("La cuenta fue creada");
             }
-            catch(ErrorEnRepositorioException excepcion)
+            catch (ErrorEnRepositorioException excepcion)
             {
                 mostrarError(excepcion.mensaje);
             }
