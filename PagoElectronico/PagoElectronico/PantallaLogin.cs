@@ -21,24 +21,18 @@ namespace PagoElectronico
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            if (!esValido())
-            {
-                MessageBox.Show(obtenerMensajeDeError(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (noEsValidoYMuestraMensaje())
                 return;
-            }
-
-            Usuario usuario;
 
             try
             {
-                usuario = RepositorioDeDatos.getInstance().login(Username.Text, Password.Text);
+                Usuario usuario = RepositorioDeDatos.getInstance().login(Username.Text, Password.Text);
                 abrirVentanaHija(new MenuPrincipal(usuario));
                 limpiar();
             }
             catch (ErrorEnRepositorioException excepcion)
             {
-                MessageBox.Show(excepcion.mensaje, "Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                mostrarError(excepcion.mensaje);
             }
         }
     }

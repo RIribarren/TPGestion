@@ -138,26 +138,7 @@ namespace PagoElectronico.Modelo
          * USUARIOS
          */ 
 
-        public Usuario login(String username, String password)
-        {
-            Usuario usuario = this.obtenerUsuario(username);
-
-            if (usuario == null)
-                throw new ErrorEnRepositorioException("El usuario y/o la contraseña son incorrectos");
-
-            if (! usuario.laPasswordEs(password))
-            {
-                //aumentar intentos fallidos
-                throw new ErrorEnRepositorioException("El usuario y/o la contraseña son incorrectos");
-            }
-
-            //if usuario esta bloqueado...
-
-            return usuario;
-        }
-
-        protected abstract Usuario obtenerUsuario(String username);
-
+        public abstract Usuario login(String username, String password);
 
         /*
          * MONEDAS

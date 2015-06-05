@@ -242,12 +242,12 @@ namespace PagoElectronico.Modelo
             tarjeta.habilitada = false;
         }
 
-        protected override Usuario obtenerUsuario(String username)
+        public override Usuario login(String username, String password)
         {
-            if (usuarios.Any(u => u.username == username))
-                return usuarios.Find(u => u.username == username);
+            if (!usuarios.Any(u => u.username == username && u.laPasswordEs(password)))
+                throw new ErrorEnRepositorioException("Usuario y/o contraseña invalidos");
 
-            return null;
+            return usuarios.Find(u => u.username == username);
         }
 
         public override List<Moneda> obtenerMonedas()
