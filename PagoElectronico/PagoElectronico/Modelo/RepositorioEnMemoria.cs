@@ -18,6 +18,9 @@ namespace PagoElectronico.Modelo
         private List<Cliente> clientes = new List<Cliente>();
         private List<Usuario> usuarios = new List<Usuario>();
         private List<Tarjeta> tarjetas = new List<Tarjeta>();
+        private List<Moneda> monedas = new List<Moneda>();
+        private List<TipoCuenta> tiposCuenta = new List<TipoCuenta>();
+        private List<Cuenta> cuentas = new List<Cuenta>();
 
         public RepositorioEnMemoria()
         {
@@ -34,7 +37,7 @@ namespace PagoElectronico.Modelo
             funcionalidades.Add(new Funcionalidad(9, "Listado estadistico"));
 
             // ROLES
-            roles.Add(new Rol(0, "Administrador", new List<Funcionalidad>(), true));
+            roles.Add(new Rol(1, "Administrador", new List<Funcionalidad>(), true));
             roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(0));
             roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(1));
             roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(2));
@@ -46,7 +49,8 @@ namespace PagoElectronico.Modelo
             roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(8));
             roles.ElementAt(0).agregarFuncionalidad(funcionalidades.ElementAt(9));
 
-            roles.Add(new Rol(1, "Cliente", new List<Funcionalidad>(), true));
+            roles.Add(new Rol(2, "Cliente", new List<Funcionalidad>(), true));
+            roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(3));
             roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(4));
             roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(5));
             roles.ElementAt(1).agregarFuncionalidad(funcionalidades.ElementAt(6));
@@ -65,12 +69,6 @@ namespace PagoElectronico.Modelo
             tiposIdentificacion.Add(new TipoIdentificacion(2, "Pasaporte"));
             tiposIdentificacion.Add(new TipoIdentificacion(3, "Cedula"));
 
-            // Usuarios
-            usuarios.Add(new Usuario(1, "administrador", "password", "a", "a", roles.ElementAt(0)));
-            usuarios.Add(new Usuario(2, "usuario2", "password", "a", "a", roles.ElementAt(1)));
-            usuarios.Add(new Usuario(3, "usuario3", "password", "a", "a", roles.ElementAt(1)));
-            usuarios.Add(new Usuario(4, "usuario4", "password", "a", "a", roles.ElementAt(1)));
-
             // Clientes
             clientes.Add(new Cliente(2, "cliente2", "ap2", "1234", tiposIdentificacion.ElementAt(0), "c2@a.com",
                 paises.ElementAt(0), "1234", "una calle", "1", "B", "CABA", paises.ElementAt(0), new DateTime(), true));
@@ -79,11 +77,26 @@ namespace PagoElectronico.Modelo
             clientes.Add(new Cliente(4, "cliente4", "ap2", "1234", tiposIdentificacion.ElementAt(2), "c4@a.com",
                 paises.ElementAt(2), "1234", "una calle", "", "", "CABA", paises.ElementAt(2), new DateTime(), true));
 
+            // Usuarios
+            usuarios.Add(new Usuario(1, "administrador", "password", "a", "a", roles.ElementAt(0),null));
+            usuarios.Add(new Usuario(2, "usuario2", "password", "a", "a", roles.ElementAt(1), clientes.ElementAt(0)));
+            usuarios.Add(new Usuario(3, "usuario3", "password", "a", "a", roles.ElementAt(1), clientes.ElementAt(1)));
+            usuarios.Add(new Usuario(4, "usuario4", "password", "a", "a", roles.ElementAt(1), clientes.ElementAt(2)));
+
             // Tarjetas
             tarjetas.Add(new Tarjeta(1, clientes.ElementAt(0), 123456789123456789, new DateTime(), new DateTime(), "123", "Visa", true));
             tarjetas.Add(new Tarjeta(2, clientes.ElementAt(0), 234567891234567891, new DateTime(), new DateTime(), "456", "MasterCard", true));
             tarjetas.Add(new Tarjeta(3, clientes.ElementAt(0), 345678912345678912, new DateTime(), new DateTime(), "789", "Visa", true));
             tarjetas.Add(new Tarjeta(4, clientes.ElementAt(1), 111222333444555666, new DateTime(), new DateTime(), "666", "Tarjeta Naranja", true));
+
+            // Monedas
+            monedas.Add(new Moneda(1, "Dolar"));
+
+            // Tipos cuenta
+            tiposCuenta.Add(new TipoCuenta(1, "Oro"));
+            tiposCuenta.Add(new TipoCuenta(2, "Plata"));
+            tiposCuenta.Add(new TipoCuenta(3, "Bronce"));
+            tiposCuenta.Add(new TipoCuenta(4, "Gratuita"));
         }
 
         public override void bajaRol(Rol rol)
@@ -235,6 +248,23 @@ namespace PagoElectronico.Modelo
                 return usuarios.Find(u => u.username == username);
 
             return null;
+        }
+
+        public override List<Moneda> obtenerMonedas()
+        {
+            return this.monedas;
+        }
+
+        public override List<TipoCuenta> obtenerTiposCuenta()
+        {
+            return tiposCuenta;
+        }
+
+        public override void crearCuenta(Cuenta nuevaCuenta)
+        {
+            nuevaCuenta.fechaCreacion = new DateTime();
+            nuevaCuenta.estado = "pendiente";
+            cuentas.Add(nuevaCuenta);
         }
     }
 }

@@ -61,7 +61,8 @@ namespace PagoElectronico.ABM_Cliente
                 Password.Text,
                 PreguntaSecreta.Text,
                 RespuestaSecreta.Text,
-                Roles.obtenerRol());
+                Roles.obtenerRol(),
+                nuevoCliente);
 
             try
             {

@@ -10,6 +10,7 @@ using PagoElectronico.Ventanas;
 using PagoElectronico.Modelo;
 using PagoElectronico.ABM_Rol;
 using PagoElectronico.ABM_Cliente;
+using PagoElectronico.ABM_Cuenta;
 
 namespace PagoElectronico.Menu
 {
@@ -52,6 +53,8 @@ namespace PagoElectronico.Menu
                 return new ABMRol();
             else if (funcionalidadElegida.nombre == "ABM Clientes")
                 return new ABMCliente();
+            else if (funcionalidadElegida.nombre == "ABM Cuenta")
+                return new ABMCuenta(usuario);
 
             throw new NotImplementedException();
         }

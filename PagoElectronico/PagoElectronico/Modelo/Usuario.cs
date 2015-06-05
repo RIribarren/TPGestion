@@ -12,6 +12,7 @@ namespace PagoElectronico.Modelo
         public String preguntaSecreta;
         public String respuestaSecreta;
         public Rol rol;
+        public Cliente cliente;
         private String passwordEncriptado;
         public String password
         {
@@ -25,7 +26,8 @@ namespace PagoElectronico.Modelo
             String password,
             String preguntaSecreta,
             String respuestaSecreta,
-            Rol rol)
+            Rol rol,
+            Cliente cliente)
         {
             this.id = id;
             this.username = username;
@@ -33,6 +35,7 @@ namespace PagoElectronico.Modelo
             this.preguntaSecreta = preguntaSecreta;
             this.respuestaSecreta = respuestaSecreta;
             this.rol = rol;
+            this.cliente = cliente;
         }
 
         public bool tieneMismoUsernameQue(Usuario usuario)
@@ -43,6 +46,11 @@ namespace PagoElectronico.Modelo
         internal bool laPasswordEs(String password)
         {
             return this.password == SHA256.GetSHA256(password);
+        }
+
+        internal bool esAdmin()
+        {
+            return rol.id == 1;
         }
     }
 }

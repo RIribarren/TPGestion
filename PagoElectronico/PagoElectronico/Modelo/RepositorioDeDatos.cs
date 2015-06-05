@@ -157,5 +157,23 @@ namespace PagoElectronico.Modelo
         }
 
         protected abstract Usuario obtenerUsuario(String username);
+
+
+        /*
+         * MONEDAS
+         */
+        public abstract List<Moneda> obtenerMonedas();
+
+
+        /*
+         * TIPOS CUENTA
+         */
+        public abstract List<TipoCuenta> obtenerTiposCuenta();
+
+
+        /*
+         * CUENTAS
+         */
+        public abstract void crearCuenta(Cuenta nuevaCuenta);
     }
 }
