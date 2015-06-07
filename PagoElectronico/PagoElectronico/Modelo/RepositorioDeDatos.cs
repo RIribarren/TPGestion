@@ -164,5 +164,7 @@ namespace PagoElectronico.Modelo
         public abstract void guardarCuenta(Cuenta cuentaModificada);
 
         public abstract void depositar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda);
+
+        public abstract void retirar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda);
     }
 }

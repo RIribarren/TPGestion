@@ -318,6 +318,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Retiros\FRetiro.resx">
+      <DependentUpon>FRetiro.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WidgetsGUI\ComboValidable.resx">
       <DependentUpon>ComboValidable.cs</DependentUpon>
     </EmbeddedResource>
@@ -361,11 +364,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Retiros\Form1.cs">
+    <Compile Include="Retiros\FRetiro.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Retiros\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Retiros\FRetiro.Designer.cs">
+      <DependentUpon>FRetiro.cs</DependentUpon>
     </Compile>
     <Compile Include="Transferencias\Form1.cs">
       <SubType>Form</SubType>
