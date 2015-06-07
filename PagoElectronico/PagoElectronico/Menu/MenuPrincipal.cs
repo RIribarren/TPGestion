@@ -11,6 +11,7 @@ using PagoElectronico.Modelo;
 using PagoElectronico.ABM_Rol;
 using PagoElectronico.ABM_Cliente;
 using PagoElectronico.ABM_Cuenta;
+using PagoElectronico.Depositos;
 
 namespace PagoElectronico.Menu
 {
@@ -55,6 +56,8 @@ namespace PagoElectronico.Menu
                 return new ABMCliente();
             else if (funcionalidadElegida.nombre == "ABM Cuenta")
                 return new ABMCuenta(usuario);
+            else if (funcionalidadElegida.nombre == "Depositos")
+                return new FDepositos(usuario.cliente);
 
             throw new NotImplementedException();
         }

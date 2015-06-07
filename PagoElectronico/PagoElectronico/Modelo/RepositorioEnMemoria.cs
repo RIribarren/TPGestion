@@ -285,5 +285,9 @@ namespace PagoElectronico.Modelo
             cuentas.Remove(cuenta);
             cuentas.Add(cuentaModificada);
         }
+
+        public override void depositar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda)
+        {
+        }
     }
 }
