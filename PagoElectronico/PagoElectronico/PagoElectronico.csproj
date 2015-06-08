@@ -446,7 +446,7 @@
     </Compile>
     <Compile Include="WidgetsGUI\Limpiable.cs" />
     <Compile Include="WidgetsGUI\Texto.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WidgetsGUI\Texto.Designer.cs">
       <DependentUpon>Texto.cs</DependentUpon>
@@ -458,13 +458,13 @@
       <DependentUpon>TextoNumericoValidable.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\TextoPasswordValidable.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WidgetsGUI\TextoPasswordValidable.Designer.cs">
       <DependentUpon>TextoPasswordValidable.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\TextoValidable.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WidgetsGUI\TextoValidable.Designer.cs">
       <DependentUpon>TextoValidable.cs</DependentUpon>

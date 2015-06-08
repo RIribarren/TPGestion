@@ -28,32 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBoxTexto = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // textBoxTexto
-            // 
-            this.textBoxTexto.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBoxTexto.Location = new System.Drawing.Point(0, 0);
-            this.textBoxTexto.Name = "textBoxTexto";
-            this.textBoxTexto.Size = new System.Drawing.Size(100, 20);
-            this.textBoxTexto.TabIndex = 0;
             // 
             // Texto
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.textBoxTexto);
-            this.Name = "Texto";
-            this.Size = new System.Drawing.Size(100, 20);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Texto_KeyDown);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        protected System.Windows.Forms.TextBox textBoxTexto;
 
 
     }

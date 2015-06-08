@@ -17,6 +17,8 @@ namespace PagoElectronico
         public PantallaLogin()
         {
             InitializeComponent();
+            Username.accionEnter = login;
+            Password.accionEnter = login;
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)

@@ -9,13 +9,9 @@ using System.Windows.Forms;
 
 namespace PagoElectronico.WidgetsGUI
 {
-    public partial class Texto : UserControl, Limpiable
+    public partial class Texto : TextBox, Limpiable
     {
-        public override String Text
-        {
-            get { return textBoxTexto.Text; }
-            set { textBoxTexto.Text = value; }
-        }
+        public Action accionEnter = null;
 
         public Texto()
         {
@@ -25,7 +21,13 @@ namespace PagoElectronico.WidgetsGUI
 
         public void limpiar()
         {
-            textBoxTexto.Clear();
+            Clear();
+        }
+
+        private void Texto_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return && accionEnter != null)
+                accionEnter();
         }
     }
 }

@@ -11,12 +11,6 @@ namespace PagoElectronico.WidgetsGUI
 {
     public partial class TextoValidable : Texto, Validable
     {
-        public override String Text
-        {
-            get {return textBoxTexto.Text;}
-            set { textBoxTexto.Text = value; }
-        }
-
         public TextoValidable()
         {
             InitializeComponent();
