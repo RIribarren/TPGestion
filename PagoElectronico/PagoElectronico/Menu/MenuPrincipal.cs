@@ -15,6 +15,7 @@ using PagoElectronico.Depositos;
 using PagoElectronico.Retiros;
 using PagoElectronico.Transferencias;
 using PagoElectronico.Facturacion;
+using PagoElectronico.Consulta_Saldos;
 
 namespace PagoElectronico.Menu
 {
@@ -68,8 +69,19 @@ namespace PagoElectronico.Menu
                 return new FTransferencias(usuario.cliente);
             else if (funcionalidadElegida.nombre == "Facturacion de costos")
                 return obtenerVentanaFacturacion();
+            else if (funcionalidadElegida.nombre == "Consulta de saldos")
+                return obtenerVentanaSaldos();
 
             throw new NotImplementedException();
+        }
+
+        private Ventana obtenerVentanaSaldos()
+        {
+            Cliente cliente = obtenerCliente();
+            if (cliente == null)
+                return null;
+
+            return new Saldos(cliente);
         }
 
         private Ventana obtenerVentanaFacturacion()

@@ -192,11 +192,11 @@
     <Compile Include="ABM Rol\ModificacionRol.Designer.cs">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="Consulta Saldos\Form1.cs">
+    <Compile Include="Consulta Saldos\Saldos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Consulta Saldos\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Consulta Saldos\Saldos.Designer.cs">
+      <DependentUpon>Saldos.cs</DependentUpon>
     </Compile>
     <Compile Include="Depositos\FDepositos.cs">
       <SubType>Form</SubType>
@@ -301,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Rol\ListadoRoles.resx">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Consulta Saldos\Saldos.resx">
+      <DependentUpon>Saldos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Depositos\FDepositos.resx">
       <DependentUpon>FDepositos.cs</DependentUpon>
