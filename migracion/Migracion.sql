@@ -1,3 +1,9 @@
+/*
+ *
+ * MIGRACION DE DATOS
+ *
+ */
+
 
 /****************************************************************/
 --						CREAR ESQUEMA
@@ -118,13 +124,33 @@ GO
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Usuario](
 	[Id_Usuario][int] IDENTITY (1,1) PRIMARY KEY,
 	[Cantidad_Intentos_Fallidos][int] NOT NULL,
-	[Username][varchar](255) NOT NULL,
+	[Username][varchar](255) NOT NULL UNIQUE,
 	[Password][varchar](255),
 	[Habilitado][char](1) NOT NULL,
 	[Fecha_Creacion][datetime] NOT NULL,
 	[Fecha_Ultima_Modificacion][datetime] NOT NULL,
 	[Pregunta_Secreta][varchar](255),
-	[Respuesta_Secreta][varchar](255)
+	[Respuesta_Secreta][varchar](255),
+	[Id_Rol][int] FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].Rol(Id_Rol) 
+)
+
+/* Creacion de 2 usuarios administradores pedidos por el enunciado */
+INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
+	[Cantidad_Intentos_Fallidos],
+	[Username],
+	[Password],
+	[Habilitado],
+	[Fecha_Creacion],
+	[Fecha_Ultima_Modificacion],
+	[Pregunta_Secreta],
+	[Respuesta_Secreta],
+	[Id_Rol]
+) VALUES (
+	0, 'admin1',
+	'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+	's', GETDATE(), GETDATE(), 'Pregunta secreta de admin',
+	'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+	1
 )
 
 INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
@@ -135,7 +161,27 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 	[Fecha_Creacion],
 	[Fecha_Ultima_Modificacion],
 	[Pregunta_Secreta],
-	[Respuesta_Secreta]
+	[Respuesta_Secreta],
+	[Id_Rol]
+) VALUES (
+	0, 'admin2',
+	'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+	's', GETDATE(), GETDATE(), 'Pregunta secreta de admin',
+	'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+	1
+)
+
+/* Creacion de usuarios de los clientes de la tabla maestra */
+INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
+	[Cantidad_Intentos_Fallidos],
+	[Username],
+	[Password],
+	[Habilitado],
+	[Fecha_Creacion],
+	[Fecha_Ultima_Modificacion],
+	[Pregunta_Secreta],
+	[Respuesta_Secreta],
+	[Id_Rol]
 )
 	SELECT DISTINCT
 		0,
@@ -145,9 +191,9 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 		GETDATE(),
 		GETDATE(),
 		null,
-		null
+		null,
+		2
 		FROM gd_esquema.Maestra
-
 GO
 
 
@@ -480,3 +526,18 @@ SELECT DISTINCT
 	Trans_Importe
 	FROM gd_esquema.Maestra as M
 	WHERE Factura_Numero IS NOT NULL
+	
+	
+	
+	
+/*
+ *
+ * STORED PROCEDURES
+ *
+ */
+
+
+
+/****************************************************************
+ *							LOGIN
+ ****************************************************************/

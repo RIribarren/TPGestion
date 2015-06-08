@@ -192,6 +192,7 @@
     <Compile Include="ABM Rol\ModificacionRol.Designer.cs">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConexionDB\RepositorioDB.cs" />
     <Compile Include="Consulta Saldos\Saldos.cs">
       <SubType>Form</SubType>
     </Compile>
