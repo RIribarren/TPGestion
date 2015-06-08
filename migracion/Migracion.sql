@@ -1,16 +1,67 @@
-/*
- *
- * MIGRACION DE DATOS
- *
- */
-
-
 /****************************************************************/
 --						CREAR ESQUEMA
 /****************************************************************/
 
 CREATE SCHEMA [LA_MAQUINA_DE_HUMO] AUTHORIZATION [gd]
 GO
+
+
+/***********************************************************************
+ *
+ *						STORED PROCEDURES
+ *
+ ***********************************************************************/
+
+/****************************************************************
+ *							LOGIN
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].Login
+	@Username varchar(255),
+	@Password varchar(255)
+AS
+	IF (SELECT COUNT(*) FROM Usuario WHERE Username = @Username AND Password = @Password) = 1
+	BEGIN
+		SELECT *
+			FROM Usuario
+			WHERE Username = @Username AND Password = @Password
+	END
+	ELSE
+	BEGIN
+		RAISERROR('Username y/o password incorrectos', 16, 1)
+	END
+GO
+
+
+/****************************************************************
+ *							ObtenerRol
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerRoles
+AS
+	SELECT Id_Rol, Rol_Nombre, Habilitado
+		FROM Rol
+GO
+
+
+/****************************************************************
+ *					obtenerFuncionalidadesDeRol
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerFuncionalidadesDeRol
+	@Id_Rol int
+AS
+	SELECT f.Id_Funcionalidad as Id_Funcionalidad, Func_Nombre
+		FROM Funcionalidad f, Rol_Funcionalidad rf, Rol r
+		WHERE f.Id_Funcionalidad = rf.Id_Funcionalidad
+			AND rf.Id_Rol = r.Id_Rol
+			AND r.Id_Rol = @Id_Rol
+GO
+
+
+
+/***********************************************************************
+ *
+ *						MIGRACION DE DATOS
+ *
+ ***********************************************************************/
 
 
 USE GD1C2015
@@ -32,21 +83,21 @@ GO
 --						FUNCIONALIDADES
 /****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Funcionalidad](
-	[Id_Funcionalidad][int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[Id_Funcionalidad][int] PRIMARY KEY NOT NULL,
 	[Func_Nombre] [varchar](255) NOT NULL
 )
 
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('ABM de Rol')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('Login y seguridad')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('ABM de Usuario')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('ABM de Cliente')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('ABM de Cuenta')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('Depósitos')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('Retiro de Efectivo')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('Tranferencias entre cuentas')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('Facturación de Costos')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('Consulta de saldos')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values('Listado Estadístico')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(1, 'ABM de Rol')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(2, 'Login y seguridad')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(3, 'ABM de Usuario')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(4, 'ABM de Cliente')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(5, 'ABM de Cuenta')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(6, 'Depósitos')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(7, 'Retiro de Efectivo')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(8, 'Tranferencias entre cuentas')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(9, 'Facturación de Costos')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(10, 'Consulta de saldos')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(11, 'Listado Estadístico')
 GO
 
 
@@ -66,11 +117,12 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Rol_Funcionalidad](
 INSERT INTO [LA_MAQUINA_DE_HUMO].Rol_Funcionalidad(Id_Rol , Id_Funcionalidad) 
 	SELECT 1,Id_Funcionalidad
 	FROM [LA_MAQUINA_DE_HUMO].Funcionalidad
+	WHERE Id_Funcionalidad IN (1,2,3,4,5,9,11) -- Cargar con las correspondientes funcionalidades
 
 INSERT INTO [LA_MAQUINA_DE_HUMO].Rol_Funcionalidad(Id_Rol , Id_Funcionalidad) 
 	SELECT 2,Id_Funcionalidad
 	FROM [LA_MAQUINA_DE_HUMO].Funcionalidad
-	WHERE Id_Funcionalidad IN (1,2,3,4,5,6,7) -- Cargar con las correspondientes funcionalidades
+	WHERE Id_Funcionalidad IN (2,5,6,7,8,9,10) -- Cargar con las correspondientes funcionalidades
 
 GO
 
@@ -527,17 +579,3 @@ SELECT DISTINCT
 	FROM gd_esquema.Maestra as M
 	WHERE Factura_Numero IS NOT NULL
 	
-	
-	
-	
-/*
- *
- * STORED PROCEDURES
- *
- */
-
-
-
-/****************************************************************
- *							LOGIN
- ****************************************************************/

@@ -21,6 +21,18 @@ namespace PagoElectronico.Menu
 {
     public partial class MenuPrincipal : Ventana
     {
+        private int ABMROL = 1;
+        //private int LOGIN = 2;
+        //private int ABRUSUARIO = 3;
+        private int ABMCLIENTE = 4;
+        private int ABMCUENTA = 5;
+        private int DEPOSITOS = 6;
+        private int RETIROEFECTIVO = 7;
+        private int TRANSFERENCIA = 8;
+        private int FACTURACION = 9;
+        private int SALDOS = 10;
+       // private int LISTADO = 11;
+
         private Usuario usuario;
 
         public MenuPrincipal(Usuario usuario)
@@ -55,21 +67,21 @@ namespace PagoElectronico.Menu
         {
             Funcionalidad funcionalidadElegida = usuario.rol.funcionalidades.ElementAt(Funcionalidades.SelectedIndex);
 
-            if (funcionalidadElegida.nombre == "ABM Roles")
+            if (funcionalidadElegida.id == ABMROL)
                 return new ABMRol();
-            else if (funcionalidadElegida.nombre == "ABM Clientes")
+            else if (funcionalidadElegida.id == ABMCLIENTE)
                 return new ABMCliente();
-            else if (funcionalidadElegida.nombre == "ABM Cuenta")
+            else if (funcionalidadElegida.id == ABMCUENTA)
                 return new ABMCuenta(usuario);
-            else if (funcionalidadElegida.nombre == "Depositos")
+            else if (funcionalidadElegida.id == DEPOSITOS)
                 return new FDepositos(usuario.cliente);
-            else if (funcionalidadElegida.nombre == "Retiro de efectivo")
+            else if (funcionalidadElegida.id == RETIROEFECTIVO)
                 return new FRetiro(usuario.cliente);
-            else if (funcionalidadElegida.nombre == "Transferencias entre cuentas")
+            else if (funcionalidadElegida.id == TRANSFERENCIA)
                 return new FTransferencias(usuario.cliente);
-            else if (funcionalidadElegida.nombre == "Facturacion de costos")
+            else if (funcionalidadElegida.id == FACTURACION)
                 return obtenerVentanaFacturacion();
-            else if (funcionalidadElegida.nombre == "Consulta de saldos")
+            else if (funcionalidadElegida.id == SALDOS)
                 return obtenerVentanaSaldos();
 
             throw new NotImplementedException();
