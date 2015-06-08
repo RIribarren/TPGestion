@@ -21,6 +21,11 @@ namespace PagoElectronico
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
+            login();
+        }
+
+        private void login()
+        {
             if (noEsValidoYMuestraMensaje())
                 return;
 
