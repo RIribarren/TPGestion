@@ -321,6 +321,9 @@
     <EmbeddedResource Include="Retiros\FRetiro.resx">
       <DependentUpon>FRetiro.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transferencias\FTransferencias.resx">
+      <DependentUpon>FTransferencias.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WidgetsGUI\ComboValidable.resx">
       <DependentUpon>ComboValidable.cs</DependentUpon>
     </EmbeddedResource>
@@ -370,11 +373,11 @@
     <Compile Include="Retiros\FRetiro.Designer.cs">
       <DependentUpon>FRetiro.cs</DependentUpon>
     </Compile>
-    <Compile Include="Transferencias\Form1.cs">
+    <Compile Include="Transferencias\FTransferencias.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Transferencias\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Transferencias\FTransferencias.Designer.cs">
+      <DependentUpon>FTransferencias.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\CBox.cs">
       <SubType>Component</SubType>

@@ -166,5 +166,9 @@ namespace PagoElectronico.Modelo
         public abstract void depositar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda);
 
         public abstract void retirar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda);
+
+        public abstract List<Cuenta> obtenerCuentas();
+
+        public abstract void transferir(Cuenta cuenta, Cuenta cuenta_2, decimal p);
     }
 }

@@ -293,5 +293,14 @@ namespace PagoElectronico.Modelo
         public override void retirar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda)
         {
         }
+
+        public override List<Cuenta> obtenerCuentas()
+        {
+            return cuentas;
+        }
+
+        public override void transferir(Cuenta cuenta, Cuenta cuenta_2, decimal p)
+        {
+        }
     }
 }

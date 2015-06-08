@@ -13,6 +13,7 @@ using PagoElectronico.ABM_Cliente;
 using PagoElectronico.ABM_Cuenta;
 using PagoElectronico.Depositos;
 using PagoElectronico.Retiros;
+using PagoElectronico.Transferencias;
 
 namespace PagoElectronico.Menu
 {
@@ -61,6 +62,8 @@ namespace PagoElectronico.Menu
                 return new FDepositos(usuario.cliente);
             else if (funcionalidadElegida.nombre == "Retiro de efectivo")
                 return new FRetiro(usuario.cliente);
+            else if (funcionalidadElegida.nombre == "Transferencias entre cuentas")
+                return new FTransferencias(usuario.cliente);
 
             throw new NotImplementedException();
         }
