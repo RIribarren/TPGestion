@@ -170,5 +170,9 @@ namespace PagoElectronico.Modelo
         public abstract List<Cuenta> obtenerCuentas();
 
         public abstract void transferir(Cuenta cuenta, Cuenta cuenta_2, decimal p);
+
+        public abstract List<Transaccion> obtenerTransaccionesImpagasDeCliente(Cliente cliente);
+
+        public abstract void facturar(Cliente cliente);
     }
 }

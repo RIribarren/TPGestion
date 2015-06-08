@@ -14,6 +14,7 @@ using PagoElectronico.ABM_Cuenta;
 using PagoElectronico.Depositos;
 using PagoElectronico.Retiros;
 using PagoElectronico.Transferencias;
+using PagoElectronico.Facturacion;
 
 namespace PagoElectronico.Menu
 {
@@ -45,7 +46,8 @@ namespace PagoElectronico.Menu
 
             Ventana ventanaDeFuncionalidad = obtenerVentanaDeFuncionalidad();
 
-            abrirVentanaHija(ventanaDeFuncionalidad);
+            if (ventanaDeFuncionalidad != null)
+                abrirVentanaHija(ventanaDeFuncionalidad);
         }
 
         private Ventana obtenerVentanaDeFuncionalidad()
@@ -64,8 +66,31 @@ namespace PagoElectronico.Menu
                 return new FRetiro(usuario.cliente);
             else if (funcionalidadElegida.nombre == "Transferencias entre cuentas")
                 return new FTransferencias(usuario.cliente);
+            else if (funcionalidadElegida.nombre == "Facturacion de costos")
+                return obtenerVentanaFacturacion();
 
             throw new NotImplementedException();
+        }
+
+        private Ventana obtenerVentanaFacturacion()
+        {
+            Cliente cliente = obtenerCliente();
+            if (cliente == null)
+                return null;
+
+            return new FFacturacion(cliente);
+        }
+
+        private Cliente obtenerCliente()
+        {
+            if (usuario.esAdmin())
+            {
+                EleccionCliente eleccionCliente = new EleccionCliente();
+                abrirVentanaHija(eleccionCliente);
+                return eleccionCliente.obtenerCliente();
+            }
+
+            return usuario.cliente;
         }
 
         private void button2_Click(object sender, EventArgs e)

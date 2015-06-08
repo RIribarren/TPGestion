@@ -204,11 +204,11 @@
     <Compile Include="Depositos\FDepositos.Designer.cs">
       <DependentUpon>FDepositos.cs</DependentUpon>
     </Compile>
-    <Compile Include="Facturacion\Form1.cs">
+    <Compile Include="Facturacion\FFacturacion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Facturacion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Facturacion\FFacturacion.Designer.cs">
+      <DependentUpon>FFacturacion.cs</DependentUpon>
     </Compile>
     <Compile Include="Listados\Form1.cs">
       <SubType>Form</SubType>
@@ -238,6 +238,7 @@
     <Compile Include="Modelo\Cuenta.cs" />
     <Compile Include="Modelo\ErrorEnRepositorioException.cs" />
     <Compile Include="Modelo\Funcionalidad.cs" />
+    <Compile Include="Modelo\Transaccion.cs" />
     <Compile Include="Modelo\Moneda.cs" />
     <Compile Include="Modelo\Pais.cs" />
     <Compile Include="Modelo\RepositorioDeDatos.cs" />
@@ -303,6 +304,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Depositos\FDepositos.resx">
       <DependentUpon>FDepositos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\FFacturacion.resx">
+      <DependentUpon>FFacturacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu\ListaValidable.resx">
       <DependentUpon>ListaValidable.cs</DependentUpon>

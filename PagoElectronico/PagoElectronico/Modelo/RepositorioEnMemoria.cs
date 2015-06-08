@@ -302,5 +302,20 @@ namespace PagoElectronico.Modelo
         public override void transferir(Cuenta cuenta, Cuenta cuenta_2, decimal p)
         {
         }
+
+        public override List<Transaccion> obtenerTransaccionesImpagasDeCliente(Cliente cliente)
+        {
+            List<Transaccion> lista = new List<Transaccion>();
+            lista.Add(new Transaccion("Item1", 10));
+            lista.Add(new Transaccion("Item2", 20));
+            lista.Add(new Transaccion("Item3", 30));
+            lista.Add(new Transaccion("Item4", 40));
+
+            return lista;
+        }
+
+        public override void facturar(Cliente cliente)
+        {
+        }
     }
 }
