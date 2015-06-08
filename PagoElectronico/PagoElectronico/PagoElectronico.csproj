@@ -79,13 +79,13 @@
       <DependentUpon>BajaCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cliente\ComboIdentificacion.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ABM Cliente\ComboIdentificacion.Designer.cs">
       <DependentUpon>ComboIdentificacion.cs</DependentUpon>
     </Compile>
     <Compile Include="ABM Cliente\ComboPais.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ABM Cliente\ComboPais.Designer.cs">
       <DependentUpon>ComboPais.cs</DependentUpon>
@@ -236,8 +236,10 @@
     </Compile>
     <Compile Include="Modelo\Cliente.cs" />
     <Compile Include="Modelo\Cuenta.cs" />
+    <Compile Include="Modelo\Deposito.cs" />
     <Compile Include="Modelo\ErrorEnRepositorioException.cs" />
     <Compile Include="Modelo\Funcionalidad.cs" />
+    <Compile Include="Modelo\Retiro.cs" />
     <Compile Include="Modelo\Transaccion.cs" />
     <Compile Include="Modelo\Moneda.cs" />
     <Compile Include="Modelo\Pais.cs" />
@@ -248,6 +250,7 @@
     <Compile Include="Modelo\Tarjeta.cs" />
     <Compile Include="Modelo\TipoCuenta.cs" />
     <Compile Include="Modelo\TipoIdentificacion.cs" />
+    <Compile Include="Modelo\Transferencia.cs" />
     <Compile Include="Modelo\Usuario.cs" />
     <Compile Include="PantallaLogin.cs">
       <SubType>Form</SubType>
@@ -393,25 +396,25 @@
       <DependentUpon>CBox.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\ComboCuentas.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WidgetsGUI\ComboCuentas.Designer.cs">
       <DependentUpon>ComboCuentas.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\ComboMoneda.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WidgetsGUI\ComboMoneda.Designer.cs">
       <DependentUpon>ComboMoneda.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\ComboTipoCuenta.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WidgetsGUI\ComboTipoCuenta.Designer.cs">
       <DependentUpon>ComboTipoCuenta.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\ComboValidable.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WidgetsGUI\ComboValidable.Designer.cs">
       <DependentUpon>ComboValidable.cs</DependentUpon>

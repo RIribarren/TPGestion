@@ -174,5 +174,13 @@ namespace PagoElectronico.Modelo
         public abstract List<Transaccion> obtenerTransaccionesImpagasDeCliente(Cliente cliente);
 
         public abstract void facturar(Cliente cliente);
+
+        public abstract List<Transferencia> obtenerUltimas10Transferencias(Cuenta cuenta);
+
+        public abstract List<Retiro> obtenerUltimos5Retiros(Cuenta cuenta);
+
+        public abstract List<Deposito> obtenerUltimos5Depositos(Cuenta cuenta);
+
+        public abstract Decimal obtenerSaldoDeCuenta(Cuenta cuenta);
     }
 }

@@ -9,22 +9,11 @@ using System.Windows.Forms;
 
 namespace PagoElectronico.WidgetsGUI
 {
-    public partial class ComboValidable : UserControl, Validable, Limpiable
+    public partial class ComboValidable : ComboBox, Validable, Limpiable
     {
-        public ComboBox.ObjectCollection Items
-        {
-            get { return comboBoxCombo.Items; }
-        }
-
-        public int SelectedIndex
-        {
-            get { return comboBoxCombo.SelectedIndex; }
-            set { comboBoxCombo.SelectedIndex = value; }
-        }
-
         public bool esValido()
         {
-            return comboBoxCombo.SelectedIndex >= 0;
+            return SelectedIndex >= 0;
         }
 
         public String obtenerMensajeDeError()

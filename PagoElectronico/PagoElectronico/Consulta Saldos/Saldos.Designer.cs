@@ -45,8 +45,8 @@
             this.Monto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboCuentas1 = new PagoElectronico.WidgetsGUI.ComboCuentas();
             this.button1 = new System.Windows.Forms.Button();
+            this.comboCuentas1 = new PagoElectronico.WidgetsGUI.ComboCuentas();
             this.gBox1.SuspendLayout();
             this.gBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -214,14 +214,6 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Cuenta";
             // 
-            // comboCuentas1
-            // 
-            this.comboCuentas1.Location = new System.Drawing.Point(57, 12);
-            this.comboCuentas1.Name = "comboCuentas1";
-            this.comboCuentas1.SelectedIndex = -1;
-            this.comboCuentas1.Size = new System.Drawing.Size(121, 21);
-            this.comboCuentas1.TabIndex = 2;
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(644, 446);
@@ -232,14 +224,24 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // comboCuentas1
+            // 
+            this.comboCuentas1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboCuentas1.FormattingEnabled = true;
+            this.comboCuentas1.Location = new System.Drawing.Point(57, 12);
+            this.comboCuentas1.Name = "comboCuentas1";
+            this.comboCuentas1.Size = new System.Drawing.Size(121, 21);
+            this.comboCuentas1.TabIndex = 5;
+            this.comboCuentas1.SelectedIndexChanged += new System.EventHandler(this.comboCuentas1_SelectedIndexChanged);
+            // 
             // Saldos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(729, 476);
+            this.Controls.Add(this.comboCuentas1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboCuentas1);
             this.Controls.Add(this.gBox1);
             this.Name = "Saldos";
             this.Text = "Form1";
@@ -260,7 +262,6 @@
 
         private PagoElectronico.WidgetsGUI.GBox gBox1;
         private System.Windows.Forms.Label label1;
-        private PagoElectronico.WidgetsGUI.ComboCuentas comboCuentas1;
         private PagoElectronico.WidgetsGUI.GBox gBox3;
         private System.Windows.Forms.TextBox textBox1;
         private PagoElectronico.WidgetsGUI.GBox gBox4;
@@ -277,6 +278,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CuentaDestino;
         private System.Windows.Forms.DataGridViewTextBoxColumn Fecha;
         private System.Windows.Forms.DataGridViewTextBoxColumn Monto;
+        private PagoElectronico.WidgetsGUI.ComboCuentas comboCuentas1;
 
     }
 }

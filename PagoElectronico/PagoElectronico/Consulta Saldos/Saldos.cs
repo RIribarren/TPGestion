@@ -21,9 +21,58 @@ namespace PagoElectronico.Consulta_Saldos
             this.cliente = cliente;
         }
 
+        protected override void cargarDatos()
+        {
+            comboCuentas1.cargarCuentas(RepositorioDeDatos.getInstance().obtenerCuentasDeCliente(cliente));
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             volver();
+        }
+
+        private void comboCuentas1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cargarSaldo();
+            cargarUltimos5Depositos();
+            cargarUltimos5Retiros();
+            cargarUltimas10Transferencias();
+        }
+
+        private void cargarSaldo()
+        {
+            Cuenta cuenta = comboCuentas1.obtenerCuenta();
+            textBox1.Text = RepositorioDeDatos.getInstance().obtenerSaldoDeCuenta(cuenta).ToString();
+        }
+
+        private void cargarUltimas10Transferencias()
+        {
+            Cuenta cuenta = comboCuentas1.obtenerCuenta();
+            List<Transferencia> ultimas10Transferencias = RepositorioDeDatos.getInstance().obtenerUltimas10Transferencias(cuenta);
+            foreach (Transferencia t in ultimas10Transferencias)
+            {
+                dataGridView3.Rows.Add(t.fecha, t.monto, t.cuentaDestino.Numero);
+            }
+        }
+
+        private void cargarUltimos5Retiros()
+        {
+            Cuenta cuenta = comboCuentas1.obtenerCuenta();
+            List<Retiro> ultimos5Retiros = RepositorioDeDatos.getInstance().obtenerUltimos5Retiros(cuenta);
+            foreach (Retiro r in ultimos5Retiros)
+            {
+                dataGridView2.Rows.Add(r.fecha, r.monto);
+            }
+        }
+
+        private void cargarUltimos5Depositos()
+        {
+            Cuenta cuenta = comboCuentas1.obtenerCuenta();
+            List<Deposito> ultimos5Depositos = RepositorioDeDatos.getInstance().obtenerUltimos5Depositos(cuenta);
+            foreach (Deposito d in ultimos5Depositos)
+            {
+                dataGridView1.Rows.Add(d.fecha, d.monto);
+            }
         }
 
     }

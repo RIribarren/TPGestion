@@ -28,32 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBoxCombo = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
-            // 
-            // comboBoxCombo
-            // 
-            this.comboBoxCombo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBoxCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxCombo.FormattingEnabled = true;
-            this.comboBoxCombo.Location = new System.Drawing.Point(0, 0);
-            this.comboBoxCombo.Name = "comboBoxCombo";
-            this.comboBoxCombo.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxCombo.TabIndex = 0;
             // 
             // ComboValidable
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.comboBoxCombo);
-            this.Name = "ComboValidable";
-            this.Size = new System.Drawing.Size(121, 21);
+            this.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBoxCombo;
     }
 }

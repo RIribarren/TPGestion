@@ -317,5 +317,49 @@ namespace PagoElectronico.Modelo
         public override void facturar(Cliente cliente)
         {
         }
+
+        public override List<Transferencia> obtenerUltimas10Transferencias(Cuenta cuenta)
+        {
+            List<Transferencia> transferencias = new List<Transferencia>();
+            transferencias.Add(new Transferencia(1000, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+            transferencias.Add(new Transferencia(2000, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+            transferencias.Add(new Transferencia(3000, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+            transferencias.Add(new Transferencia(100, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+            transferencias.Add(new Transferencia(200, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+            transferencias.Add(new Transferencia(300, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+            transferencias.Add(new Transferencia(400, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+            transferencias.Add(new Transferencia(500, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+            transferencias.Add(new Transferencia(600, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+            transferencias.Add(new Transferencia(10, new DateTime(), new Cuenta(clientes.ElementAt(1), paises.ElementAt(1), monedas.ElementAt(0), tiposCuenta.ElementAt(0))));
+
+            return transferencias;
+        }
+
+        public override List<Retiro> obtenerUltimos5Retiros(Cuenta cuenta)
+        {
+            List<Retiro> retiros = new List<Retiro>();
+            retiros.Add(new Retiro(100, new DateTime()));
+            retiros.Add(new Retiro(200, new DateTime()));
+            retiros.Add(new Retiro(300, new DateTime()));
+            retiros.Add(new Retiro(400, new DateTime()));
+            retiros.Add(new Retiro(500, new DateTime()));
+            return retiros;
+        }
+
+        public override List<Deposito> obtenerUltimos5Depositos(Cuenta cuenta)
+        {
+            List<Deposito> depositos = new List<Deposito>();
+            depositos.Add(new Deposito(400, new DateTime()));
+            depositos.Add(new Deposito(500, new DateTime()));
+            depositos.Add(new Deposito(600, new DateTime()));
+            depositos.Add(new Deposito(700, new DateTime()));
+            depositos.Add(new Deposito(800, new DateTime()));
+            return depositos;
+        }
+
+        public override Decimal obtenerSaldoDeCuenta(Cuenta cuenta)
+        {
+            return 12345.67M;
+        }
     }
 }
