@@ -13,6 +13,7 @@ namespace PagoElectronico.ConexionDB
     {
         private String parametrosConexionDB;
         private DateTime fechaDeSistema;
+        private String esquema;
 
         public BaseDeDatos()
         {
@@ -20,6 +21,8 @@ namespace PagoElectronico.ConexionDB
                 + "Database=" + ConfigurationSettings.AppSettings["database"] + ";"
                 + "User ID=" + ConfigurationSettings.AppSettings["id"] + ";"
                 + "Password=" + ConfigurationSettings.AppSettings["password"];
+
+            esquema = ConfigurationSettings.AppSettings["esquema"];
 
             establecerFechaDeSistema();
         }
@@ -33,7 +36,7 @@ namespace PagoElectronico.ConexionDB
                 + ConfigurationSettings.AppSettings["hour"] + ":"
                 + ConfigurationSettings.AppSettings["minutes"]);
             
-            SqlCommand sp = obtenerStoredProcedure("[LA_MAQUINA_DE_HUMO].setFecha");
+            SqlCommand sp = obtenerStoredProcedure("setFecha");
             sp.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = fechaDeSistema;
             sp.ExecuteNonQuery();
         }
@@ -42,7 +45,7 @@ namespace PagoElectronico.ConexionDB
         {
             SqlConnection conexion = new SqlConnection(parametrosConexionDB);
             conexion.Open();
-            SqlCommand sp = new SqlCommand(nombre, conexion);
+            SqlCommand sp = new SqlCommand("[" + esquema + "]." + nombre, conexion);
             sp.CommandType = CommandType.StoredProcedure;
             return sp;
         }
@@ -54,7 +57,7 @@ namespace PagoElectronico.ConexionDB
 
         public override List<Rol> getRoles()
         {
-            var spObtenerRoles = obtenerStoredProcedure("[LA_MAQUINA_DE_HUMO].obtenerRoles");
+            var spObtenerRoles = obtenerStoredProcedure("obtenerRoles");
             List<Rol> roles = new List<Rol>();
             try {
                 var reader = spObtenerRoles.ExecuteReader();
@@ -77,7 +80,7 @@ namespace PagoElectronico.ConexionDB
 
         private List<Funcionalidad> obtenerFuncionalidadesDeRol(int Id_Rol)
         {
-            var spObtenerFuncionalidades = obtenerStoredProcedure("[LA_MAQUINA_DE_HUMO].obtenerFuncionalidadesDeRol");
+            var spObtenerFuncionalidades = obtenerStoredProcedure("obtenerFuncionalidadesDeRol");
             spObtenerFuncionalidades.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = Id_Rol;
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
             try
@@ -206,7 +209,7 @@ namespace PagoElectronico.ConexionDB
 
         public override Usuario login(string username, string password)
         {
-            SqlCommand storedLogin = obtenerStoredProcedure("[LA_MAQUINA_DE_HUMO].Login");
+            SqlCommand storedLogin = obtenerStoredProcedure("Login");
             storedLogin.Parameters.Add("@Username", SqlDbType.VarChar).Value = username;
             storedLogin.Parameters.Add("@Password", SqlDbType.VarChar).Value = SHA256.GetSHA256(password);
 
@@ -234,7 +237,7 @@ namespace PagoElectronico.ConexionDB
 
         private Cliente obtenerClieteDeUsuario(int Id_Usuario)
         {
-            SqlCommand sp = obtenerStoredProcedure("obtenerClieteDeUsuario");
+            SqlCommand sp = obtenerStoredProcedure("obtenerClienteDeUsuario");
             sp.Parameters.Add("@Id_Usuario", SqlDbType.Int).Value = Id_Usuario;
 
             SqlDataReader reader;
@@ -242,27 +245,31 @@ namespace PagoElectronico.ConexionDB
             try
             {
                 reader = sp.ExecuteReader();
-                cliente = new Cliente(
-                    int.Parse(reader["Id_Cliente"].ToString()),
-                    reader["Cli_Nombre"].ToString(),
-                    reader["Cli_Apellido"].ToString(),
-                    reader["Cli_Nro_Doc"].ToString(),
-                    getTiposIdentificacion().Find(i => i.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
-                    reader["Cli_Mail"].ToString(),
-                    getPaises().Find(p => p.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
-                    reader["Cli_Dom_Nro"].ToString(),
-                    reader["Cli_Dom_Calle"].ToString(),
-                    reader["Cli_Dom_Piso"].ToString(),
-                    reader["Cli_Dom_Depto"].ToString(),
-                    reader["Cli_Dom_Localidad"].ToString(),
-                    getPaises().Find(p => p.id == int.Parse(reader["Cli_Nacionalidad_Codigo"].ToString())),
-                    DateTime.Parse(reader["Cli_Fecha_Nac"].ToString()),
-                    reader["Cli_Habilitado"].ToString() == "s");
+                if (reader.Read())
+                    cliente = new Cliente(
+                        int.Parse(reader["Id_Cliente"].ToString()),
+                        reader["Cli_Nombre"].ToString(),
+                        reader["Cli_Apellido"].ToString(),
+                        reader["Cli_Nro_Doc"].ToString(),
+                        getTiposIdentificacion().Find(i => i.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
+                        reader["Cli_Mail"].ToString(),
+                        getPaises().Find(p => p.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
+                        reader["Cli_Dom_Nro"].ToString(),
+                        reader["Cli_Dom_Calle"].ToString(),
+                        reader["Cli_Dom_Piso"].ToString(),
+                        reader["Cli_Dom_Depto"].ToString(),
+                        reader["Cli_Dom_Localidad"].ToString(),
+                        getPaises().Find(p => p.id == int.Parse(reader["Cli_Nacionalidad_Codigo"].ToString())),
+                        DateTime.Parse(reader["Cli_Fecha_Nac"].ToString()),
+                        reader["Cli_Habilitado"].ToString() == "s");
+                else
+                    cliente = null;
+              
                 sp.Connection.Close();
             }
-            catch (SqlException)
+            catch (SqlException ex)
             {
-                return null;
+                throw new ErrorEnRepositorioException(ex.Message);
             }
 
             return cliente;            
