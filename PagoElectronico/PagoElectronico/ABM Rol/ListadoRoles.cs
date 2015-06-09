@@ -14,19 +14,25 @@ namespace PagoElectronico.ABM_Rol
 {
     public partial class ListadoRoles : Ventana
     {
-        private ABMRol abmRol;
         private List<Rol> roles;
+        private Predicate<Rol> filtro = (r => true);
+        public Rol rolElegido = null;
 
-        public ListadoRoles(ABMRol abmRol)
+        public ListadoRoles()
         {
-            this.abmRol = abmRol;
             InitializeComponent();
+        }
+
+        public ListadoRoles(Predicate<Rol> filtro)
+        {
+            InitializeComponent();
+            this.filtro = filtro;
         }
 
         protected override void cargarDatos()
         {
             List<Rol> todosLosRoles = RepositorioDeDatos.getInstance().getRoles();
-            cargarRoles(todosLosRoles);        
+            cargarRoles(todosLosRoles.FindAll(filtro));        
         }
 
         private void cargarRoles(List<Rol> rolesACargar)
@@ -35,9 +41,7 @@ namespace PagoElectronico.ABM_Rol
             dataGridViewRoles.Refresh();
             roles = rolesACargar;
             foreach (Rol rol in roles)
-            {
                 dataGridViewRoles.Rows.Add(rol.nombre, rol.estaActivo);
-            }
         }
 
         private void dataGridViewRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -47,16 +51,15 @@ namespace PagoElectronico.ABM_Rol
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
                 e.RowIndex >= 0)
             {
-                Rol rol = roles.ElementAt(e.RowIndex);
-                abmRol.rolFueSeleccionado(rol);
-                this.Hide();
+                rolElegido = roles.ElementAt(e.RowIndex);
+                volver();
             }
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
             var rolesFiltrados = RepositorioDeDatos.getInstance().getRolesFiltrados(getFiltro());
-            cargarRoles(rolesFiltrados);
+            cargarRoles(rolesFiltrados.FindAll(filtro));
         }
 
         private Predicate<Rol> getFiltro()

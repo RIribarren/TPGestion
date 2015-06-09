@@ -11,39 +11,29 @@ using PagoElectronico.Ventanas;
 
 namespace PagoElectronico.ABM_Rol
 {
-    enum Operacion
-    {
-        NINGUNA,
-        ALTA,
-        BAJA,
-        MODIFICACION
-    };
-
     public partial class ABMRol : Ventana
     {
-        private Operacion operacion;
-
         public ABMRol()
         {
-            this.operacion = Operacion.NINGUNA;
-
             InitializeComponent();
         }
 
         private void buttonBaja_Click(object sender, EventArgs e)
         {
-            this.operacion = Operacion.BAJA;
-            abrirVentanaHija(new ListadoRoles(this));
+            ListadoRoles listadoRoles = new ListadoRoles((r => r.estaActivo));
+            abrirVentanaHija(listadoRoles);
+            Rol rolElegido = listadoRoles.rolElegido;
+
+            if (rolElegido == null) return;
+
+            ejecutarBaja(rolElegido);
         }
 
-        public void rolFueSeleccionado(Rol rol)
+        private Rol obtenerRol()
         {
-            if (this.operacion == Operacion.BAJA)
-                ejecutarBaja(rol);
-            else
-                ejecutarModificacion(rol);
-
-            this.operacion = Operacion.NINGUNA;
+            ListadoRoles listadoRoles = new ListadoRoles();
+            abrirVentanaHija(listadoRoles);
+            return listadoRoles.rolElegido;
         }
 
         private void ejecutarModificacion(Rol rol)
@@ -67,8 +57,8 @@ namespace PagoElectronico.ABM_Rol
 
         private void buttonModificacion_Click(object sender, EventArgs e)
         {
-            this.operacion = Operacion.MODIFICACION;
-            abrirVentanaHija(new ListadoRoles(this));
+            Rol rolElegido = obtenerRol();
+            ejecutarModificacion(rolElegido);
         }
 
         private void buttonAlta_Click(object sender, EventArgs e)

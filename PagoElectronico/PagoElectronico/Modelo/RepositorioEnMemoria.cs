@@ -119,11 +119,6 @@ namespace PagoElectronico.Modelo
             return funcionalidades;
         }
 
-        public override List<Rol> getRolesFiltrados(Predicate<Rol> filtro)
-        {
-            return roles.FindAll(filtro);
-        }
-
         public override List<Pais> getPaises()
         {
             return paises;

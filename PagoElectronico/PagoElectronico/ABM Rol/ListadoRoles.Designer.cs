@@ -157,7 +157,7 @@
             this.Controls.Add(this.dataGridViewRoles);
             this.Controls.Add(this.groupBox1);
             this.Name = "ListadoRoles";
-            this.Text = "Listado de Roles";
+            this.Text = "Pago electrónico - Selección de rol";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRoles)).EndInit();

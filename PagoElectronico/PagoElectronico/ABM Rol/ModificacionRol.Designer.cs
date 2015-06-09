@@ -28,9 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // ModificacionRol
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "ModificacionRol";
+            this.ClientSize = new System.Drawing.Size(413, 400);
+            this.Name = "ModificacionRol";
+            this.Text = "Pago electrónico - Modificación de rol";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

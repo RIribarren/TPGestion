@@ -142,7 +142,7 @@ AS
 	END TRY
 	BEGIN CATCH
 		DECLARE @MensajeError varchar(255)
-		SET @MensajeError = 'El nombre ' + @Nombre + ' ya esta en uso'
+		SET @MensajeError = 'El nombre "' + @Nombre + '" ya esta en uso'
 		RAISERROR(@MensajeError, 16, 1)
 	END CATCH
 GO

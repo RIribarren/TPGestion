@@ -107,11 +107,6 @@ namespace PagoElectronico.ConexionDB
             throw new NotImplementedException();
         }
 
-        public override List<Rol> getRolesFiltrados(Predicate<Rol> filtro)
-        {
-            throw new NotImplementedException();
-        }
-
         public override List<Funcionalidad> getFuncionalidades()
         {
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();

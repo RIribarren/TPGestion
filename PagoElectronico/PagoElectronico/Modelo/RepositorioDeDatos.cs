@@ -34,7 +34,10 @@ namespace PagoElectronico.Modelo
 
         abstract public List<Rol> getRolesActivados();
 
-        abstract public List<Rol> getRolesFiltrados(Predicate<Rol> filtro);
+        public List<Rol> getRolesFiltrados(Predicate<Rol> filtro)
+        {
+            return getRoles().FindAll(filtro);
+        }
 
         public abstract void guardarRol(Rol rolModificado);
 

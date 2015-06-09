@@ -28,24 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Funcionalidades = new PagoElectronico.Menu.ListaValidable();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
+            this.Funcionalidades = new PagoElectronico.Menu.ListaValidable();
+            this.gBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // Funcionalidades
-            // 
-            this.Funcionalidades.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Funcionalidades.FormattingEnabled = true;
-            this.Funcionalidades.ItemHeight = 20;
-            this.Funcionalidades.Location = new System.Drawing.Point(12, 12);
-            this.Funcionalidades.Name = "Funcionalidades";
-            this.Funcionalidades.Size = new System.Drawing.Size(296, 184);
-            this.Funcionalidades.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(233, 230);
+            this.button1.Location = new System.Drawing.Point(249, 231);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -55,7 +47,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(12, 230);
+            this.button2.Location = new System.Drawing.Point(12, 231);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -63,24 +55,46 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // gBox1
+            // 
+            this.gBox1.Controls.Add(this.Funcionalidades);
+            this.gBox1.Location = new System.Drawing.Point(12, 12);
+            this.gBox1.Name = "gBox1";
+            this.gBox1.Size = new System.Drawing.Size(312, 213);
+            this.gBox1.TabIndex = 3;
+            this.gBox1.TabStop = false;
+            this.gBox1.Text = "Funcionalidades";
+            // 
+            // Funcionalidades
+            // 
+            this.Funcionalidades.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Funcionalidades.FormattingEnabled = true;
+            this.Funcionalidades.ItemHeight = 20;
+            this.Funcionalidades.Location = new System.Drawing.Point(6, 19);
+            this.Funcionalidades.Name = "Funcionalidades";
+            this.Funcionalidades.Size = new System.Drawing.Size(296, 184);
+            this.Funcionalidades.TabIndex = 1;
+            // 
             // MenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(322, 265);
+            this.ClientSize = new System.Drawing.Size(332, 265);
+            this.Controls.Add(this.gBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.Funcionalidades);
             this.Name = "MenuPrincipal";
-            this.Text = "MenuPrincipal";
+            this.Text = "Pago electrónico - Menú principal";
+            this.gBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private ListaValidable Funcionalidades;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private PagoElectronico.WidgetsGUI.GBox gBox1;
+        private ListaValidable Funcionalidades;
     }
 }

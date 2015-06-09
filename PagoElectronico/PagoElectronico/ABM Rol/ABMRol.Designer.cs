@@ -37,7 +37,7 @@
             // 
             this.buttonAlta.Location = new System.Drawing.Point(12, 12);
             this.buttonAlta.Name = "buttonAlta";
-            this.buttonAlta.Size = new System.Drawing.Size(227, 41);
+            this.buttonAlta.Size = new System.Drawing.Size(272, 41);
             this.buttonAlta.TabIndex = 0;
             this.buttonAlta.Text = "Alta de Rol";
             this.buttonAlta.UseVisualStyleBackColor = true;
@@ -47,7 +47,7 @@
             // 
             this.buttonBaja.Location = new System.Drawing.Point(12, 72);
             this.buttonBaja.Name = "buttonBaja";
-            this.buttonBaja.Size = new System.Drawing.Size(227, 41);
+            this.buttonBaja.Size = new System.Drawing.Size(272, 41);
             this.buttonBaja.TabIndex = 1;
             this.buttonBaja.Text = "Baja de Rol";
             this.buttonBaja.UseVisualStyleBackColor = true;
@@ -57,7 +57,7 @@
             // 
             this.buttonModificacion.Location = new System.Drawing.Point(12, 134);
             this.buttonModificacion.Name = "buttonModificacion";
-            this.buttonModificacion.Size = new System.Drawing.Size(227, 41);
+            this.buttonModificacion.Size = new System.Drawing.Size(272, 41);
             this.buttonModificacion.TabIndex = 2;
             this.buttonModificacion.Text = "Modificar Rol";
             this.buttonModificacion.UseVisualStyleBackColor = true;
@@ -67,12 +67,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(256, 186);
+            this.ClientSize = new System.Drawing.Size(296, 186);
             this.Controls.Add(this.buttonModificacion);
             this.Controls.Add(this.buttonBaja);
             this.Controls.Add(this.buttonAlta);
             this.Name = "ABMRol";
-            this.Text = "Form1";
+            this.Text = "Pago electrónico - ABM Rol";
             this.ResumeLayout(false);
 
         }
