@@ -36,24 +36,9 @@ namespace PagoElectronico.Modelo
 
         abstract public List<Rol> getRolesFiltrados(Predicate<Rol> filtro);
 
-        public void guardarRol(Rol rolModificado)
-        {
-            validarRol(rolModificado);
-            guardarRolModificado(rolModificado);
-        }
+        public abstract void guardarRol(Rol rolModificado);
 
-        public void crearRol(Rol rol)
-        {
-            validarRol(rol);
-            agregarRol(rol);
-        }
-
-        abstract protected void guardarRolModificado(Rol rol);
-
-        abstract protected void agregarRol(Rol rol);
-
-        abstract public void validarRol(Rol rol);
-
+        public abstract void crearRol(Rol rol);
 
         /*
          * FUNCIONALIDADES

@@ -124,26 +124,6 @@ namespace PagoElectronico.Modelo
             return roles.FindAll(filtro);
         }
 
-        protected override void guardarRolModificado(Rol rolModificado)
-        {
-            Rol rol = roles.Find(r => r.id == rolModificado.id);
-
-            roles.Remove(rol);
-            roles.Add(rolModificado);
-        }
-    
-        protected override void agregarRol(Rol rol)
-        {
-            rol.id = roles.OrderBy(r => r.id).Last().id + 1;
-            roles.Add(rol);
-        }
-
-        public override void validarRol(Rol rol)
-        {
-            if (roles.Any(r => r.nombre == rol.nombre && r.id != rol.id))
-                throw new ErrorEnRepositorioException("El nombre " + rol.nombre + " ya esta en uso");
-        }
-
         public override List<Pais> getPaises()
         {
             return paises;
@@ -360,6 +340,16 @@ namespace PagoElectronico.Modelo
         public override Decimal obtenerSaldoDeCuenta(Cuenta cuenta)
         {
             return 12345.67M;
+        }
+
+        public override void guardarRol(Rol rolModificado)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void crearRol(Rol rol)
+        {
+            throw new NotImplementedException();
         }
     }
 }

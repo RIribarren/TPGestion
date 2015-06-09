@@ -112,24 +112,27 @@ namespace PagoElectronico.ConexionDB
             throw new NotImplementedException();
         }
 
-        protected override void guardarRolModificado(Rol rol)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void agregarRol(Rol rol)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void validarRol(Rol rol)
-        {
-            throw new NotImplementedException();
-        }
-
         public override List<Funcionalidad> getFuncionalidades()
         {
-            throw new NotImplementedException();
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+            SqlCommand sp = obtenerStoredProcedure("obtenerFuncionalides");
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    funcionalidades.Add(new Funcionalidad(
+                        int.Parse(reader["Id_Funcionalidad"].ToString()),
+                        reader["Func_Nombre"].ToString()));
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return funcionalidades;
         }
 
         public override List<Pais> getPaises()
@@ -398,6 +401,36 @@ namespace PagoElectronico.ConexionDB
         public override decimal obtenerSaldoDeCuenta(Cuenta cuenta)
         {
             throw new NotImplementedException();
+        }
+
+        public override void guardarRol(Rol rolModificado)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void crearRol(Rol rol)
+        {
+            SqlCommand spCrear = obtenerStoredProcedure("crearRol");
+            spCrear.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = rol.nombre;
+            spCrear.Parameters.Add("@Habilitado", SqlDbType.Char).Value = rol.estaActivo ? 's' : 'n';
+            try
+            {
+                var reader = spCrear.ExecuteReader();
+                reader.Read();
+                foreach (Funcionalidad f in rol.funcionalidades)
+                {
+                    SqlCommand sp = obtenerStoredProcedure("agregarFuncionalidadARol");
+                    sp.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = int.Parse(reader["Id_Rol"].ToString());
+                    sp.Parameters.Add("@Id_Funcionalidad", SqlDbType.Int).Value = f.id;
+                    sp.ExecuteNonQuery();
+                    sp.Connection.Close();
+                }
+                spCrear.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
     }
 }

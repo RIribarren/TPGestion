@@ -103,6 +103,15 @@ GO
 
 
 
+/****************************************************************
+ *					obtenerFuncionalides
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerFuncionalides
+AS
+	SELECT * FROM LA_MAQUINA_DE_HUMO.Funcionalidad
+GO
+
+
 
 /****************************************************************
  *					obtenerFuncionalidadesDeRol
@@ -115,6 +124,40 @@ AS
 		WHERE f.Id_Funcionalidad = rf.Id_Funcionalidad
 			AND rf.Id_Rol = r.Id_Rol
 			AND r.Id_Rol = @Id_Rol
+GO
+
+
+
+/****************************************************************
+ *						crearRol
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearRol
+	@Nombre varchar(255),
+	@Habilitado char(1)
+AS
+	BEGIN TRY
+		INSERT INTO LA_MAQUINA_DE_HUMO.Rol (Rol_Nombre, Habilitado) VALUES (@Nombre, @Habilitado)
+		-- Devuelvo el id del rol
+		SELECT Id_Rol FROM LA_MAQUINA_DE_HUMO.Rol WHERE Rol_Nombre = @Nombre
+	END TRY
+	BEGIN CATCH
+		DECLARE @MensajeError varchar(255)
+		SET @MensajeError = 'El nombre ' + @Nombre + ' ya esta en uso'
+		RAISERROR(@MensajeError, 16, 1)
+	END CATCH
+GO
+
+
+
+/****************************************************************
+ *						agregarFuncionalidadARol
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].agregarFuncionalidadARol
+	@Id_Rol int,
+	@Id_Funcionalidad int
+AS
+	INSERT INTO LA_MAQUINA_DE_HUMO.Rol_Funcionalidad (Id_Rol, Id_Funcionalidad)
+		VALUES (@Id_Rol, @Id_Funcionalidad)
 GO
 
 
@@ -155,6 +198,12 @@ AS
 GO
 
 
+
+
+
+
+
+
 /***********************************************************************
  *
  *						MIGRACION DE DATOS
@@ -183,7 +232,7 @@ EXECUTE [LA_MAQUINA_DE_HUMO].SetFecha @FechaActual
 /****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Rol](
 	[Id_Rol][int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
-	[Rol_Nombre] [varchar](255) NOT NULL,
+	[Rol_Nombre] [varchar](255) UNIQUE NOT NULL,
 	[Habilitado][char](1) NOT NULL
 )
 
