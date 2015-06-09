@@ -136,6 +136,24 @@ GO
 
 
 
+/****************************************************************
+ *					obtenerTiposIdentificacion
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerTiposIdentificacion
+AS
+	SELECT * FROM LA_MAQUINA_DE_HUMO.Documento
+GO
+
+
+
+/****************************************************************
+ *					obtenerPaises
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerPaises
+AS
+	SELECT * FROM LA_MAQUINA_DE_HUMO.Pais
+GO
+
 
 /***********************************************************************
  *

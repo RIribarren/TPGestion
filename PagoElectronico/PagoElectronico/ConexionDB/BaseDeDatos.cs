@@ -134,12 +134,48 @@ namespace PagoElectronico.ConexionDB
 
         public override List<Pais> getPaises()
         {
-            throw new NotImplementedException();
+            List<Pais> paises = new List<Pais>();
+            SqlCommand sp = obtenerStoredProcedure("obtenerPaises");
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    paises.Add(new Pais(
+                        int.Parse(reader["Pais_Codigo"].ToString()),
+                        reader["Pais_Desc"].ToString()));
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return paises;
         }
 
         public override List<TipoIdentificacion> getTiposIdentificacion()
         {
-            throw new NotImplementedException();
+            List<TipoIdentificacion> tiposIdentificacion = new List<TipoIdentificacion>();
+            SqlCommand sp = obtenerStoredProcedure("obtenerTiposIdentificacion");
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    tiposIdentificacion.Add(new TipoIdentificacion(
+                        int.Parse(reader["Doc_Codigo"].ToString()),
+                        reader["Doc_Desc"].ToString()));
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return tiposIdentificacion;
         }
 
         protected override void validarCliente(Cliente nuevoCliente)
@@ -246,6 +282,14 @@ namespace PagoElectronico.ConexionDB
             {
                 reader = sp.ExecuteReader();
                 if (reader.Read())
+                {
+                    Pais nacionalidad;
+                    try {
+                        nacionalidad = getPaises().Find(p => p.id == int.Parse(reader["Cli_Nacionalidad_Codigo"].ToString()));
+                    } catch (Exception) {
+                        nacionalidad = null;
+                    }
+
                     cliente = new Cliente(
                         int.Parse(reader["Id_Cliente"].ToString()),
                         reader["Cli_Nombre"].ToString(),
@@ -259,9 +303,10 @@ namespace PagoElectronico.ConexionDB
                         reader["Cli_Dom_Piso"].ToString(),
                         reader["Cli_Dom_Depto"].ToString(),
                         reader["Cli_Dom_Localidad"].ToString(),
-                        getPaises().Find(p => p.id == int.Parse(reader["Cli_Nacionalidad_Codigo"].ToString())),
+                        nacionalidad,
                         DateTime.Parse(reader["Cli_Fecha_Nac"].ToString()),
                         reader["Cli_Habilitado"].ToString() == "s");
+                }
                 else
                     cliente = null;
               
