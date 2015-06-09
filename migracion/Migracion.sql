@@ -162,6 +162,20 @@ GO
 
 
 
+/****************************************************************
+ *							bajaRol
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].bajaRol
+	@Id_Rol int
+AS
+	UPDATE LA_MAQUINA_DE_HUMO.Rol
+		SET Habilitado = 'n'
+		WHERE Id_Rol = @Id_Rol
+GO
+
+
+
+
 
 /****************************************************************
  *					obtenerClienteDeUsuario

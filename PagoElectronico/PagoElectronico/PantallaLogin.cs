@@ -34,7 +34,12 @@ namespace PagoElectronico
             try
             {
                 Usuario usuario = RepositorioDeDatos.getInstance().login(Username.Text, Password.Text);
-                abrirVentanaHija(new MenuPrincipal(usuario));
+
+                if (usuario.rol.estaActivo)
+                    abrirVentanaHija(new MenuPrincipal(usuario));
+                else
+                    mostrarError("El rol del usuario no está habilitado");
+
                 limpiar();
             }
             catch (ErrorEnRepositorioException excepcion)

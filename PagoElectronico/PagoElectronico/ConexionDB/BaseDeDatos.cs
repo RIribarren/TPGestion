@@ -52,7 +52,17 @@ namespace PagoElectronico.ConexionDB
 
         public override void bajaRol(Rol rol)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("bajaRol");
+            sp.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = rol.id;
+
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override List<Rol> getRoles()
