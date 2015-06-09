@@ -32,10 +32,7 @@ namespace PagoElectronico.ABM_Cliente
         public void setPais(Pais pais)
         {
             if (pais != null)
-            {
-                int indicePais = paises.FindIndex(p => p.id == pais.id);
-                SelectedIndex = indicePais;
-            }
+                SelectedIndex = paises.FindIndex(p => p.id == pais.id);
         }
     }
 }

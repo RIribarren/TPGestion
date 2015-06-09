@@ -144,9 +144,11 @@ namespace PagoElectronico.ConexionDB
             {
                 var reader = sp.ExecuteReader();
                 while (reader.Read())
+                {
                     paises.Add(new Pais(
                         int.Parse(reader["Pais_Codigo"].ToString()),
                         reader["Pais_Desc"].ToString()));
+                }
 
                 sp.Connection.Close();
             }
@@ -208,7 +210,7 @@ namespace PagoElectronico.ConexionDB
                         reader["Cli_Nro_Doc"].ToString(),
                         getTiposIdentificacion().Find(i => i.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
                         reader["Cli_Mail"].ToString(),
-                        getPaises().Find(p => p.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
+                        getPaises().Find(p => p.id == int.Parse(reader["Cli_Pais_Codigo"].ToString())),
                         reader["Cli_Dom_Nro"].ToString(),
                         reader["Cli_Dom_Calle"].ToString(),
                         reader["Cli_Dom_Piso"].ToString(),
@@ -327,7 +329,7 @@ namespace PagoElectronico.ConexionDB
                         reader["Cli_Nro_Doc"].ToString(),
                         getTiposIdentificacion().Find(i => i.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
                         reader["Cli_Mail"].ToString(),
-                        getPaises().Find(p => p.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
+                        getPaises().Find(p => p.id == int.Parse(reader["Cli_Pais_Codigo"].ToString())),
                         reader["Cli_Dom_Nro"].ToString(),
                         reader["Cli_Dom_Calle"].ToString(),
                         reader["Cli_Dom_Piso"].ToString(),

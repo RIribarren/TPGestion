@@ -33,6 +33,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.Habilitado = new PagoElectronico.WidgetsGUI.CBox();
             this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
+            this.Altura = new PagoElectronico.WidgetsGUI.TextoNumericoValidable();
             this.Piso = new PagoElectronico.WidgetsGUI.TextoNumerico();
             this.label15 = new System.Windows.Forms.Label();
             this.Nacionalidad = new PagoElectronico.ABM_Cliente.ComboPais();
@@ -58,7 +59,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.Altura = new PagoElectronico.WidgetsGUI.TextoNumericoValidable();
             this.gBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -139,6 +139,13 @@
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Campos de Cliente";
             // 
+            // Altura
+            // 
+            this.Altura.Location = new System.Drawing.Point(305, 44);
+            this.Altura.Name = "Altura";
+            this.Altura.Size = new System.Drawing.Size(100, 20);
+            this.Altura.TabIndex = 114;
+            // 
             // Piso
             // 
             this.Piso.Location = new System.Drawing.Point(305, 70);
@@ -157,25 +164,25 @@
             // 
             // Nacionalidad
             // 
+            this.Nacionalidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Nacionalidad.Location = new System.Drawing.Point(325, 122);
             this.Nacionalidad.Name = "Nacionalidad";
-            this.Nacionalidad.SelectedIndex = -1;
             this.Nacionalidad.Size = new System.Drawing.Size(121, 21);
             this.Nacionalidad.TabIndex = 111;
             // 
             // pais
             // 
+            this.pais.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.pais.Location = new System.Drawing.Point(64, 148);
             this.pais.Name = "pais";
-            this.pais.SelectedIndex = -1;
             this.pais.Size = new System.Drawing.Size(121, 21);
             this.pais.TabIndex = 110;
             // 
             // TipoIdentificacion
             // 
+            this.TipoIdentificacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TipoIdentificacion.Location = new System.Drawing.Point(113, 96);
             this.TipoIdentificacion.Name = "TipoIdentificacion";
-            this.TipoIdentificacion.SelectedIndex = -1;
             this.TipoIdentificacion.Size = new System.Drawing.Size(121, 21);
             this.TipoIdentificacion.TabIndex = 109;
             // 
@@ -342,13 +349,6 @@
             this.label1.Size = new System.Drawing.Size(44, 13);
             this.label1.TabIndex = 85;
             this.label1.Text = "Nombre";
-            // 
-            // Altura
-            // 
-            this.Altura.Location = new System.Drawing.Point(305, 44);
-            this.Altura.Name = "Altura";
-            this.Altura.Size = new System.Drawing.Size(100, 20);
-            this.Altura.TabIndex = 114;
             // 
             // ModificacionCliente
             // 
