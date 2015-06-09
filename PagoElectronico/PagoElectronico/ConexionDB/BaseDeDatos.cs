@@ -410,7 +410,28 @@ namespace PagoElectronico.ConexionDB
 
         public override void guardarRol(Rol rolModificado)
         {
-            throw new NotImplementedException();
+            SqlCommand spCrear = obtenerStoredProcedure("actualizarYBorrarFuncionalidadesRol");
+            spCrear.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = rolModificado.id;
+            spCrear.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = rolModificado.nombre;
+            spCrear.Parameters.Add("@Habilitado", SqlDbType.Char).Value = rolModificado.estaActivo ? 's' : 'n';
+            try
+            {
+                var reader = spCrear.ExecuteReader();
+                reader.Read();
+                foreach (Funcionalidad f in rolModificado.funcionalidades)
+                {
+                    SqlCommand sp = obtenerStoredProcedure("agregarFuncionalidadARol");
+                    sp.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = rolModificado.id;
+                    sp.Parameters.Add("@Id_Funcionalidad", SqlDbType.Int).Value = f.id;
+                    sp.ExecuteNonQuery();
+                    sp.Connection.Close();
+                }
+                spCrear.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override void crearRol(Rol rol)

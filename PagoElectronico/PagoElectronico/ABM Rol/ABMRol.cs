@@ -58,7 +58,8 @@ namespace PagoElectronico.ABM_Rol
         private void buttonModificacion_Click(object sender, EventArgs e)
         {
             Rol rolElegido = obtenerRol();
-            ejecutarModificacion(rolElegido);
+            if (rolElegido != null)
+                ejecutarModificacion(rolElegido);
         }
 
         private void buttonAlta_Click(object sender, EventArgs e)

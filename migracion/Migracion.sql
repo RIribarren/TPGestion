@@ -175,6 +175,23 @@ GO
 
 
 
+/****************************************************************
+ *				actualizarYBorrarFuncionalidadesRol
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].actualizarYBorrarFuncionalidadesRol
+	@Id_Rol int,
+    @Nombre varchar(255),
+    @Habilitado char(1)
+AS
+	UPDATE LA_MAQUINA_DE_HUMO.Rol
+		SET Rol_Nombre = @Nombre, Habilitado = @Habilitado
+		WHERE Id_Rol = @Id_Rol
+		
+	DELETE LA_MAQUINA_DE_HUMO.Rol_Funcionalidad
+		WHERE Id_Rol = @Id_Rol
+GO
+
+
 
 
 /****************************************************************
