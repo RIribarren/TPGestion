@@ -15,6 +15,7 @@ namespace PagoElectronico.ABM_Cliente
     public partial class FiltroCliente : Ventana
     {
         List<Cliente> clientes = new List<Cliente>();
+        List<Cliente> clientesEnPantalla;
 
         public FiltroCliente()
         {
@@ -28,17 +29,22 @@ namespace PagoElectronico.ABM_Cliente
 
         protected override void cargarDatos()
         {
+            clientes = obtenerClientes();
+            cargarClientes(clientes);
+        }
+
+        protected void cargarClientes(List<Cliente> clientesACargar)
+        {
+            clientesEnPantalla = clientesACargar;
             dataGridView1.Rows.Clear();
             dataGridView1.Refresh();
 
-            clientes = obtenerClientes();
-
-            foreach (Cliente cliente in clientes)
-            {
+            foreach (Cliente cliente in clientesEnPantalla)
                 dataGridView1.Rows.Add(cliente.nombre, cliente.Apellido, cliente.email,
                     cliente.tipoIdentificacion.nombre, cliente.nroIdentificacion);
-            }
         }
+
+
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -47,7 +53,7 @@ namespace PagoElectronico.ABM_Cliente
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
                 e.RowIndex >= 0)
             {
-                tomarAccion(clientes.ElementAt(e.RowIndex));
+                tomarAccion(clientesEnPantalla.ElementAt(e.RowIndex));
                 volver();
             }
         }
@@ -55,6 +61,35 @@ namespace PagoElectronico.ABM_Cliente
         protected virtual void tomarAccion(Cliente cliente) { throw new NotImplementedException(); }
 
         protected virtual List<Cliente> obtenerClientes() { throw new NotImplementedException(); }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Predicate<Cliente> filtro = obtenerFiltro();
+            cargarClientes(clientes.FindAll(filtro));
+        }
+
+        private Predicate<Cliente> obtenerFiltro()
+        {
+            Predicate<Cliente> filtroNombre = (c => true);
+            Predicate<Cliente> filtroApellido = (c => true);
+            Predicate<Cliente> filtroEmail = (c => true);
+            Predicate<Cliente> filtroNumeroId = (c => true);
+            Predicate<Cliente> filtroTipoId = (c => true);
+
+            if (TextoFiltroNombre.Text != "")
+                filtroNombre = (c => c.nombre.Contains(TextoFiltroNombre.Text));
+            if (TextoFiltroApellido.Text != "")
+                filtroApellido = (c => c.Apellido.Contains(TextoFiltroApellido.Text));
+            if (TextoFiltroEmail.Text != "")
+                filtroEmail = (c => c.email.Contains(TextoFiltroEmail.Text));
+            if (TextoFiltroNroIdentificacion.Text != "")
+                filtroNumeroId = (c => c.nroIdentificacion.Contains(TextoFiltroNroIdentificacion.Text));
+            if (ComboFiltroTipoIdentificacion.SelectedIndex >= 0)
+                filtroTipoId = (c => c.tipoIdentificacion.id == ComboFiltroTipoIdentificacion.obtenerTipoIdentificacion().id);
+
+            return (c => filtroNombre(c) && filtroApellido(c) && filtroEmail(c)
+                && filtroNumeroId(c) && filtroTipoId(c));
+        }
 
     }
 }

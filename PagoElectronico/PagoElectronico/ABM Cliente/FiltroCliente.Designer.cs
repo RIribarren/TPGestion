@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
-            this.comboIdentificacion1 = new PagoElectronico.ABM_Cliente.ComboIdentificacion();
-            this.textoNumerico1 = new PagoElectronico.WidgetsGUI.TextoNumerico();
-            this.texto3 = new PagoElectronico.WidgetsGUI.Texto();
-            this.texto2 = new PagoElectronico.WidgetsGUI.Texto();
-            this.texto1 = new PagoElectronico.WidgetsGUI.Texto();
+            this.ComboFiltroTipoIdentificacion = new PagoElectronico.ABM_Cliente.ComboIdentificacion();
+            this.TextoFiltroNroIdentificacion = new PagoElectronico.WidgetsGUI.TextoNumerico();
+            this.TextoFiltroEmail = new PagoElectronico.WidgetsGUI.Texto();
+            this.TextoFiltroApellido = new PagoElectronico.WidgetsGUI.Texto();
+            this.TextoFiltroNombre = new PagoElectronico.WidgetsGUI.Texto();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -54,11 +54,11 @@
             // 
             // gBox1
             // 
-            this.gBox1.Controls.Add(this.comboIdentificacion1);
-            this.gBox1.Controls.Add(this.textoNumerico1);
-            this.gBox1.Controls.Add(this.texto3);
-            this.gBox1.Controls.Add(this.texto2);
-            this.gBox1.Controls.Add(this.texto1);
+            this.gBox1.Controls.Add(this.ComboFiltroTipoIdentificacion);
+            this.gBox1.Controls.Add(this.TextoFiltroNroIdentificacion);
+            this.gBox1.Controls.Add(this.TextoFiltroEmail);
+            this.gBox1.Controls.Add(this.TextoFiltroApellido);
+            this.gBox1.Controls.Add(this.TextoFiltroNombre);
             this.gBox1.Controls.Add(this.label5);
             this.gBox1.Controls.Add(this.label4);
             this.gBox1.Controls.Add(this.label3);
@@ -71,41 +71,41 @@
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Filtros de búsqueda";
             // 
-            // comboIdentificacion1
+            // ComboFiltroTipoIdentificacion
             // 
-            this.comboIdentificacion1.Location = new System.Drawing.Point(514, 19);
-            this.comboIdentificacion1.Name = "comboIdentificacion1";
-            this.comboIdentificacion1.SelectedIndex = -1;
-            this.comboIdentificacion1.Size = new System.Drawing.Size(121, 21);
-            this.comboIdentificacion1.TabIndex = 9;
+            this.ComboFiltroTipoIdentificacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboFiltroTipoIdentificacion.Location = new System.Drawing.Point(514, 19);
+            this.ComboFiltroTipoIdentificacion.Name = "ComboFiltroTipoIdentificacion";
+            this.ComboFiltroTipoIdentificacion.Size = new System.Drawing.Size(121, 21);
+            this.ComboFiltroTipoIdentificacion.TabIndex = 9;
             // 
-            // textoNumerico1
+            // TextoFiltroNroIdentificacion
             // 
-            this.textoNumerico1.Location = new System.Drawing.Point(513, 46);
-            this.textoNumerico1.Name = "textoNumerico1";
-            this.textoNumerico1.Size = new System.Drawing.Size(100, 20);
-            this.textoNumerico1.TabIndex = 8;
+            this.TextoFiltroNroIdentificacion.Location = new System.Drawing.Point(513, 46);
+            this.TextoFiltroNroIdentificacion.Name = "TextoFiltroNroIdentificacion";
+            this.TextoFiltroNroIdentificacion.Size = new System.Drawing.Size(100, 20);
+            this.TextoFiltroNroIdentificacion.TabIndex = 8;
             // 
-            // texto3
+            // TextoFiltroEmail
             // 
-            this.texto3.Location = new System.Drawing.Point(56, 72);
-            this.texto3.Name = "texto3";
-            this.texto3.Size = new System.Drawing.Size(100, 20);
-            this.texto3.TabIndex = 7;
+            this.TextoFiltroEmail.Location = new System.Drawing.Point(56, 72);
+            this.TextoFiltroEmail.Name = "TextoFiltroEmail";
+            this.TextoFiltroEmail.Size = new System.Drawing.Size(100, 20);
+            this.TextoFiltroEmail.TabIndex = 7;
             // 
-            // texto2
+            // TextoFiltroApellido
             // 
-            this.texto2.Location = new System.Drawing.Point(56, 46);
-            this.texto2.Name = "texto2";
-            this.texto2.Size = new System.Drawing.Size(100, 20);
-            this.texto2.TabIndex = 6;
+            this.TextoFiltroApellido.Location = new System.Drawing.Point(56, 46);
+            this.TextoFiltroApellido.Name = "TextoFiltroApellido";
+            this.TextoFiltroApellido.Size = new System.Drawing.Size(100, 20);
+            this.TextoFiltroApellido.TabIndex = 6;
             // 
-            // texto1
+            // TextoFiltroNombre
             // 
-            this.texto1.Location = new System.Drawing.Point(56, 20);
-            this.texto1.Name = "texto1";
-            this.texto1.Size = new System.Drawing.Size(100, 20);
-            this.texto1.TabIndex = 5;
+            this.TextoFiltroNombre.Location = new System.Drawing.Point(56, 20);
+            this.TextoFiltroNombre.Name = "TextoFiltroNombre";
+            this.TextoFiltroNombre.Size = new System.Drawing.Size(100, 20);
+            this.TextoFiltroNombre.TabIndex = 5;
             // 
             // label5
             // 
@@ -170,6 +170,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Buscar";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // dataGridView1
             // 
@@ -247,16 +248,16 @@
         #endregion
 
         private PagoElectronico.WidgetsGUI.GBox gBox1;
-        private PagoElectronico.WidgetsGUI.Texto texto3;
-        private PagoElectronico.WidgetsGUI.Texto texto2;
-        private PagoElectronico.WidgetsGUI.Texto texto1;
+        private PagoElectronico.WidgetsGUI.Texto TextoFiltroEmail;
+        private PagoElectronico.WidgetsGUI.Texto TextoFiltroApellido;
+        private PagoElectronico.WidgetsGUI.Texto TextoFiltroNombre;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private ComboIdentificacion comboIdentificacion1;
-        private PagoElectronico.WidgetsGUI.TextoNumerico textoNumerico1;
+        private ComboIdentificacion ComboFiltroTipoIdentificacion;
+        private PagoElectronico.WidgetsGUI.TextoNumerico TextoFiltroNroIdentificacion;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridView dataGridView1;
