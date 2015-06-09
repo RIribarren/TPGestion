@@ -42,8 +42,8 @@ namespace PagoElectronico.ABM_Cliente
                 -1,
                 Nombre.Text,
                 Apellido.Text,
-                NroIdentificacion.Text,
-                TipoIdentificacion.obtenerTipoIdentificacion(),
+                Nro_de_identificacion.Text,
+                Tipo_identificacion.obtenerTipoIdentificacion(),
                 Email.Text,
                 pais.obtenerPais(),
                 Altura.Text,
@@ -52,15 +52,15 @@ namespace PagoElectronico.ABM_Cliente
                 textBoxDepto.Text,
                 Localidad.Text,
                 Nacionalidad.obtenerPais(),
-                FechaNacimiento.getFecha(),
+                Fecha_de_nacimiento.getFecha(),
                 true);
 
             Usuario nuevoUsuario = new Usuario(
                 -1,
                 Username.Text,
                 Password.Text,
-                PreguntaSecreta.Text,
-                RespuestaSecreta.Text,
+                Pregunta_Secreta.Text,
+                Respuesta_Secreta.Text,
                 Roles.obtenerRol(),
                 nuevoCliente);
 

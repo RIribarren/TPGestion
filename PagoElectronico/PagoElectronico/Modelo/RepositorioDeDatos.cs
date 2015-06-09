@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PagoElectronico.ConexionDB;
 
 namespace PagoElectronico.Modelo
 {
@@ -14,7 +15,7 @@ namespace PagoElectronico.Modelo
         static public RepositorioDeDatos getInstance()
         {
             if (Instancia == null)
-                Instancia = new RepositorioEnMemoria();
+                Instancia = new BaseDeDatos();
 
             return Instancia;               
         }
@@ -31,8 +32,6 @@ namespace PagoElectronico.Modelo
         abstract public void bajaRol(Rol rol);
 
         abstract public List<Rol> getRoles();
-
-        abstract public List<Rol> getRolesActivados();
 
         public List<Rol> getRolesFiltrados(Predicate<Rol> filtro)
         {
@@ -65,24 +64,7 @@ namespace PagoElectronico.Modelo
         /*
          * CLIENTES
          */
-        public void crearCliente(Cliente nuevoCliente, Usuario nuevoUsuario)
-        {
-            validarCliente(nuevoCliente);
-
-            validarUsuario(nuevoUsuario);
-
-            agregarCliente(nuevoCliente);
-
-            agregarUsuario(nuevoUsuario);
-        }
-
-        abstract protected void validarCliente(Cliente nuevoCliente);
-
-        abstract protected void agregarCliente(Cliente nuevoCliente);
-
-        abstract protected void validarUsuario(Usuario nuevoUsuario);
-
-        abstract protected void agregarUsuario(Usuario nuevoUsuario);
+        public abstract void crearCliente(Cliente nuevoCliente, Usuario nuevoUsuario);
 
         abstract public List<Cliente> obtenerClientes();
 

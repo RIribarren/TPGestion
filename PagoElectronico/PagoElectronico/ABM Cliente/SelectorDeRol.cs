@@ -22,7 +22,7 @@ namespace PagoElectronico.ABM_Cliente
 
         public void cargarRoles()
         {
-            roles = RepositorioDeDatos.getInstance().getRolesActivados();
+            roles = RepositorioDeDatos.getInstance().getRolesFiltrados((r => r.estaActivo));
 
             foreach (Rol rol in roles)
             {

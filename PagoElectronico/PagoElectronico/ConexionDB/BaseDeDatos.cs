@@ -112,11 +112,6 @@ namespace PagoElectronico.ConexionDB
             return funcionalidades;
         }
 
-        public override List<Rol> getRolesActivados()
-        {
-            throw new NotImplementedException();
-        }
-
         public override List<Funcionalidad> getFuncionalidades()
         {
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
@@ -184,26 +179,6 @@ namespace PagoElectronico.ConexionDB
             }
 
             return tiposIdentificacion;
-        }
-
-        protected override void validarCliente(Cliente nuevoCliente)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void agregarCliente(Cliente nuevoCliente)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void validarUsuario(Usuario nuevoUsuario)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void agregarUsuario(Usuario nuevoUsuario)
-        {
-            throw new NotImplementedException();
         }
 
         public override List<Cliente> obtenerClientes()
@@ -452,6 +427,38 @@ namespace PagoElectronico.ConexionDB
                     sp.Connection.Close();
                 }
                 spCrear.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+        }
+
+        public override void crearCliente(Cliente nuevoCliente, Usuario nuevoUsuario)
+        {
+            SqlCommand spCrearClienteYUsuario = obtenerStoredProcedure("crearClienteYUsuario");
+            spCrearClienteYUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = nuevoUsuario.username;
+            spCrearClienteYUsuario.Parameters.Add("@Password", SqlDbType.VarChar).Value = nuevoUsuario.password;
+            spCrearClienteYUsuario.Parameters.Add("@PreguntaSecreta", SqlDbType.VarChar).Value = nuevoUsuario.preguntaSecreta;
+            spCrearClienteYUsuario.Parameters.Add("@RespuestaSecreta", SqlDbType.VarChar).Value = nuevoUsuario.respuestaSecreta;
+            spCrearClienteYUsuario.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = nuevoUsuario.rol.id;
+            spCrearClienteYUsuario.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = nuevoCliente.nombre;
+            spCrearClienteYUsuario.Parameters.Add("@Apellido", SqlDbType.VarChar).Value = nuevoCliente.Apellido;
+            spCrearClienteYUsuario.Parameters.Add("@NroDocumento", SqlDbType.Decimal).Value = Convert.ToDecimal(nuevoCliente.nroIdentificacion);
+            spCrearClienteYUsuario.Parameters.Add("@Id_TipoDocumento", SqlDbType.Int).Value = nuevoCliente.tipoIdentificacion.id;
+            spCrearClienteYUsuario.Parameters.Add("@Mail", SqlDbType.VarChar).Value = nuevoCliente.email;
+            spCrearClienteYUsuario.Parameters.Add("@Id_Pais", SqlDbType.Int).Value = nuevoCliente.pais.id;
+            spCrearClienteYUsuario.Parameters.Add("@Dom_Nro", SqlDbType.Int).Value = int.Parse(nuevoCliente.altura);
+            spCrearClienteYUsuario.Parameters.Add("@Dom_Calle", SqlDbType.VarChar).Value = nuevoCliente.calle;
+            if (nuevoCliente.piso != "") spCrearClienteYUsuario.Parameters.Add("@Dom_Piso", SqlDbType.Int).Value = int.Parse(nuevoCliente.piso);
+            if (nuevoCliente.depto != "") spCrearClienteYUsuario.Parameters.Add("@Dom_Depto", SqlDbType.VarChar).Value = nuevoCliente.depto;
+            spCrearClienteYUsuario.Parameters.Add("@Dom_Localidad", SqlDbType.VarChar).Value = nuevoCliente.localidad;
+            spCrearClienteYUsuario.Parameters.Add("@Id_Nacionalidad", SqlDbType.Int).Value = nuevoCliente.nacionalidad.id;
+            spCrearClienteYUsuario.Parameters.Add("@Fecha_Nac", SqlDbType.DateTime).Value = nuevoCliente.fechaNacimiento;
+
+            try
+            {
+                var reader = spCrearClienteYUsuario.ExecuteReader();
             }
             catch (SqlException ex)
             {

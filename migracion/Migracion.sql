@@ -211,11 +211,58 @@ GO
 
 
 /****************************************************************
+ *					crearClienteYUsuario
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearClienteYUsuario
+	@Username varchar(255), @Password varchar(255), @PreguntaSecreta varchar(255),
+	@RespuestaSecreta varchar(255), @Id_Rol int,
+	@Nombre varchar(255), @Apellido varchar(255), @NroDocumento numeric(18,0),
+	@Id_TipoDocumento int, @Mail varchar(255), @Id_Pais int, @Dom_Nro int,
+	@Dom_Calle varchar(255), @Dom_Piso int = NULL, @Dom_Depto varchar(255) = NULL,
+	@Dom_Localidad varchar(255), @Id_Nacionalidad int, @Fecha_Nac DateTime
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+		INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario([Cantidad_Intentos_Fallidos], [Username],
+				[Password],[Habilitado],[Fecha_Creacion],[Fecha_Ultima_Modificacion],
+				[Pregunta_Secreta],[Respuesta_Secreta],[Id_Rol])
+			VALUES (0, @Username, @Password, 's',
+				LA_MAQUINA_DE_HUMO.obtenerFecha(), LA_MAQUINA_DE_HUMO.obtenerFecha(),
+				@PreguntaSecreta, @RespuestaSecreta, @Id_Rol)
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		RAISERROR('El username ya se encuentra en uso', 16, 1)
+		RETURN
+	END CATCH
+	
+	BEGIN TRY
+		DECLARE @Id_Usuario int;
+		SET @Id_Usuario = (SELECT Id_Usuario FROM LA_MAQUINA_DE_HUMO.Usuario WHERE Username = @Username)
+		INSERT INTO [LA_MAQUINA_DE_HUMO].Clientes(
+				[Cli_Nombre], [Cli_Apellido], [Cli_Nro_Doc], [Cli_Tipo_Doc_Cod], 
+				[Cli_Mail], [Cli_Pais_Codigo], [Cli_Dom_Nro],[Cli_Dom_Calle], 
+				[Cli_Dom_Piso], [Cli_Dom_Depto], [Cli_Dom_Localidad],
+				[Cli_Nacionalidad_Codigo],[Cli_Fecha_Nac],[Cli_Habilitado],	[Id_Usuario])
+			VALUES (@Nombre, @Apellido, @NroDocumento, @Id_TipoDocumento,
+				@Mail, @Id_Pais, @Dom_Nro, @Dom_Calle,
+				@Dom_Piso, @Dom_Depto, @Dom_Localidad,
+				@Id_Nacionalidad, @Fecha_Nac, 's', @Id_Usuario)
+	END TRY
+	BEGIN CATCH
+		ROLLBACK
+		RAISERROR('Ya existe un cliente con esa identificacion y/o email', 16, 1)
+		RETURN
+	END CATCH
+COMMIT
+GO
+/****************************************************************
  *					obtenerTiposIdentificacion
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerTiposIdentificacion
 AS
 	SELECT * FROM LA_MAQUINA_DE_HUMO.Documento
+		ORDER BY Doc_Desc
 GO
 
 
@@ -226,6 +273,7 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerPaises
 AS
 	SELECT * FROM LA_MAQUINA_DE_HUMO.Pais
+		ORDER BY Pais_Desc
 GO
 
 
@@ -392,9 +440,9 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 	[Id_Rol]
 ) VALUES (
 	0, 'admin1',
-	'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+	'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', --SHA256 de "w23e"
 	's', GETDATE(), GETDATE(), 'Pregunta secreta de admin',
-	'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+	'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f', --SHA256 de "default"
 	1
 )
 
@@ -410,9 +458,9 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 	[Id_Rol]
 ) VALUES (
 	0, 'admin2',
-	'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+	'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', --SHA256 de "w23e"
 	's', GETDATE(), GETDATE(), 'Pregunta secreta de admin',
-	'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
+	'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f', --SHA256 de "default"
 	1
 )
 
@@ -435,8 +483,8 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 		's',
 		GETDATE(),
 		GETDATE(),
-		null,
-		null,
+		'Pregunta secreta default',
+		'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f', --SHA256 de "default"
 		2
 		FROM gd_esquema.Maestra
 GO

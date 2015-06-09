@@ -245,7 +245,6 @@
     <Compile Include="Modelo\Moneda.cs" />
     <Compile Include="Modelo\Pais.cs" />
     <Compile Include="Modelo\RepositorioDeDatos.cs" />
-    <Compile Include="Modelo\RepositorioEnMemoria.cs" />
     <Compile Include="Modelo\Rol.cs" />
     <Compile Include="Modelo\SHA256.cs" />
     <Compile Include="Modelo\Tarjeta.cs" />
