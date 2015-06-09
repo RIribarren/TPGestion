@@ -8,9 +8,27 @@ GO
 
 /***********************************************************************
  *
- *						STORED PROCEDURES
+ *						STORED PROCEDURES y FUNCIONES
  *
  ***********************************************************************/
+/****************************************************************
+ *							FECHA
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].SetFecha
+	@Fecha DateTime
+AS
+	TRUNCATE TABLE [LA_MAQUINA_DE_HUMO].FECHA_DEL_SISTEMA
+	INSERT INTO [LA_MAQUINA_DE_HUMO].FECHA_DEL_SISTEMA ([Fecha]) VALUES (@Fecha)
+GO
+
+CREATE FUNCTION [LA_MAQUINA_DE_HUMO].obtenerFecha () RETURNS DateTime
+AS
+BEGIN
+	RETURN(SELECT TOP(1) * FROM [LA_MAQUINA_DE_HUMO].FECHA_DEL_SISTEMA)
+END
+GO
+
+
 
 /****************************************************************
  *							LOGIN
@@ -19,17 +37,58 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].Login
 	@Username varchar(255),
 	@Password varchar(255)
 AS
+	-- Verifico si las credenciales son correctas
 	IF (SELECT COUNT(*) FROM Usuario WHERE Username = @Username AND Password = @Password) = 1
 	BEGIN
+		IF (SELECT Cantidad_Intentos_Fallidos FROM Usuario WHERE Username = @Username) >= 3
+		BEGIN
+			-- Logueo el evento
+			INSERT INTO Auditoria ([Id_Usuario], [Fecha], [Resultado], [Nro_Intento])
+				(SELECT Id_Usuario, GETDATE(), 'Credenciales correctas. No se autoriza login por cantidad de intentos fallidos',
+						NULL
+					FROM Usuario
+					WHERE Username = @Username)
+			RAISERROR('El usuario se encuentra bloqueado por acumulacion de intentos fallidos', 16, 1)
+		END
+		-- Logueo login satisfactorio
+		INSERT INTO Auditoria ([Id_Usuario], [Fecha], [Resultado], [Nro_Intento])
+			(SELECT Id_Usuario, GETDATE(), 'Login satisfactorio', NULL
+				FROM Usuario
+				WHERE Username = @Username)
+		
+		-- Borro intentos fallidos
+			UPDATE Usuario SET Cantidad_Intentos_Fallidos = 0
+				FROM Usuario u
+				WHERE u.Username = @Username
+
+		-- Devuelvo los datos del usuario
 		SELECT *
 			FROM Usuario
 			WHERE Username = @Username AND Password = @Password
 	END
 	ELSE
 	BEGIN
+		-- Verifico si existe el usuario
+		IF (SELECT COUNT(*) FROM Usuario WHERE Username = @Username) = 1
+		BEGIN
+			-- Si existe incremento intentos fallidos
+			UPDATE Usuario 
+				SET Cantidad_Intentos_Fallidos=
+					(SELECT Cantidad_Intentos_Fallidos + 1
+						FROM Usuario u
+						WHERE u.Username = @Username)
+			
+			-- Logueo el evento
+			INSERT INTO Auditoria ([Id_Usuario], [Fecha], [Resultado], [Nro_Intento])
+				(SELECT Id_Usuario, GETDATE(), 'Password incorrecto', Cantidad_Intentos_Fallidos
+					FROM Usuario
+					WHERE Username = @Username)
+		END
 		RAISERROR('Username y/o password incorrectos', 16, 1)
 	END
 GO
+
+
 
 
 /****************************************************************
@@ -40,6 +99,8 @@ AS
 	SELECT Id_Rol, Rol_Nombre, Habilitado
 		FROM Rol
 GO
+
+
 
 
 /****************************************************************
@@ -57,6 +118,12 @@ GO
 
 
 
+
+
+
+
+
+
 /***********************************************************************
  *
  *						MIGRACION DE DATOS
@@ -65,6 +132,21 @@ GO
 
 
 USE GD1C2015
+/****************************************************************/
+--							FECHA_DEL_SISTEMA
+/****************************************************************/
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[FECHA_DEL_SISTEMA](
+	[Fecha][DateTime] PRIMARY KEY
+)
+
+/* Cargar fecha actual.
+ * La app va a actualizar esta fecha de acuerdo al archivo de configuracion
+ */
+DECLARE @FechaActual DateTime
+SET @FechaActual = GETDATE()
+EXECUTE [LA_MAQUINA_DE_HUMO].SetFecha @FechaActual
+
+
 /****************************************************************/
 --							ROL
 /****************************************************************/
@@ -319,7 +401,7 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Auditoria](
 	[Id_Usuario][int] FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].Usuario(Id_Usuario),
 	[Fecha][datetime] NOT NULL,
 	[Resultado][varchar](255) NOT NULL,
-	[Nro_Intento][int] NOT NULL
+	[Nro_Intento][int]
 )
 
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta](

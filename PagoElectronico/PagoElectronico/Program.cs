@@ -16,7 +16,7 @@ namespace PagoElectronico
         [STAThread]
         static void Main()
         {
-            RepositorioDeDatos repositorio = new RepositorioDB();
+            RepositorioDeDatos repositorio = new BaseDeDatos();
             RepositorioDeDatos.setInstance(repositorio);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

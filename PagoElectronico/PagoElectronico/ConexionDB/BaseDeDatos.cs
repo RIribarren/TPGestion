@@ -5,11 +5,48 @@ using System.Text;
 using PagoElectronico.Modelo;
 using System.Data.SqlClient;
 using System.Data;
+using System.Configuration;
 
 namespace PagoElectronico.ConexionDB
 {
-    class RepositorioDB: RepositorioDeDatos
+    class BaseDeDatos: RepositorioDeDatos
     {
+        private String parametrosConexionDB;
+        private DateTime fechaDeSistema;
+
+        public BaseDeDatos()
+        {
+            parametrosConexionDB = "Server=" + ConfigurationSettings.AppSettings["server"] + ";"
+                + "Database=" + ConfigurationSettings.AppSettings["database"] + ";"
+                + "User ID=" + ConfigurationSettings.AppSettings["id"] + ";"
+                + "Password=" + ConfigurationSettings.AppSettings["password"];
+
+            establecerFechaDeSistema();
+        }
+
+        private void establecerFechaDeSistema()
+        {
+            fechaDeSistema = DateTime.Parse(
+                ConfigurationSettings.AppSettings["year"] + "/"
+                + ConfigurationSettings.AppSettings["month"] + "/"
+                + ConfigurationSettings.AppSettings["day"] + " "
+                + ConfigurationSettings.AppSettings["hour"] + ":"
+                + ConfigurationSettings.AppSettings["minutes"]);
+            
+            SqlCommand sp = obtenerStoredProcedure("[LA_MAQUINA_DE_HUMO].setFecha");
+            sp.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = fechaDeSistema;
+            sp.ExecuteNonQuery();
+        }
+
+        private SqlCommand obtenerStoredProcedure(String nombre)
+        {
+            SqlConnection conexion = new SqlConnection(parametrosConexionDB);
+            conexion.Open();
+            SqlCommand sp = new SqlCommand(nombre, conexion);
+            sp.CommandType = CommandType.StoredProcedure;
+            return sp;
+        }
+
         public override void bajaRol(Rol rol)
         {
             throw new NotImplementedException();
@@ -309,18 +346,6 @@ namespace PagoElectronico.ConexionDB
         public override decimal obtenerSaldoDeCuenta(Cuenta cuenta)
         {
             throw new NotImplementedException();
-        }
-
-
-
-
-        private SqlCommand obtenerStoredProcedure(String nombre)
-        {
-            SqlConnection conexion = new SqlConnection("Server=localhost\\SQLSERVER2008;Database=GD1C2015;User ID=gd;Password=gd2015");
-            conexion.Open();
-            SqlCommand stored = new SqlCommand(nombre, conexion);
-            stored.CommandType = CommandType.StoredProcedure;
-            return stored;
         }
     }
 }
