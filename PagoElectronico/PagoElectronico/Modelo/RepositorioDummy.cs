@@ -52,11 +52,6 @@ namespace PagoElectronico.Modelo
         {
         }
 
-        public override List<Cliente> obtenerClientesHabilitados()
-        {
-            return new List<Cliente>();
-        }
-
         public override void guardarCliente(Cliente cliente)
         {
         }

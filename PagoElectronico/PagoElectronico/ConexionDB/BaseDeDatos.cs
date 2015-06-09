@@ -191,11 +191,6 @@ namespace PagoElectronico.ConexionDB
             throw new NotImplementedException();
         }
 
-        public override List<Cliente> obtenerClientesHabilitados()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void guardarCliente(Cliente cliente)
         {
             throw new NotImplementedException();

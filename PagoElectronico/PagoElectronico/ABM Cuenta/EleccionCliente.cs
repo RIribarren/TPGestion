@@ -27,7 +27,7 @@ namespace PagoElectronico.ABM_Cuenta
 
         protected override List<Cliente> obtenerClientes()
         {
-            return RepositorioDeDatos.getInstance().obtenerClientesHabilitados();
+            return RepositorioDeDatos.getInstance().obtenerClientesFiltrados(c => c.habilitado);
         }
 
         public Cliente obtenerCliente()

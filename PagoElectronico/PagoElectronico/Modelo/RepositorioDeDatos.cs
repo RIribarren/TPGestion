@@ -70,7 +70,10 @@ namespace PagoElectronico.Modelo
 
         abstract public void bajaCliente(Cliente clienteABorrar);
 
-        abstract public List<Cliente> obtenerClientesHabilitados();
+        public List<Cliente> obtenerClientesFiltrados(Predicate<Cliente> filtro)
+        {
+            return obtenerClientes().FindAll(filtro);
+        }
 
         abstract public void guardarCliente(Cliente cliente);
 
