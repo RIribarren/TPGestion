@@ -262,6 +262,16 @@ GO
 /****************************************************************
  *					obtenerTiposIdentificacion
  ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerClientes
+AS
+	SELECT * FROM LA_MAQUINA_DE_HUMO.Clientes
+		ORDER BY Cli_Nombre, Cli_Apellido
+GO
+
+
+/****************************************************************
+ *					obtenerTiposIdentificacion
+ ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerTiposIdentificacion
 AS
 	SELECT * FROM LA_MAQUINA_DE_HUMO.Documento

@@ -183,7 +183,49 @@ namespace PagoElectronico.ConexionDB
 
         public override List<Cliente> obtenerClientes()
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerClientes");
+            List<Cliente> clientes = new List<Cliente>();
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                {
+                    Pais nacionalidad;
+                    try
+                    {
+                        nacionalidad = getPaises().Find(p => p.id == int.Parse(reader["Cli_Nacionalidad_Codigo"].ToString()));
+                    }
+                    catch (Exception)
+                    {
+                        nacionalidad = null;
+                    }
+
+                    clientes.Add(new Cliente(
+                        int.Parse(reader["Id_Cliente"].ToString()),
+                        reader["Cli_Nombre"].ToString(),
+                        reader["Cli_Apellido"].ToString(),
+                        reader["Cli_Nro_Doc"].ToString(),
+                        getTiposIdentificacion().Find(i => i.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
+                        reader["Cli_Mail"].ToString(),
+                        getPaises().Find(p => p.id == int.Parse(reader["Cli_Tipo_Doc_Cod"].ToString())),
+                        reader["Cli_Dom_Nro"].ToString(),
+                        reader["Cli_Dom_Calle"].ToString(),
+                        reader["Cli_Dom_Piso"].ToString(),
+                        reader["Cli_Dom_Depto"].ToString(),
+                        reader["Cli_Dom_Localidad"].ToString(),
+                        nacionalidad,
+                        DateTime.Parse(reader["Cli_Fecha_Nac"].ToString()),
+                        reader["Cli_Habilitado"].ToString() == "s"));
+                }
+                sp.Connection.Close();
+
+                return clientes;
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override void bajaCliente(Cliente clienteABorrar)
