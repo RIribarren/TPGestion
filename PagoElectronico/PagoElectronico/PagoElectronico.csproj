@@ -240,6 +240,7 @@
     <Compile Include="Modelo\Deposito.cs" />
     <Compile Include="Modelo\ErrorEnRepositorioException.cs" />
     <Compile Include="Modelo\Funcionalidad.cs" />
+    <Compile Include="Modelo\RepositorioDummy.cs" />
     <Compile Include="Modelo\Retiro.cs" />
     <Compile Include="Modelo\Transaccion.cs" />
     <Compile Include="Modelo\Moneda.cs" />

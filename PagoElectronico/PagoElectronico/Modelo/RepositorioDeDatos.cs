@@ -15,7 +15,7 @@ namespace PagoElectronico.Modelo
         static public RepositorioDeDatos getInstance()
         {
             if (Instancia == null)
-                Instancia = new BaseDeDatos();
+                Instancia = new RepositorioDummy();
 
             return Instancia;               
         }
