@@ -260,12 +260,24 @@ GO
 
 
 /****************************************************************
+ *							bajaCliente
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].bajaCliente
+	@Id_Cliente int
+AS
+	UPDATE LA_MAQUINA_DE_HUMO.Clientes
+		SET Cli_Habilitado = 'n'
+		WHERE Id_Cliente = @Id_Cliente
+GO
+
+
+/****************************************************************
  *					obtenerTiposIdentificacion
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerClientes
 AS
 	SELECT * FROM LA_MAQUINA_DE_HUMO.Clientes
-		ORDER BY Cli_Nombre, Cli_Apellido
+		--ORDER BY Cli_Nombre, Cli_Apellido
 GO
 
 

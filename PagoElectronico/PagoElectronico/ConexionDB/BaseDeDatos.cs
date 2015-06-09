@@ -230,7 +230,17 @@ namespace PagoElectronico.ConexionDB
 
         public override void bajaCliente(Cliente clienteABorrar)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("bajaCliente");
+            sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = clienteABorrar.id;
+
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override void guardarCliente(Cliente cliente)
