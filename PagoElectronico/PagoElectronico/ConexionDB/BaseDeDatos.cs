@@ -247,7 +247,32 @@ namespace PagoElectronico.ConexionDB
 
         public override void guardarCliente(Cliente cliente)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("guardarCliente");
+
+            sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = cliente.id;
+            sp.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = cliente.nombre;
+            sp.Parameters.Add("@Apellido", SqlDbType.VarChar).Value = cliente.Apellido;
+            sp.Parameters.Add("@NroDocumento", SqlDbType.Decimal).Value = Convert.ToDecimal(cliente.nroIdentificacion);
+            sp.Parameters.Add("@Id_TipoDocumento", SqlDbType.Int).Value = cliente.tipoIdentificacion.id;
+            sp.Parameters.Add("@Mail", SqlDbType.VarChar).Value = cliente.email;
+            sp.Parameters.Add("@Id_Pais", SqlDbType.Int).Value = cliente.pais.id;
+            sp.Parameters.Add("@Dom_Nro", SqlDbType.Int).Value = int.Parse(cliente.altura);
+            sp.Parameters.Add("@Dom_Calle", SqlDbType.VarChar).Value = cliente.calle;
+            if (cliente.piso != "") sp.Parameters.Add("@Dom_Piso", SqlDbType.Int).Value = int.Parse(cliente.piso);
+            if (cliente.depto != "") sp.Parameters.Add("@Dom_Depto", SqlDbType.VarChar).Value = cliente.depto;
+            sp.Parameters.Add("@Dom_Localidad", SqlDbType.VarChar).Value = cliente.localidad;
+            sp.Parameters.Add("@Id_Nacionalidad", SqlDbType.Int).Value = cliente.nacionalidad.id;
+            sp.Parameters.Add("@Fecha_Nac", SqlDbType.DateTime).Value = cliente.fechaNacimiento;
+            sp.Parameters.Add("@Habilitado", SqlDbType.Char).Value = cliente.habilitado ? 's' : 'n';
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override List<Tarjeta> obtenerTarjetasHabilitadasDeCliente(Cliente cliente)

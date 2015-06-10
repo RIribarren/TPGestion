@@ -271,6 +271,32 @@ AS
 GO
 
 
+
+/****************************************************************
+ *							guardarCliente
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].guardarCliente
+	@Id_Cliente int, @Nombre varchar(255), @Apellido varchar(255), @NroDocumento numeric(18,0),
+	@Id_TipoDocumento int, @Mail varchar(255), @Id_Pais int, @Dom_Nro int,
+	@Dom_Calle varchar(255), @Dom_Piso int = NULL, @Dom_Depto varchar(255) = NULL,
+	@Dom_Localidad varchar(255), @Id_Nacionalidad int, @Fecha_Nac DateTime,
+	@Habilitado char(1)
+AS
+	BEGIN TRY
+		UPDATE [LA_MAQUINA_DE_HUMO].Clientes
+			SET	Cli_Nombre = @Nombre, Cli_Apellido = @Apellido, Cli_Nro_Doc = @NroDocumento,
+				Cli_Tipo_Doc_Cod = @Id_TipoDocumento, Cli_Mail = @Mail, Cli_Pais_Codigo = @Id_Pais,
+				Cli_Dom_Nro = @Dom_Nro, Cli_Dom_Calle = @Dom_Calle, Cli_Dom_Piso = @Dom_Piso,
+				Cli_Dom_Depto = @Dom_Depto, Cli_Dom_Localidad = @Dom_Localidad,
+				Cli_Nacionalidad_Codigo = @Id_Nacionalidad, Cli_Fecha_Nac = @Fecha_Nac,
+				Cli_Habilitado = @Habilitado
+			WHERE Id_Cliente = @Id_Cliente
+	END TRY
+	BEGIN CATCH
+		RAISERROR('Ya existe un cliente con esa identificacion y/o email', 16, 1)
+	END CATCH
+GO
+
 /****************************************************************
  *					obtenerTiposIdentificacion
  ****************************************************************/
