@@ -427,17 +427,64 @@ namespace PagoElectronico.ConexionDB
 
         public override void crearCuenta(Cuenta nuevaCuenta)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("crearCuenta");
+            sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = nuevaCuenta.cliente.id;
+            sp.Parameters.Add("@Id_Tipo_Cuenta", SqlDbType.Int).Value = nuevaCuenta.tipoCuenta.id;
+            sp.Parameters.Add("@Id_Moneda", SqlDbType.Int).Value = nuevaCuenta.moneda.id;
+
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override List<Cuenta> obtenerCuentasDeCliente(Cliente cliente)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerCuentasCliente");
+            sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = cliente.id;
+            List<Cuenta> cuentas = new List<Cuenta>();
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                {
+                    cuentas.Add(new Cuenta(
+                        decimal.Parse(reader["Cuenta_Numero"].ToString()),
+                        getPaises().Find(p => p.id == int.Parse(reader["Cuenta_Pais"].ToString())),
+                        obtenerMonedas().Find(m => m.id == int.Parse(reader["Id_Moneda"].ToString())),
+                        DateTime.Parse(reader["Fecha_Creacion"].ToString()),
+                        cliente,
+                        obtenerTiposCuenta().Find(tc => tc.id == int.Parse(reader["Id_Tipo_Cuenta"].ToString())),
+                        reader["Estado"].ToString()));
+                }
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return cuentas;
         }
 
         public override void bajaCuenta(Cuenta cuenta)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("bajaCuenta");
+            sp.Parameters.Add("@Cuenta_Numero", SqlDbType.Decimal).Value = cuenta.Numero;
+            
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override void guardarCuenta(Cuenta cuentaModificada)

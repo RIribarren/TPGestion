@@ -14,7 +14,6 @@ namespace PagoElectronico.Modelo
         public Cliente cliente;
         public TipoCuenta tipoCuenta;
         public String estado;
-        public DateTime fechaCierre;
 
         public Cuenta(Cliente cliente, Pais pais, Moneda moneda, TipoCuenta tipo)
         {
@@ -31,8 +30,7 @@ namespace PagoElectronico.Modelo
             DateTime fechaCreacion,
             Cliente cliente,
             TipoCuenta tipoCuenta,
-            String estado,
-            DateTime fechaCierre)
+            String estado)
         {
             this.Numero = Numero;
             this.pais = pais;
@@ -41,7 +39,6 @@ namespace PagoElectronico.Modelo
             this.cliente = cliente;
             this.tipoCuenta = tipoCuenta;
             this.estado = estado;
-            this.fechaCierre = fechaCierre;
         }
     }
 }

@@ -43,8 +43,7 @@ namespace PagoElectronico.ABM_Cuenta
                 cuenta.fechaCreacion,
                 cuenta.cliente,
                 TipoDeCuenta.obtenerTipoCuenta(),
-                cuenta.estado,
-                cuenta.fechaCierre);
+                cuenta.estado);
 
             try
             {

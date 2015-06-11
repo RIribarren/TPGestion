@@ -32,7 +32,7 @@
             this.comboTipoCuenta1 = new PagoElectronico.WidgetsGUI.ComboTipoCuenta();
             this.comboMoneda1 = new PagoElectronico.WidgetsGUI.ComboMoneda();
             this.comboPais1 = new PagoElectronico.ABM_Cliente.ComboPais();
-            this.textoNumerico1 = new PagoElectronico.WidgetsGUI.TextoNumerico();
+            this.textoNumero = new PagoElectronico.WidgetsGUI.TextoNumerico();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -54,7 +54,7 @@
             this.gBox1.Controls.Add(this.comboTipoCuenta1);
             this.gBox1.Controls.Add(this.comboMoneda1);
             this.gBox1.Controls.Add(this.comboPais1);
-            this.gBox1.Controls.Add(this.textoNumerico1);
+            this.gBox1.Controls.Add(this.textoNumero);
             this.gBox1.Controls.Add(this.label4);
             this.gBox1.Controls.Add(this.label3);
             this.gBox1.Controls.Add(this.label2);
@@ -68,34 +68,34 @@
             // 
             // comboTipoCuenta1
             // 
+            this.comboTipoCuenta1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboTipoCuenta1.Location = new System.Drawing.Point(347, 45);
             this.comboTipoCuenta1.Name = "comboTipoCuenta1";
-            this.comboTipoCuenta1.SelectedIndex = -1;
             this.comboTipoCuenta1.Size = new System.Drawing.Size(121, 21);
             this.comboTipoCuenta1.TabIndex = 7;
             // 
             // comboMoneda1
             // 
+            this.comboMoneda1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboMoneda1.Location = new System.Drawing.Point(347, 18);
             this.comboMoneda1.Name = "comboMoneda1";
-            this.comboMoneda1.SelectedIndex = -1;
             this.comboMoneda1.Size = new System.Drawing.Size(121, 21);
             this.comboMoneda1.TabIndex = 6;
             // 
             // comboPais1
             // 
+            this.comboPais1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboPais1.Location = new System.Drawing.Point(71, 45);
             this.comboPais1.Name = "comboPais1";
-            this.comboPais1.SelectedIndex = -1;
             this.comboPais1.Size = new System.Drawing.Size(121, 21);
             this.comboPais1.TabIndex = 5;
             // 
-            // textoNumerico1
+            // textoNumero
             // 
-            this.textoNumerico1.Location = new System.Drawing.Point(71, 19);
-            this.textoNumerico1.Name = "textoNumerico1";
-            this.textoNumerico1.Size = new System.Drawing.Size(100, 20);
-            this.textoNumerico1.TabIndex = 4;
+            this.textoNumero.Location = new System.Drawing.Point(71, 19);
+            this.textoNumero.Name = "textoNumero";
+            this.textoNumero.Size = new System.Drawing.Size(100, 20);
+            this.textoNumero.TabIndex = 4;
             // 
             // label4
             // 
@@ -141,6 +141,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "Limpiar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -150,6 +151,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Buscar";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // dataGridView1
             // 
@@ -225,7 +227,7 @@
         private PagoElectronico.WidgetsGUI.ComboTipoCuenta comboTipoCuenta1;
         private PagoElectronico.WidgetsGUI.ComboMoneda comboMoneda1;
         private PagoElectronico.ABM_Cliente.ComboPais comboPais1;
-        private PagoElectronico.WidgetsGUI.TextoNumerico textoNumerico1;
+        private PagoElectronico.WidgetsGUI.TextoNumerico textoNumero;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
