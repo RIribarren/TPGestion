@@ -61,18 +61,6 @@ namespace PagoElectronico.Modelo
             return new List<Tarjeta>();
         }
 
-        protected override void agregarTarjeta(Tarjeta nuevaTarjeta)
-        {
-        }
-
-        protected override void validarTarjeta(Tarjeta nuevaTarjeta)
-        {
-        }
-
-        protected override void guardarTarjetaModificada(Tarjeta tarjetaModificada)
-        {
-        }
-
         public override void bajaTarjeta(Tarjeta tarjeta)
         {
         }

@@ -306,7 +306,17 @@ namespace PagoElectronico.ConexionDB
 
         public override void bajaTarjeta(Tarjeta tarjeta)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("bajaTarjeta");
+            sp.Parameters.Add("@Id_Tarjeta", SqlDbType.Int).Value = tarjeta.id;
+
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override Usuario login(string username, string password)
@@ -650,28 +660,29 @@ namespace PagoElectronico.ConexionDB
             }
             catch (SqlException ex)
             {
-                throw new ErrorEnRepositorioException(ex.Message);
+                   throw new ErrorEnRepositorioException(ex.Message);
             }
-        }
-
-        protected override void agregarTarjeta(Tarjeta nuevaTarjeta)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void validarTarjeta(Tarjeta nuevaTarjeta)
-        {
-            throw new NotImplementedException();
         }
 
         public override void guardarTarjeta(Tarjeta tarjetaModificada)
         {
-            throw new NotImplementedException();
-        }
+            SqlCommand sp = obtenerStoredProcedure("guardarTarjeta");
+            sp.Parameters.Add("@Id_Tarjeta", SqlDbType.Int).Value = tarjetaModificada.id;
+            sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = tarjetaModificada.cliente.id;
+            sp.Parameters.Add("@Tarjeta_Numero", SqlDbType.Decimal).Value = tarjetaModificada.numero;
+            sp.Parameters.Add("@Tarjeta_Emisor_Descripcion", SqlDbType.VarChar).Value = tarjetaModificada.emisor;
+            sp.Parameters.Add("@Tarjeta_Fecha_Emision", SqlDbType.DateTime).Value = tarjetaModificada.fechaEmision;
+            sp.Parameters.Add("@Tarjeta_Fecha_Vencimiento", SqlDbType.DateTime).Value = tarjetaModificada.fechaVencimiento;
+            sp.Parameters.Add("@Tarjeta_Codigo_Seg", SqlDbType.VarChar).Value = tarjetaModificada.codigoSeguridad;
 
-        protected override void guardarTarjetaModificada(Tarjeta tarjetaModificada)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
     }
 }

@@ -362,6 +362,21 @@ GO
 
 
 
+/****************************************************************
+ *					bajaTarjeta
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].bajaTarjeta
+	@Id_Tarjeta int
+AS
+	UPDATE LA_MAQUINA_DE_HUMO.Tarjeta
+		SET Habilitado = 'n'
+		WHERE Id_Tarjeta = @Id_Tarjeta
+GO
+
+
+
+
+
 
 
 
@@ -379,7 +394,7 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearCuenta
 	@Id_Tipo_Cuenta int,
 	@Id_Moneda int
 AS
-	DECLARE @mensajeError varchar(255)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 cliente: ' + CONVERT(varchar, @Id_Cliente) + '
 tipo cuenta: ' + CONVERT(varchar, @Id_Tipo_Cuenta) + '
@@ -396,7 +411,7 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentasCliente
 	@Id_Cliente int
 AS
-	DECLARE @mensajeError varchar(255)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 cliente: ' + CONVERT(varchar, @Id_Cliente) + '
 Falta implementar este stored!'
@@ -412,7 +427,7 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].bajaCuenta
 	@Cuenta_Numero numeric(18,0)
 AS
-	DECLARE @mensajeError varchar(255)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
 Falta implementar este stored!'
@@ -432,8 +447,35 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearTarjeta
 	@Tarjeta_Fecha_Vencimiento datetime,
 	@Tarjeta_Codigo_Seg varchar(255)
 AS
-	DECLARE @mensajeError varchar(255)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
+Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
+Tarjeta_Numero: ' + CONVERT(varchar, @Tarjeta_Numero) + '
+Tarjeta_Emisor_Descripcion: ' + CONVERT(varchar, @Tarjeta_Emisor_Descripcion) + '
+Tarjeta_Fecha_Emision: ' + CONVERT(varchar, @Tarjeta_Fecha_Emision) + '
+Tarjeta_Fecha_Vencimiento: ' + CONVERT(varchar, @Tarjeta_Fecha_Vencimiento) + '
+Tarjeta_Codigo_Seg: ' + CONVERT(varchar, @Tarjeta_Codigo_Seg) + '
+Falta implementar este stored!'
+	RAISERROR(@mensajeError, 16, 1)
+GO
+
+
+
+/****************************************************************
+ *					guardarTarjeta
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].guardarTarjeta
+	@Id_Tarjeta int,
+	@Id_Cliente int,
+	@Tarjeta_Numero numeric(18,0),
+	@Tarjeta_Emisor_Descripcion varchar(255),
+	@Tarjeta_Fecha_Emision datetime,
+	@Tarjeta_Fecha_Vencimiento datetime,
+	@Tarjeta_Codigo_Seg varchar(255)
+AS
+	DECLARE @mensajeError varchar(2048)
+	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
+Id_Tarjeta: ' + CONVERT(varchar, @Id_Tarjeta) + '
 Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
 Tarjeta_Numero: ' + CONVERT(varchar, @Tarjeta_Numero) + '
 Tarjeta_Emisor_Descripcion: ' + CONVERT(varchar, @Tarjeta_Emisor_Descripcion) + '
