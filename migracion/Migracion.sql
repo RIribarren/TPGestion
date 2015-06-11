@@ -349,6 +349,17 @@ GO
 
 
 
+/****************************************************************
+ *					obtenerTarjetasHabilitadasDeCliente
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerTarjetasHabilitadasDeCliente
+	@Id_Cliente int
+AS
+	SELECT * FROM LA_MAQUINA_DE_HUMO.Tarjeta
+		WHERE Id_Cliente = @Id_Cliente
+			AND Habilitado = 's'
+GO
+
 
 
 
@@ -385,12 +396,12 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentasCliente
 	@Id_Cliente int
 AS
-/*	DECLARE @mensajeError varchar(255)
+	DECLARE @mensajeError varchar(255)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 cliente: ' + CONVERT(varchar, @Id_Cliente) + '
 Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)*/
-	select * from LA_MAQUINA_DE_HUMO.Cuenta
+	RAISERROR(@mensajeError, 16, 1)
+	--select * from LA_MAQUINA_DE_HUMO.Cuenta
 GO
 
 
@@ -404,6 +415,31 @@ AS
 	DECLARE @mensajeError varchar(255)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
+Falta implementar este stored!'
+	RAISERROR(@mensajeError, 16, 1)
+GO
+
+
+
+/****************************************************************
+ *					crearTarjeta
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearTarjeta
+	@Id_Cliente int,
+	@Tarjeta_Numero numeric(18,0),
+	@Tarjeta_Emisor_Descripcion varchar(255),
+	@Tarjeta_Fecha_Emision datetime,
+	@Tarjeta_Fecha_Vencimiento datetime,
+	@Tarjeta_Codigo_Seg varchar(255)
+AS
+	DECLARE @mensajeError varchar(255)
+	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
+Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
+Tarjeta_Numero: ' + CONVERT(varchar, @Tarjeta_Numero) + '
+Tarjeta_Emisor_Descripcion: ' + CONVERT(varchar, @Tarjeta_Emisor_Descripcion) + '
+Tarjeta_Fecha_Emision: ' + CONVERT(varchar, @Tarjeta_Fecha_Emision) + '
+Tarjeta_Fecha_Vencimiento: ' + CONVERT(varchar, @Tarjeta_Fecha_Vencimiento) + '
+Tarjeta_Codigo_Seg: ' + CONVERT(varchar, @Tarjeta_Codigo_Seg) + '
 Falta implementar este stored!'
 	RAISERROR(@mensajeError, 16, 1)
 GO
@@ -426,12 +462,12 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[FECHA_DEL_SISTEMA](
 	[Fecha][DateTime] PRIMARY KEY
 )
 
-/* Cargar fecha actual.
- * La app va a actualizar esta fecha de acuerdo al archivo de configuracion
+/* Cargo fecha actual para realizar la migracion.
+ * La app va a actualizar esta fecha cada vez que sea ejecutada
+ * de acuerdo al archivo de configuracion
  */
-DECLARE @FechaActual DateTime
-SET @FechaActual = GETDATE()
-EXECUTE [LA_MAQUINA_DE_HUMO].SetFecha @FechaActual
+INSERT INTO [LA_MAQUINA_DE_HUMO].FECHA_DEL_SISTEMA ([Fecha]) VALUES (GETDATE())
+
 
 
 /****************************************************************/

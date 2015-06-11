@@ -277,22 +277,31 @@ namespace PagoElectronico.ConexionDB
 
         public override List<Tarjeta> obtenerTarjetasHabilitadasDeCliente(Cliente cliente)
         {
-            throw new NotImplementedException();
-        }
+            SqlCommand sp = obtenerStoredProcedure("obtenerTarjetasHabilitadasDeCliente");
+            sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = cliente.id;
+            List<Tarjeta> tarjetas = new List<Tarjeta>();
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    tarjetas.Add(new Tarjeta(
+                        int.Parse(reader["Id_Tarjeta"].ToString()),
+                        cliente,
+                        decimal.Parse(reader["Tarjeta_Numero"].ToString()),
+                        DateTime.Parse(reader["Tarjeta_Fecha_Emision"].ToString()),
+                        DateTime.Parse(reader["Tarjeta_Fecha_Vencimiento"].ToString()),
+                        reader["Tarjeta_Codigo_Seg"].ToString(),
+                        reader["Tarjeta_Emisor_Descripcion"].ToString(),
+                        reader["Habilitado"].ToString() == "s"));
 
-        protected override void agregarTarjeta(Tarjeta nuevaTarjeta)
-        {
-            throw new NotImplementedException();
-        }
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
 
-        protected override void validarTarjeta(Tarjeta nuevaTarjeta)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void guardarTarjetaModificada(Tarjeta tarjetaModificada)
-        {
-            throw new NotImplementedException();
+            return tarjetas;
         }
 
         public override void bajaTarjeta(Tarjeta tarjeta)
@@ -623,6 +632,46 @@ namespace PagoElectronico.ConexionDB
             {
                 throw new ErrorEnRepositorioException(ex.Message);
             }
+        }
+
+        public override void crearTarjeta(Tarjeta nuevaTarjeta)
+        {
+            SqlCommand sp = obtenerStoredProcedure("crearTarjeta");
+            sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = nuevaTarjeta.cliente.id;
+            sp.Parameters.Add("@Tarjeta_Numero", SqlDbType.Decimal).Value = nuevaTarjeta.numero;
+            sp.Parameters.Add("@Tarjeta_Emisor_Descripcion", SqlDbType.VarChar).Value = nuevaTarjeta.emisor;
+            sp.Parameters.Add("@Tarjeta_Fecha_Emision", SqlDbType.DateTime).Value = nuevaTarjeta.fechaEmision;
+            sp.Parameters.Add("@Tarjeta_Fecha_Vencimiento", SqlDbType.DateTime).Value = nuevaTarjeta.fechaVencimiento;
+            sp.Parameters.Add("@Tarjeta_Codigo_Seg", SqlDbType.VarChar).Value = nuevaTarjeta.codigoSeguridad;
+
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+        }
+
+        protected override void agregarTarjeta(Tarjeta nuevaTarjeta)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void validarTarjeta(Tarjeta nuevaTarjeta)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void guardarTarjeta(Tarjeta tarjetaModificada)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void guardarTarjetaModificada(Tarjeta tarjetaModificada)
+        {
+            throw new NotImplementedException();
         }
     }
 }

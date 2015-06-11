@@ -154,5 +154,15 @@ namespace PagoElectronico.Modelo
         {
             return 0;
         }
+
+        public override void crearTarjeta(Tarjeta nuevaTarjeta)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void guardarTarjeta(Tarjeta tarjetaModificada)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -85,22 +85,13 @@ namespace PagoElectronico.Modelo
          * TARJETAS
          */
 
-        public void crearTarjeta(Tarjeta nuevaTarjeta)
-        {
-            validarTarjeta(nuevaTarjeta);
-
-            agregarTarjeta(nuevaTarjeta);
-        }
+        abstract public void crearTarjeta(Tarjeta nuevaTarjeta);
 
         protected abstract void agregarTarjeta(Tarjeta nuevaTarjeta);
 
         protected abstract void validarTarjeta(Tarjeta nuevaTarjeta);
 
-        public void guardarTarjeta(Tarjeta tarjetaModificada)
-        {
-            validarTarjeta(tarjetaModificada);
-            guardarTarjetaModificada(tarjetaModificada);
-        }
+        abstract public void guardarTarjeta(Tarjeta tarjetaModificada);
 
         protected abstract void guardarTarjetaModificada(Tarjeta tarjetaModificada);
 
