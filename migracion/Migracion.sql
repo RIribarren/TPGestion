@@ -329,7 +329,23 @@ GO
 
 
 
+/****************************************************************
+ *					obtenerTiposCuenta
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerTiposCuenta
+AS
+	SELECT Id_Tipo_Cuenta, Descripcion FROM LA_MAQUINA_DE_HUMO.Tipo_Cuenta
+GO
 
+
+
+/****************************************************************
+ *					obtenerMonedas
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerMonedas
+AS
+	SELECT * FROM LA_MAQUINA_DE_HUMO.Moneda
+GO
 
 
 

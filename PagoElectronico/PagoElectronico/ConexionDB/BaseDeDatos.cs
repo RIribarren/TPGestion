@@ -379,12 +379,50 @@ namespace PagoElectronico.ConexionDB
 
         public override List<Moneda> obtenerMonedas()
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerMonedas");
+            List<Moneda> monedas = new List<Moneda>();
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                {
+                    monedas.Add(new Moneda(
+                        int.Parse(reader["Id_Moneda"].ToString()),
+                        reader["Descripcion"].ToString()));
+                }
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return monedas;
         }
 
         public override List<TipoCuenta> obtenerTiposCuenta()
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerTiposCuenta");
+            List<TipoCuenta> tiposCuenta = new List<TipoCuenta>();
+            
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                {
+                    tiposCuenta.Add(new TipoCuenta(
+                        int.Parse(reader["Id_Tipo_Cuenta"].ToString()),
+                        reader["Descripcion"].ToString()));
+                }
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return tiposCuenta;
         }
 
         public override void crearCuenta(Cuenta nuevaCuenta)
