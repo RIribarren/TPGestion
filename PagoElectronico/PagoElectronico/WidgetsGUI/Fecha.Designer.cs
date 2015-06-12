@@ -65,8 +65,8 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxFecha;
         private System.Windows.Forms.Button buttonSeleccionar;
+        public System.Windows.Forms.TextBox textBoxFecha;
 
     }
 }

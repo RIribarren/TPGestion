@@ -14,21 +14,29 @@ namespace PagoElectronico.ABM_Cliente
     public partial class ListadoTarjetas : Ventana
     {
         private List<Tarjeta> tarjetas;
+        private List<Tarjeta> tarjetasEnPantalla;
         private Cliente cliente;
 
         public ListadoTarjetas(Cliente cliente)
         {
             InitializeComponent();
             this.cliente = cliente;
+            FechaVencimiento.esValidable = false;
+            FechaEmision.esValidable = false;
         }
 
         protected override void cargarDatos()
         {
-            TarjetasDeCliente.Rows.Clear();
-
             tarjetas = RepositorioDeDatos.getInstance().obtenerTarjetasHabilitadasDeCliente(cliente);
 
-            foreach (var tarjeta in tarjetas)
+            mostrarTarjetas(tarjetas);
+        }
+
+        private void mostrarTarjetas(List<Tarjeta> tarjetasAMostrar)
+        {
+            tarjetasEnPantalla = tarjetasAMostrar;
+            TarjetasDeCliente.Rows.Clear();
+            foreach (var tarjeta in tarjetasEnPantalla)
             {
                 TarjetasDeCliente.Rows.Add(
                     soloLos4UltimosNumeros(tarjeta.numero),
@@ -50,6 +58,7 @@ namespace PagoElectronico.ABM_Cliente
         private void button1_Click(object sender, EventArgs e)
         {
             limpiar();
+            mostrarTarjetas(tarjetas);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -79,7 +88,7 @@ namespace PagoElectronico.ABM_Cliente
             foreach (DataGridViewRow fila in TarjetasDeCliente.Rows)
             {
                 if (Convert.ToBoolean(fila.Cells[5].Value) == true)
-                    return tarjetas.ElementAt(fila.Index);
+                    return tarjetasEnPantalla.ElementAt(fila.Index);
             }
 
             return null;
@@ -109,6 +118,34 @@ namespace PagoElectronico.ABM_Cliente
                 {
                     mostrarError(excepcion.mensaje);
                 }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            mostrarTarjetas(tarjetas.FindAll(obtenerFiltro()));
+        }
+
+        private Predicate<Tarjeta> obtenerFiltro()
+        {
+            Predicate<Tarjeta> filtroNumero = (t => true);
+            Predicate<Tarjeta> filtroCodigo = (t => true);
+            Predicate<Tarjeta> filtroEmisor = (t => true);
+            Predicate<Tarjeta> filtroFechaEmision = (t => true);
+            Predicate<Tarjeta> filtroFechaVencimiento = (t => true);
+
+            if (textoNumero.Text != "")
+                filtroNumero = (t => t.numero.ToString().Contains(textoNumero.Text));
+            if (textoCodigo.Text != "")
+                filtroCodigo = (t => t.codigoSeguridad.ToString().Contains(textoCodigo.Text));
+            if (textoEmisor.Text != "")
+                filtroEmisor = (t => t.emisor.ToString().Contains(textoEmisor.Text));
+            if (FechaEmision.textBoxFecha.Text != "")
+                filtroFechaEmision = (t => t.fechaEmision == FechaEmision.getFecha());
+            if (FechaVencimiento.textBoxFecha.Text != "")
+                filtroFechaVencimiento = (t => t.fechaVencimiento == FechaVencimiento.getFecha());
+
+            return t => filtroNumero(t) && filtroCodigo(t) && filtroEmisor(t)
+                && filtroFechaEmision(t) && filtroFechaVencimiento(t);
         }
     }
 }

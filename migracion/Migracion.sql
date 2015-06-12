@@ -200,9 +200,7 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerClienteDeUsuario
 	@Id_Usuario int
 AS
-	SELECT top 1 Id_Cliente,Cli_Nombre,Cli_Apellido,Cli_Nro_Doc,Cli_Tipo_Doc_Cod,Cli_Mail,Cli_Dom_Nro,
-			Cli_Dom_Calle,Cli_Dom_Piso,Cli_Dom_Depto,Cli_Dom_Localidad,Cli_Nacionalidad_Codigo,Cli_Fecha_Nac,
-			Cli_Habilitado
+	SELECT top 1 *
 		FROM Usuario u, Clientes c
 		WHERE u.Id_Usuario = @Id_Usuario
 			AND u.Id_Usuario = c.Id_Usuario

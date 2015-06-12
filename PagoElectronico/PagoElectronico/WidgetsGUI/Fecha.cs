@@ -12,6 +12,7 @@ namespace PagoElectronico.WidgetsGUI
     public partial class Fecha : UserControl, Validable, Limpiable
     {
         private DateTime fecha;
+        public bool esValidable = true;
 
         public Fecha()
         {
@@ -43,6 +44,9 @@ namespace PagoElectronico.WidgetsGUI
 
         public bool esValido()
         {
+            if (!esValidable)
+                return true;
+
             return textBoxFecha.Text != "";
         }
 
