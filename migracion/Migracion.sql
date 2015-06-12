@@ -404,6 +404,20 @@ GO
 
 
 /****************************************************************
+ *					obtenerCuentas
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentas
+AS
+/*	DECLARE @mensajeError varchar(2048)
+	SET @mensajeError = OBJECT_NAME(@@PROCID) + '
+Falta implementar este stored!'
+	RAISERROR(@mensajeError, 16, 1)*/
+	select * from LA_MAQUINA_DE_HUMO.Cuenta
+GO
+
+
+
+/****************************************************************
  *					obtenerCuentasCliente
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentasCliente
@@ -522,6 +536,25 @@ AS
 Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
 Importe: ' + CONVERT(varchar, @Importe) + '
 Id_Moneda: ' + CONVERT(varchar, @Id_Moneda) + '
+Falta implementar este stored!'
+	RAISERROR(@mensajeError, 16, 1)
+GO
+
+
+
+/****************************************************************
+ *					transferir
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].transferir
+	@Numero_Cuenta_Origen numeric(18,0),
+	@Numero_Cuenta_Destino numeric(18,0),
+	@Importe numeric(18,2)
+AS
+	DECLARE @mensajeError varchar(2048)
+	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
+Numero_Cuenta_Origen: ' + CONVERT(varchar, @Numero_Cuenta_Origen) + '
+Numero_Cuenta_Destino: ' + CONVERT(varchar, @Numero_Cuenta_Destino) + '
+Importe: ' + CONVERT(varchar, @Importe) + '
 Falta implementar este stored!'
 	RAISERROR(@mensajeError, 16, 1)
 GO

@@ -548,12 +548,48 @@ namespace PagoElectronico.ConexionDB
 
         public override List<Cuenta> obtenerCuentas()
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerCuentas");
+            List<Cuenta> cuentas = new List<Cuenta>();
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                {
+                    cuentas.Add(new Cuenta(
+                        decimal.Parse(reader["Cuenta_Numero"].ToString()),
+                        getPaises().Find(p => p.id == int.Parse(reader["Cuenta_Pais"].ToString())),
+                        obtenerMonedas().Find(m => m.id == int.Parse(reader["Id_Moneda"].ToString())),
+                        DateTime.Parse(reader["Fecha_Creacion"].ToString()),
+                        null,
+                        obtenerTiposCuenta().Find(tc => tc.id == int.Parse(reader["Id_Tipo_Cuenta"].ToString())),
+                        reader["Estado"].ToString()));
+                }
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return cuentas;
         }
 
-        public override void transferir(Cuenta cuenta, Cuenta cuenta_2, decimal p)
+        public override void transferir(Cuenta cuentaOrigen, Cuenta cuentaDestino, decimal p)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("transferir");
+            sp.Parameters.Add("@Numero_Cuenta_Origen", SqlDbType.Decimal).Value = cuentaOrigen.Numero;
+            sp.Parameters.Add("@Numero_Cuenta_Destino", SqlDbType.Decimal).Value = cuentaDestino.Numero;
+            sp.Parameters.Add("@Importe", SqlDbType.Decimal).Value = p;
+
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override List<Transaccion> obtenerTransaccionesImpagasDeCliente(Cliente cliente)
