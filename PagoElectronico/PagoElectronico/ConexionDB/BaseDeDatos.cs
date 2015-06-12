@@ -594,12 +594,40 @@ namespace PagoElectronico.ConexionDB
 
         public override List<Transaccion> obtenerTransaccionesImpagasDeCliente(Cliente cliente)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerTransaccionesImpagasDeCliente");
+            sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = cliente.id;
+            List<Transaccion> transacciones = new List<Transaccion>();
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    transacciones.Add(new Transaccion(
+                        reader["Descripcion"].ToString(),
+                        decimal.Parse(reader["Importe"].ToString())));
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return transacciones;
         }
 
         public override void facturar(Cliente cliente)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("facturar");
+            sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = cliente.id;
+
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override List<Transferencia> obtenerUltimas10Transferencias(Cuenta cuenta)

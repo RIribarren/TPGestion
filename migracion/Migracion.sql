@@ -562,6 +562,49 @@ GO
 
 
 
+/****************************************************************
+ *					obtenerTransaccionesImpagasDeCliente
+ ****************************************************************/
+ /* NOTA: este stored tiene que devolver como minimo 2 columnas (en cualquier
+	orden) que se llamen: Importe y Descripcion
+	
+	Algo asi:   	
+	select Importe as Importe, Item_Descripcion as Descripcion
+		from LA_MAQUINA_DE_HUMO.Transaccion t, LA_MAQUINA_DE_HUMO.Item i
+		where t.Id_Item = i.Id_Item
+			AND ...
+		...
+ */
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerTransaccionesImpagasDeCliente
+	@Id_Cliente numeric(18,0)
+AS
+/*	DECLARE @mensajeError varchar(2048)
+	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
+Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
+Falta implementar este stored!'
+	RAISERROR(@mensajeError, 16, 1) */
+	select Importe as Importe, Item_Descripcion as Descripcion
+		from LA_MAQUINA_DE_HUMO.Transaccion t, LA_MAQUINA_DE_HUMO.Item i
+		where t.Id_Item = i.Id_Item
+			and Id_Cliente = @Id_Cliente
+GO
+
+
+
+/****************************************************************
+ *					facturar
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].facturar
+	@Id_Cliente numeric(18,0)
+AS
+	DECLARE @mensajeError varchar(2048)
+	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
+Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
+Falta implementar este stored!'
+	RAISERROR(@mensajeError, 16, 1)
+GO
+
+
 /***********************************************************************
  *
  *						MIGRACION DE DATOS
