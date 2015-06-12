@@ -720,8 +720,8 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Funcionalidad](
 )
 
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(1, 'ABM de Rol')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(2, 'Login y seguridad')
-INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(3, 'ABM de Usuario')
+--INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(2, 'Login y seguridad')
+--INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(3, 'ABM de Usuario')
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(4, 'ABM de Cliente')
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(5, 'ABM de Cuenta')
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(6, 'Depósitos')
