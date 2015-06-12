@@ -511,9 +511,22 @@ namespace PagoElectronico.ConexionDB
             throw new NotImplementedException();
         }
 
-        public override void depositar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda)
+        public override void depositar(Cuenta cuenta, decimal p, Moneda moneda, Tarjeta tarjeta)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("depositar");
+            sp.Parameters.Add("@Cuenta_Numero", SqlDbType.Decimal).Value = cuenta.Numero;
+            sp.Parameters.Add("@Importe", SqlDbType.Decimal).Value = p;
+            sp.Parameters.Add("@Id_Moneda", SqlDbType.Decimal).Value = moneda.id;
+            sp.Parameters.Add("@Id_Tarjeta", SqlDbType.Decimal).Value = tarjeta.id;
+
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
         }
 
         public override void retirar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda)

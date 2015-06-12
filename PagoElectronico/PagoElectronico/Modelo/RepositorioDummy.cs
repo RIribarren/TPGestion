@@ -97,7 +97,7 @@ namespace PagoElectronico.Modelo
         {
         }
 
-        public override void depositar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda)
+        public override void depositar(Cuenta cuenta, decimal p, Moneda moneda, Tarjeta tarjeta)
         {
         }
 
