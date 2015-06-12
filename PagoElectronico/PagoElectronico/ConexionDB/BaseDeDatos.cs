@@ -632,22 +632,96 @@ namespace PagoElectronico.ConexionDB
 
         public override List<Transferencia> obtenerUltimas10Transferencias(Cuenta cuenta)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerUltimas10Transferencias");
+            sp.Parameters.Add("@Cuenta_Numero", SqlDbType.Decimal).Value = cuenta.Numero;
+            List<Transferencia> transferencias = new List<Transferencia>();
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    transferencias.Add(new Transferencia(
+                        decimal.Parse(reader["Tranf_Importe"].ToString()),
+                        DateTime.Parse(reader["Tranf_Fecha"].ToString()),
+                        new Cuenta(decimal.Parse(reader["Tranf_Cuenta_Dest_Numero"].ToString()), null,null, new DateTime()
+                            ,null,null,null)));
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return transferencias;
         }
 
         public override List<Retiro> obtenerUltimos5Retiros(Cuenta cuenta)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerUltimos5Retiros");
+            sp.Parameters.Add("@Cuenta_Numero", SqlDbType.Decimal).Value = cuenta.Numero;
+            List<Retiro> retiros = new List<Retiro>();
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    retiros.Add(new Retiro(
+                        decimal.Parse(reader["Retiro_importe"].ToString()),
+                        DateTime.Parse(reader["Retiro_Fecha"].ToString())));
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return retiros;
         }
 
         public override List<Deposito> obtenerUltimos5Depositos(Cuenta cuenta)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerUltimos5Depositos");
+            sp.Parameters.Add("@Cuenta_Numero", SqlDbType.Decimal).Value = cuenta.Numero;
+            List<Deposito> depositos = new List<Deposito>();
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    depositos.Add(new Deposito(
+                        decimal.Parse(reader["Deposito_importe"].ToString()),
+                        DateTime.Parse(reader["Deposito_Fecha"].ToString())));
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return depositos;
         }
 
         public override decimal obtenerSaldoDeCuenta(Cuenta cuenta)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("obtenerSaldoDeCuenta");
+            sp.Parameters.Add("@Cuenta_Numero", SqlDbType.Decimal).Value = cuenta.Numero;
+            decimal saldo;
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                reader.Read();
+                saldo = decimal.Parse(reader[0].ToString());
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return saldo;
         }
 
         public override void guardarRol(Rol rolModificado)
