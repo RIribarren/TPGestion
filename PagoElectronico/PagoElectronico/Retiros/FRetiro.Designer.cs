@@ -30,20 +30,20 @@
         {
             this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
             this.comboMoneda1 = new PagoElectronico.WidgetsGUI.ComboMoneda();
-            this.textoNumerico1 = new PagoElectronico.WidgetsGUI.TextoNumerico();
             this.comboCuentas1 = new PagoElectronico.WidgetsGUI.ComboCuentas();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.textoImporte = new PagoElectronico.WidgetsGUI.TextoNumericoValidable();
             this.gBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // gBox1
             // 
+            this.gBox1.Controls.Add(this.textoImporte);
             this.gBox1.Controls.Add(this.comboMoneda1);
-            this.gBox1.Controls.Add(this.textoNumerico1);
             this.gBox1.Controls.Add(this.comboCuentas1);
             this.gBox1.Controls.Add(this.label3);
             this.gBox1.Controls.Add(this.label2);
@@ -57,24 +57,17 @@
             // 
             // comboMoneda1
             // 
+            this.comboMoneda1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboMoneda1.Location = new System.Drawing.Point(64, 72);
             this.comboMoneda1.Name = "comboMoneda1";
-            this.comboMoneda1.SelectedIndex = -1;
             this.comboMoneda1.Size = new System.Drawing.Size(121, 21);
             this.comboMoneda1.TabIndex = 5;
             // 
-            // textoNumerico1
-            // 
-            this.textoNumerico1.Location = new System.Drawing.Point(64, 46);
-            this.textoNumerico1.Name = "textoNumerico1";
-            this.textoNumerico1.Size = new System.Drawing.Size(100, 20);
-            this.textoNumerico1.TabIndex = 4;
-            // 
             // comboCuentas1
             // 
+            this.comboCuentas1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboCuentas1.Location = new System.Drawing.Point(64, 19);
             this.comboCuentas1.Name = "comboCuentas1";
-            this.comboCuentas1.SelectedIndex = -1;
             this.comboCuentas1.Size = new System.Drawing.Size(121, 21);
             this.comboCuentas1.TabIndex = 3;
             // 
@@ -125,6 +118,13 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // textoImporte
+            // 
+            this.textoImporte.Location = new System.Drawing.Point(64, 46);
+            this.textoImporte.Name = "textoImporte";
+            this.textoImporte.Size = new System.Drawing.Size(100, 20);
+            this.textoImporte.TabIndex = 6;
+            // 
             // FRetiro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -145,12 +145,12 @@
 
         private PagoElectronico.WidgetsGUI.GBox gBox1;
         private PagoElectronico.WidgetsGUI.ComboMoneda comboMoneda1;
-        private PagoElectronico.WidgetsGUI.TextoNumerico textoNumerico1;
         private PagoElectronico.WidgetsGUI.ComboCuentas comboCuentas1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private PagoElectronico.WidgetsGUI.TextoNumericoValidable textoImporte;
     }
 }

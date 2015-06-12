@@ -509,6 +509,26 @@ GO
 
 
 
+/****************************************************************
+ *					retirar
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].retirar
+	@Cuenta_Numero numeric(18,0),
+	@Importe numeric(18,2),
+	@Id_Moneda int
+AS
+	DECLARE @mensajeError varchar(2048)
+	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
+Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
+Importe: ' + CONVERT(varchar, @Importe) + '
+Id_Moneda: ' + CONVERT(varchar, @Id_Moneda) + '
+Falta implementar este stored!'
+	RAISERROR(@mensajeError, 16, 1)
+GO
+
+
+
+
 /***********************************************************************
  *
  *						MIGRACION DE DATOS

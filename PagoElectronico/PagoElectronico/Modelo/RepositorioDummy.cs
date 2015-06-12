@@ -101,7 +101,7 @@ namespace PagoElectronico.Modelo
         {
         }
 
-        public override void retirar(Cliente cliente, Cuenta cuenta, decimal p, Moneda moneda)
+        public override void retirar(Cuenta cuenta, decimal p, Moneda moneda)
         {
         }
 

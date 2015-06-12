@@ -41,9 +41,8 @@ namespace PagoElectronico.Retiros
             try
             {
                 RepositorioDeDatos.getInstance().retirar(
-                    cliente,
                     cuenta,
-                    Convert.ToDecimal(textoNumerico1.Text),
+                    Convert.ToDecimal(textoImporte.Text),
                     comboMoneda1.obtenerMoneda());
 
                 volverDeOperacionExitosa("Se realizó el retiro");
