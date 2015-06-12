@@ -408,11 +408,10 @@ GO
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentas
 AS
-/*	DECLARE @mensajeError varchar(2048)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + '
 Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)*/
-	select * from LA_MAQUINA_DE_HUMO.Cuenta
+	RAISERROR(@mensajeError, 16, 1)
 GO
 
 
@@ -423,14 +422,11 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentasCliente
 	@Id_Cliente int
 AS
-/*	DECLARE @mensajeError varchar(2048)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 cliente: ' + CONVERT(varchar, @Id_Cliente) + '
 Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)*/
-	select *
-		from LA_MAQUINA_DE_HUMO.Cuenta cue
-		where cue.Id_Cliente = @Id_Cliente
+	RAISERROR(@mensajeError, 16, 1)
 GO
 
 
@@ -578,15 +574,11 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerTransaccionesImpagasDeCliente
 	@Id_Cliente int
 AS
-/*	DECLARE @mensajeError varchar(2048)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
 Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1) */
-	select Importe as Importe, Item_Descripcion as Descripcion
-		from LA_MAQUINA_DE_HUMO.Transaccion t, LA_MAQUINA_DE_HUMO.Item i
-		where t.Id_Item = i.Id_Item
-			and Id_Cliente = @Id_Cliente
+	RAISERROR(@mensajeError, 16, 1) 
 GO
 
 
@@ -612,12 +604,11 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerSaldoDeCuenta
 	@Cuenta_Numero numeric(18,0)
 AS
-/*	DECLARE @mensajeError varchar(2048)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
 Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)*/
-	select 10000
+	RAISERROR(@mensajeError, 16, 1)
 GO
 
 
@@ -628,14 +619,11 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimos5Depositos
 	@Cuenta_Numero numeric(18,0)
 AS
-/*	DECLARE @mensajeError varchar(2048)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
 Falta implementar este stored!'
 	RAISERROR(@mensajeError, 16, 1)
-*/
-	select top 5 * from Deposito
-		where Numero_Cuenta = @Cuenta_Numero
 GO
 
 
@@ -646,13 +634,11 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimos5Retiros
 	@Cuenta_Numero numeric(18,0)
 AS
-/*	DECLARE @mensajeError varchar(2048)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
 Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)*/
-	select top 5 * from Retiro	
-		where Numero_Cuenta = @Cuenta_Numero
+	RAISERROR(@mensajeError, 16, 1)
 GO
 
 
@@ -663,14 +649,11 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimas10Transferencias
 	@Cuenta_Numero numeric(18,0)
 AS
-	/*DECLARE @mensajeError varchar(2048)
+	DECLARE @mensajeError varchar(2048)
 	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
 Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
 Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)*/
-	
-	select top 10 * from Transferencia
-		where Tranf_Cuenta_Origen_Numero = @Cuenta_Numero
+	RAISERROR(@mensajeError, 16, 1)
 GO
 
 
