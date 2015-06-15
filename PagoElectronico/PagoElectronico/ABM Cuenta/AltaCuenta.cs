@@ -37,7 +37,8 @@ namespace PagoElectronico.ABM_Cuenta
                     cliente,
                     PaisDeRegistro.obtenerPais(),
                     TipoDeMoneda.obtenerMoneda(),
-                    TipoDeCuenta.obtenerTipoCuenta());
+                    TipoDeCuenta.obtenerTipoCuenta(),
+                    int.Parse(textoNumericoValidable1.Text));
 
                 RepositorioDeDatos.getInstance().crearCuenta(nuevaCuenta);
                 volverDeOperacionExitosa("La cuenta fue creada");

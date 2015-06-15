@@ -391,21 +391,45 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearCuenta
 	@Id_Cliente int,
 	@Id_Tipo_Cuenta int,
 	@Id_Moneda int,
-	@Cuenta_Pais numeric(18,0) /** Agregue este parametro que es necesario **/
+	@Cuenta_Pais numeric(18,0),
+	@Cantidad_Suscripciones int
 AS
-BEGIN TRANSACTION
-	BEGIN TRY
-			DECLARE @Ultima_Cuenta numeric(18,0)
-			SET @Ultima_Cuenta = (SELECT TOP 1 Cuenta_numero FROM LA_MAQUINA_DE_HUMO.Cuenta ORDER BY Cuenta_numero DESC)
-			INSERT INTO [LA_MAQUINA_DE_HUMO].Cuenta(Cuenta_Numero, Cuenta_Pais,Id_Moneda,Fecha_Creacion,Id_Cliente,
-			Id_Tipo_Cuenta,Estado,Fecha_Cierre)
-			VALUES (@Ultima_Cuenta +1 , @Cuenta_Pais, @Id_Moneda,LA_MAQUINA_DE_HUMO.obtenerFecha(),@Id_Cliente,@Id_Tipo_Cuenta,null)
-	END TRY
-	BEGIN CATCH
-	ROLLBACK
-	RAISERROR('La cuenta ya se encuentra en uso', 16, 1)
-	END CATCH
-COMMIT
+	-- Creo la cuenta
+	INSERT INTO LA_MAQUINA_DE_HUMO.Cuenta(
+		[Cuenta_Pais],
+		[Id_Moneda],
+		[Fecha_Creacion],
+		[Id_Cliente],
+		[Id_Tipo_Cuenta],
+		[Fecha_Cierre]
+	) VALUES (
+		@Cuenta_Pais,
+		@Id_Moneda,
+		LA_MAQUINA_DE_HUMO.obtenerFecha(),
+		@Id_Cliente,
+		@Id_Tipo_Cuenta,
+		NULL
+	)
+	
+	DECLARE @Cuenta_Numero numeric(18,0)
+	SET @Cuenta_Numero = (SELECT top 1 Cuenta_Numero FROM LA_MAQUINA_DE_HUMO.Cuenta order by Cuenta_Numero DESC)
+	
+	-- Creo las suscripciones
+	INSERT INTO LA_MAQUINA_DE_HUMO.Suscripcion(
+		Cuenta_Numero,
+		Suscripcion_Fecha_Inicio,
+		Suscripcion_Fecha_Fin,
+		Suscripcion_costo_por_dia
+	) VALUES (
+		@Cuenta_Numero,
+		LA_MAQUINA_DE_HUMO.obtenerFecha(),
+		(SELECT LA_MAQUINA_DE_HUMO.obtenerFecha() + (Duracion * @Cantidad_Suscripciones)
+			FROM LA_MAQUINA_DE_HUMO.Tipo_Cuenta
+			WHERE Id_Tipo_Cuenta = @Id_Tipo_Cuenta),
+		(SELECT Costo_Suscripcion_Por_Dia
+			FROM LA_MAQUINA_DE_HUMO.Tipo_Cuenta
+			WHERE Id_Tipo_Cuenta = @Id_Tipo_Cuenta)
+	)
 GO
 
 
@@ -941,47 +965,65 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Auditoria](
 	[Nro_Intento][int]
 )
 
+
+/****************************************************************
+						TIPO_CUENTA
+*****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta](
-[Id_Tipo_Cuenta][int] PRIMARY KEY IDENTITY (1,1),
-[Duracion][int],
-[Costo_Apertura][numeric] (18,2),
-[Costo_Tranferencia][numeric] (18,2),
-[Descripcion][varchar](255)
+	[Id_Tipo_Cuenta][int] PRIMARY KEY IDENTITY (1,1),
+	[Duracion][int],
+	[Costo_Suscripcion_Por_Dia][numeric] (18,2),
+	[Costo_Tranferencia][numeric] (18,2),
+	[Descripcion][varchar](255)
 )
 
-INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (90,100,8,'ORO')
-INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (60,70,10,'PLATA')
-INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (30,50,12,'BRONCE')
-INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (15,0,20,'GRATUITA')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (NULL, 0, 20, 'GRATUITA')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (30, 1, 15, 'BRONCE')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (30, 2, 10, 'PLATA')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (30, 3, 5, 'ORO')
 
+
+
+
+
+/****************************************************************
+						MONEDA
+*****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Moneda](
-[Id_Moneda][int] PRIMARY KEY IDENTITY (1,1),
-[Descripcion][varchar](255)
+	[Id_Moneda][int] PRIMARY KEY IDENTITY (1,1),
+	[Descripcion][varchar](255)
 )
 INSERT INTO [LA_MAQUINA_DE_HUMO].[Moneda] values ('DOLAR')
 
-CREATE TABLE [LA_MAQUINA_DE_HUMO].[Cuenta](
-[Cuenta_Numero][numeric] (18,0) PRIMARY KEY,
-[Cuenta_Pais][numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Pais(Pais_Codigo),
-[Id_Moneda][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Moneda(Id_Moneda),
-[Fecha_Creacion][datetime],
-[Id_Cliente][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Clientes(Id_Cliente),
-[Id_Tipo_Cuenta][int]FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Tipo_Cuenta(Id_Tipo_Cuenta),
-[Estado][varchar](255),
-[Fecha_Cierre][datetime],
-)
 
-INSERT INTO LA_MAQUINA_DE_HUMO.Cuenta(
-[Cuenta_Numero],
-[Cuenta_Pais],
-[Id_Moneda],
-[Fecha_Creacion],
-[Id_Cliente],
-[Id_Tipo_Cuenta],
-[Estado],
-[Fecha_Cierre]
+/****************************************************************
+						CUENTA
+*****************************************************************/
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Cuenta](
+	[Cuenta_Numero][numeric] (18,0) PRIMARY KEY IDENTITY(1,1),
+	[Cuenta_Pais][numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Pais(Pais_Codigo),
+	[Id_Moneda][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Moneda(Id_Moneda),
+	[Fecha_Creacion][datetime],
+	[Id_Cliente][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Clientes(Id_Cliente),
+	[Id_Tipo_Cuenta][int]FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Tipo_Cuenta(Id_Tipo_Cuenta),
+	[Fecha_Cierre][datetime]
 )
-select distinct
+GO
+
+-- Apago el identity mientras cargo las cuentas de los clientes
+SET IDENTITY_INSERT LA_MAQUINA_DE_HUMO.Cuenta ON
+
+-- Cargo cuentas existentes
+INSERT INTO LA_MAQUINA_DE_HUMO.Cuenta(
+	[Cuenta_Numero],
+	[Cuenta_Pais],
+	[Id_Moneda],
+	[Fecha_Creacion],
+	[Id_Cliente],
+	[Id_Tipo_Cuenta],
+	[Fecha_Cierre]
+)
+SELECT DISTINCT
 	M.Cuenta_Numero,
 	M.Cuenta_Pais_Codigo,
 	1,
@@ -990,9 +1032,26 @@ select distinct
 		from LA_MAQUINA_DE_HUMO.Clientes as C 
 		where M.Cli_Nro_Doc = C.Cli_Nro_Doc),
 	4,
-	'habilitado',
 	null			
  From gd_esquema.Maestra as M
+
+-- Prendo el identity para la creacion de nuevas cuentas
+SET IDENTITY_INSERT LA_MAQUINA_DE_HUMO.Cuenta OFF
+GO
+
+
+/****************************************************************
+						CUENTA
+*****************************************************************/
+CREATE TABLE LA_MAQUINA_DE_HUMO.Suscripcion(
+	Id_Suscripcion int PRIMARY KEY IDENTITY (1,1),
+	Cuenta_Numero numeric(18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero),
+	Suscripcion_Fecha_Inicio datetime,
+	Suscripcion_Fecha_Fin datetime,
+	Suscripcion_costo_por_dia numeric (18,2)
+)
+GO
+
 
 
 

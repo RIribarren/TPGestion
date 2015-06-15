@@ -450,6 +450,8 @@ namespace PagoElectronico.ConexionDB
             sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = nuevaCuenta.cliente.id;
             sp.Parameters.Add("@Id_Tipo_Cuenta", SqlDbType.Int).Value = nuevaCuenta.tipoCuenta.id;
             sp.Parameters.Add("@Id_Moneda", SqlDbType.Int).Value = nuevaCuenta.moneda.id;
+            sp.Parameters.Add("@Cuenta_Pais", SqlDbType.Int).Value = nuevaCuenta.pais.id;
+            sp.Parameters.Add("@Cantidad_Suscripciones", SqlDbType.Int).Value = nuevaCuenta.cantidadSuscripciones;
 
             try
             {

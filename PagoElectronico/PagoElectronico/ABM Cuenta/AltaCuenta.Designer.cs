@@ -37,11 +37,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.textoNumericoValidable1 = new PagoElectronico.WidgetsGUI.TextoNumericoValidable();
+            this.label4 = new System.Windows.Forms.Label();
             this.gBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // gBox1
             // 
+            this.gBox1.Controls.Add(this.label4);
+            this.gBox1.Controls.Add(this.textoNumericoValidable1);
             this.gBox1.Controls.Add(this.TipoDeCuenta);
             this.gBox1.Controls.Add(this.TipoDeMoneda);
             this.gBox1.Controls.Add(this.PaisDeRegistro);
@@ -50,32 +54,32 @@
             this.gBox1.Controls.Add(this.label1);
             this.gBox1.Location = new System.Drawing.Point(12, 12);
             this.gBox1.Name = "gBox1";
-            this.gBox1.Size = new System.Drawing.Size(234, 107);
+            this.gBox1.Size = new System.Drawing.Size(234, 133);
             this.gBox1.TabIndex = 0;
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Datos de cuenta";
             // 
             // TipoDeCuenta
             // 
+            this.TipoDeCuenta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TipoDeCuenta.Location = new System.Drawing.Point(93, 73);
             this.TipoDeCuenta.Name = "TipoDeCuenta";
-            this.TipoDeCuenta.SelectedIndex = -1;
             this.TipoDeCuenta.Size = new System.Drawing.Size(121, 21);
             this.TipoDeCuenta.TabIndex = 5;
             // 
             // TipoDeMoneda
             // 
+            this.TipoDeMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TipoDeMoneda.Location = new System.Drawing.Point(93, 46);
             this.TipoDeMoneda.Name = "TipoDeMoneda";
-            this.TipoDeMoneda.SelectedIndex = -1;
             this.TipoDeMoneda.Size = new System.Drawing.Size(121, 21);
             this.TipoDeMoneda.TabIndex = 4;
             // 
             // PaisDeRegistro
             // 
+            this.PaisDeRegistro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PaisDeRegistro.Location = new System.Drawing.Point(93, 19);
             this.PaisDeRegistro.Name = "PaisDeRegistro";
-            this.PaisDeRegistro.SelectedIndex = -1;
             this.PaisDeRegistro.Size = new System.Drawing.Size(121, 21);
             this.PaisDeRegistro.TabIndex = 3;
             // 
@@ -108,7 +112,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 125);
+            this.button1.Location = new System.Drawing.Point(12, 169);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -118,7 +122,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(171, 125);
+            this.button2.Location = new System.Drawing.Point(171, 169);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -126,11 +130,27 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // textoNumericoValidable1
+            // 
+            this.textoNumericoValidable1.Location = new System.Drawing.Point(143, 100);
+            this.textoNumericoValidable1.Name = "textoNumericoValidable1";
+            this.textoNumericoValidable1.Size = new System.Drawing.Size(37, 20);
+            this.textoNumericoValidable1.TabIndex = 6;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 104);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(131, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Cantidad de suscripciones";
+            // 
             // AltaCuenta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(258, 158);
+            this.ClientSize = new System.Drawing.Size(258, 204);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.gBox1);
@@ -153,5 +173,7 @@
         private PagoElectronico.WidgetsGUI.ComboTipoCuenta TipoDeCuenta;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label4;
+        private PagoElectronico.WidgetsGUI.TextoNumericoValidable textoNumericoValidable1;
     }
 }

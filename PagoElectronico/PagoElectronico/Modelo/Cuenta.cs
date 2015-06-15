@@ -14,13 +14,15 @@ namespace PagoElectronico.Modelo
         public Cliente cliente;
         public TipoCuenta tipoCuenta;
         public String estado;
+        public int cantidadSuscripciones;
 
-        public Cuenta(Cliente cliente, Pais pais, Moneda moneda, TipoCuenta tipo)
+        public Cuenta(Cliente cliente, Pais pais, Moneda moneda, TipoCuenta tipo, int cantidadSuscripciones)
         {
             this.cliente = cliente;
             this.pais = pais;
             this.moneda = moneda;
             this.tipoCuenta = tipo;
+            this.cantidadSuscripciones = cantidadSuscripciones;
         }
 
         public Cuenta(
