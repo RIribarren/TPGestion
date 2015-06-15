@@ -390,15 +390,22 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearCuenta
 	@Id_Cliente int,
 	@Id_Tipo_Cuenta int,
-	@Id_Moneda int
+	@Id_Moneda int,
+	@Cuenta_Pais numeric(18,0) /** Agregue este parametro que es necesario **/
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-cliente: ' + CONVERT(varchar, @Id_Cliente) + '
-tipo cuenta: ' + CONVERT(varchar, @Id_Tipo_Cuenta) + '
-moneda: ' + CONVERT(varchar, @Id_Moneda) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+BEGIN TRANSACTION
+	BEGIN TRY
+			DECLARE @Ultima_Cuenta numeric(18,0)
+			SET @Ultima_Cuenta = (SELECT TOP 1 Cuenta_numero FROM LA_MAQUINA_DE_HUMO.Cuenta ORDER BY Cuenta_numero DESC)
+			INSERT INTO [LA_MAQUINA_DE_HUMO].Cuenta(Cuenta_Numero, Cuenta_Pais,Id_Moneda,Fecha_Creacion,Id_Cliente,
+			Id_Tipo_Cuenta,Estado,Fecha_Cierre)
+			VALUES (@Ultima_Cuenta +1 , @Cuenta_Pais, @Id_Moneda,LA_MAQUINA_DE_HUMO.obtenerFecha(),@Id_Cliente,@Id_Tipo_Cuenta,null)
+	END TRY
+	BEGIN CATCH
+	ROLLBACK
+	RAISERROR('La cuenta ya se encuentra en uso', 16, 1)
+	END CATCH
+COMMIT
 GO
 
 
@@ -408,10 +415,7 @@ GO
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentas
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+	SELECT DISTINCT * FROM LA_MAQUINA_DE_HUMO.Cuenta
 GO
 
 
@@ -422,11 +426,8 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentasCliente
 	@Id_Cliente int
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-cliente: ' + CONVERT(varchar, @Id_Cliente) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+     SELECT DISTINCT Cuenta_numero FROM LA_MAQUINA_DE_HUMO.Cuenta 
+     WHERE Id_Cliente = @Id_Cliente
 GO
 
 
@@ -437,11 +438,14 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].bajaCuenta
 	@Cuenta_Numero numeric(18,0)
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+    IF (SELECT COUNT(*) FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero) >= 1
+		BEGIN
+			UPDATE LA_MAQUINA_DE_HUMO.Cuenta
+			SET Habilitado = 'n'
+			WHERE Cuenta_Numero = @Cuenta_Numero
+		END
+	ELSE
+	RAISERROR('La Cuenta no existe en el sistema ', 16, 1)
 GO
 
 
