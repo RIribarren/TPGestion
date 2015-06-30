@@ -402,14 +402,16 @@ BEGIN TRANSACTION
 		[Fecha_Creacion],
 		[Id_Cliente],
 		[Id_Tipo_Cuenta],
-		[Fecha_Cierre]
+		[Fecha_Cierre],
+		[Estado_Id]
 	) VALUES (
 		@Cuenta_Pais,
 		@Id_Moneda,
 		LA_MAQUINA_DE_HUMO.obtenerFecha(),
 		@Id_Cliente,
 		@Id_Tipo_Cuenta,
-		NULL
+		NULL,
+		1
 	)
 
 	-- Creo las suscripciones
@@ -424,26 +426,28 @@ BEGIN TRANSACTION
 	
 	WHILE @i < @Cantidad_Suscripciones
 	BEGIN	
-		INSERT INTO LA_MAQUINA_DE_HUMO.Suscripcion(
-			Cuenta_Numero,
-			Suscripcion_Fecha_Inicio,
-			Suscripcion_Fecha_Fin,
-			Suscripcion_costo_por_dia,
-			Id_Tipo_Cuenta
+		INSERT INTO LA_MAQUINA_DE_HUMO.Alta_Cuenta(
+			Alta_Cuenta_Fecha_Inicio,
+			Alta_Cuenta_Fecha_Fin,
+			Cuenta_Numero
 		) VALUES (
-			@Cuenta_Numero,
 			LA_MAQUINA_DE_HUMO.obtenerFecha() + @Duracion_Suscripcion * @i,
-			(SELECT LA_MAQUINA_DE_HUMO.obtenerFecha() + @Duracion_Suscripcion * (@i + 1)
-				FROM LA_MAQUINA_DE_HUMO.Tipo_Cuenta
-				WHERE Id_Tipo_Cuenta = @Id_Tipo_Cuenta),
-			(SELECT Costo_Suscripcion_Por_Dia
-				FROM LA_MAQUINA_DE_HUMO.Tipo_Cuenta
-				WHERE Id_Tipo_Cuenta = @Id_Tipo_Cuenta),
-			@Id_Tipo_Cuenta
+			LA_MAQUINA_DE_HUMO.obtenerFecha() + @Duracion_Suscripcion * (@i + 1),
+			@Cuenta_Numero
 		)
 		
 		SET @i = @i + 1
 	END
+
+	DECLARE @Importe numeric(18,2)
+	SET @Importe = (SELECT Costo_Alta FROM LA_MAQUINA_DE_HUMO.Tipo_Cuenta WHERE Id_Tipo_Cuenta = @Id_Tipo_Cuenta)
+	
+	INSERT INTO LA_MAQUINA_DE_HUMO.Transaccion(
+		Id_Item,
+		Id_Cliente,
+		Importe,
+		Id_Evento)
+		SELECT TOP(@Cantidad_Suscripciones) 2, @Id_Cliente, @Importe, Id_Alta_Cuenta FROM LA_MAQUINA_DE_HUMO.Alta_Cuenta ORDER BY Id_Alta_Cuenta DESC
 COMMIT
 GO
 
@@ -458,52 +462,47 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].guardarCuenta
 	@Cuenta_Pais numeric(18,0)
 AS
 BEGIN TRANSACTION
-	-- Si hubo cambio de tipo de cuenta, actualizamos la cuenta y generamos registros de modificacion de suscripcion
-	-- si el nuevo tipo es de mayor precio
-	IF (SELECT Id_Tipo_Cuenta FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero) != @Id_Tipo_Cuenta
-	BEGIN
-		DECLARE @Precio_por_dia_actual numeric(18,2)
-		SET @Precio_por_dia_actual = (SELECT Costo_Suscripcion_Por_Dia FROM Cuenta c, Tipo_Cuenta tc
-			WHERE c.Id_Tipo_Cuenta = tc.Id_Tipo_Cuenta AND c.Cuenta_Numero = @Cuenta_Numero)
-		
-		DECLARE @Precio_por_dia_nuevo numeric(18,2)
-		SET @Precio_por_dia_nuevo = (SELECT Costo_Suscripcion_Por_Dia FROM Tipo_Cuenta WHERE Id_Tipo_Cuenta = @Id_Tipo_Cuenta)
-		
-		DECLARE @Precio_por_dia_de_modificacion numeric(18,2)
-		
-		-- Determino si hay que cobrar, dependiendo si el costo del nuevo tipo es mayor al que ya tenia
-		IF @Precio_por_dia_nuevo > @Precio_por_dia_actual
-		BEGIN
-			SET @Precio_por_dia_de_modificacion = @Precio_por_dia_nuevo - @Precio_por_dia_actual
-		END
-		ELSE
-		BEGIN
-			SET @Precio_por_dia_de_modificacion = 0
-		END
-		
-		
-		INSERT INTO LA_MAQUINA_DE_HUMO.ModificacionSuscripcion(
-			Id_Suscripcion,
-			Id_Nuevo_Tipo_Cuenta,
-			Modificacion_Fecha_Inicio,
-			Modificacion_Costo_Por_Dia
-		)
-		SELECT Id_Suscripcion,
-				@Id_Tipo_Cuenta,
-				CASE WHEN Suscripcion_Fecha_Inicio < LA_MAQUINA_DE_HUMO.obtenerFecha()
-					THEN LA_MAQUINA_DE_HUMO.obtenerFecha()
-					ELSE Suscripcion_Fecha_Inicio
-				END,
-				@Precio_por_dia_de_modificacion
-			FROM LA_MAQUINA_DE_HUMO.Suscripcion
-			WHERE Suscripcion_Fecha_Fin > LA_MAQUINA_DE_HUMO.obtenerFecha()
-				AND Cuenta_Numero = @Cuenta_Numero
-	END
+	DECLARE @Estado_Cuenta int
+	SET @Estado_Cuenta = (SELECT Estado_ID FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero)
 	
-	-- Hago el update de los campos de la cuenta	
+	IF @Estado_Cuenta = 4
+	BEGIN
+		RAISERROR('No puede modificarse una cuenta cerrada', 16, 1)
+		ROLLBACK
+		RETURN
+	END
+
+
 	UPDATE LA_MAQUINA_DE_HUMO.Cuenta
 		SET Id_Moneda = @Id_Moneda, Cuenta_Pais = @Cuenta_Pais, Id_Tipo_Cuenta = @Id_Tipo_Cuenta
 		WHERE Cuenta_Numero = @Cuenta_Numero
+		
+	INSERT INTO LA_MAQUINA_DE_HUMO.Modificacion_Cuenta(
+		[Modificacion_Cuenta_Fecha],
+		[Cuenta_Numero])
+	VALUES (
+		LA_MAQUINA_DE_HUMO.obtenerFecha(),
+		@Cuenta_Numero
+	)
+
+	DECLARE @Tipo_Cuenta_Anterior int
+	SET @Tipo_Cuenta_Anterior = (SELECT Id_Tipo_Cuenta FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero)
+
+	IF @Tipo_Cuenta_Anterior = @Id_Tipo_Cuenta
+	BEGIN
+		DECLARE @Id_Cliente int
+		SET @Id_Cliente = (SELECT Id_Cliente FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero) 
+
+		DECLARE @Importe numeric(18,2)
+		SET @Importe = (SELECT Costo_Modificacion FROM LA_MAQUINA_DE_HUMO.Tipo_Cuenta WHERE Id_Tipo_Cuenta = @Id_Tipo_Cuenta)
+		
+		INSERT INTO LA_MAQUINA_DE_HUMO.Transaccion(
+			Id_Item,
+			Id_Cliente,
+			Importe,
+			Id_Evento)
+			SELECT TOP(1) 3, @Id_Cliente, @Importe, Id_Modificacion_Cuenta FROM LA_MAQUINA_DE_HUMO.Modificacion_Cuenta
+	END
 COMMIT
 GO
 
@@ -536,7 +535,39 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].bajaCuenta
 	@Cuenta_Numero numeric(18,0)
 AS
-	RAISERROR('NO IMPLEMENTADO', 16, 1)
+BEGIN TRANSACTION
+	DECLARE @Transferencias_No_Facturadas int
+	SET @Transferencias_No_Facturadas = (SELECT COUNT(*) FROM Transaccion, Transferencia
+											WHERE Id_Evento = Id_Transferencia
+												AND Tranf_Cuenta_Origen_Numero = @Cuenta_Numero
+												AND Factura_Numero IS NULL)
+	DECLARE @Altas_No_Facturadas int
+	SET @Altas_No_Facturadas = (SELECT COUNT(*) FROM Transaccion, Alta_Cuenta
+											WHERE Id_Evento = Id_Alta_Cuenta
+												AND Cuenta_Numero = @Cuenta_Numero
+												AND Factura_Numero IS NULL)
+												
+	DECLARE @Modificaciones_No_Facturadas int
+	SET @Modificaciones_No_Facturadas = (SELECT COUNT(*) FROM Transaccion, Modificacion_Cuenta
+											WHERE Id_Evento = Id_Modificacion_Cuenta
+												AND Cuenta_Numero = @Cuenta_Numero
+												AND Factura_Numero IS NULL)
+
+	DECLARE @Transacciones_No_Facturadas int
+	SET @Transacciones_No_Facturadas = @Transferencias_No_Facturadas + @Altas_No_Facturadas + @Modificaciones_No_Facturadas
+
+	IF @Transacciones_No_Facturadas > 0
+	BEGIN
+		RAISERROR('La cuenta tiene transacciones no facturadas. No puede darse de baja', 16, 1)
+		ROLLBACK
+		RETURN
+	END
+	
+	UPDATE LA_MAQUINA_DE_HUMO.Cuenta
+		SET Estado_ID = 4, Fecha_Cierre = LA_MAQUINA_DE_HUMO.obtenerFecha()
+		WHERE Cuenta_Numero = @Cuenta_Numero
+	
+COMMIT
 GO
 
 
@@ -603,6 +634,23 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].depositar
 	@Id_Tarjeta int
 AS
 BEGIN TRANSACTION
+IF (Select Tarjeta_Fecha_Vencimiento from Tarjeta where Id_Tarjeta = @Id_Tarjeta) < LA_MAQUINA_DE_HUMO.obtenerFecha()
+BEGIN
+	RAISERROR('La tarjeta esta vencida, no es posible depositar',16,1)
+	ROLLBACK
+	RETURN
+END
+
+DECLARE @Estado_Cuenta int
+	SET @Estado_Cuenta = (SELECT Estado_ID FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero)
+	
+	IF @Estado_Cuenta != 2
+	BEGIN
+		RAISERROR('La cuenta destino no se encuentra habilitada', 16, 1)
+		ROLLBACK
+		RETURN
+	END
+
 	INSERT INTO LA_MAQUINA_DE_HUMO.Deposito(
 		Numero_Cuenta,
 		Deposito_importe,
@@ -641,10 +689,12 @@ BEGIN TRANSACTION
 	END
 
 	-- Verificar que la cuenta este habilitada
-	IF LA_MAQUINA_DE_HUMO.estadoCuenta(@Cuenta_Numero) != 'habilitado'
+	DECLARE @Estado_Cuenta int
+	SET @Estado_Cuenta = (SELECT Estado_ID FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero)
+	IF @Estado_Cuenta != 2
 	BEGIN
-		RAISERROR('No se puede efectuar el retiro dado que la cuenta no esta habilitada', 16, 1)
-		ROLLBACK TRANSACTION
+		RAISERROR('La cuenta destino no se encuentra habilitada', 16, 1)
+		ROLLBACK
 		RETURN
 	END
 	
@@ -692,20 +742,15 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].transferir
 	@Importe numeric(18,2)
 AS
 BEGIN TRANSACTION
-	IF LA_MAQUINA_DE_HUMO.estadoCuenta(@Numero_Cuenta_Origen) != 'habilitado'
+	DECLARE @Estado_Cuenta int
+	SET @Estado_Cuenta = (SELECT Estado_ID FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Numero_Cuenta_Destino)
+	IF @Estado_Cuenta != 2 AND @Estado_Cuenta != 3
 	BEGIN
-		RAISERROR('No se pueden realizar transferencias desde una cuenta no habilitada', 16, 1)
-		ROLLBACK TRANSACTION
+		RAISERROR('La cuenta destino debe estar habilitada o inhabilitada ', 16, 1)
+		ROLLBACK
 		RETURN
 	END
-	
-	IF LA_MAQUINA_DE_HUMO.estadoCuenta(@Numero_Cuenta_Destino) != 'habilitado'
-		AND LA_MAQUINA_DE_HUMO.estadoCuenta(@Numero_Cuenta_Destino) != 'inhabilitado'
-	BEGIN
-		RAISERROR('No se pueden realizar transferencias hacia una cuenta pendiente de activacion o cerrada', 16, 1)
-		ROLLBACK TRANSACTION
-		RETURN
-	END
+
 	
 	IF @Importe > LA_MAQUINA_DE_HUMO.saldoCuenta(@Numero_Cuenta_Origen)
 	BEGIN
@@ -791,20 +836,102 @@ Falta implementar este stored!'
 GO
 
 
+/****************************************************************
+ *					obtenerMontoDepositos
+ ****************************************************************/
+CREATE FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoDepositos(@Cuenta_Numero numeric(18,0))
+	RETURNS numeric(18,2)
+AS
+BEGIN
+	DECLARE @MontoDepositos numeric(18,2)
+	SET @MontoDepositos =(SELECT SUM(Deposito_Importe) FROM LA_MAQUINA_DE_HUMO.Deposito
+		WHERE Numero_Cuenta = @Cuenta_Numero
+			AND Deposito_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha())
+	
+	IF (@MontoDepositos IS NULL)
+	BEGIN
+		SET @MontoDepositos= 0
+	END
+	RETURN @MontoDepositos
+END
+GO
+
+
+/****************************************************************
+ *					obtenerMontoTransferenciasRecibidas
+ ****************************************************************/
+CREATE FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoTransferenciasRecibidas(@Cuenta_Numero numeric(18,0))
+	RETURNS numeric(18,2)
+AS
+BEGIN
+	DECLARE @MontoTranferenciasRecibidaas numeric(18,2)
+	SET @MontoTranferenciasRecibidaas= (SELECT SUM(Tranf_Importe) FROM LA_MAQUINA_DE_HUMO.Transferencia
+		WHERE Tranf_Cuenta_Dest_Numero = @Cuenta_Numero
+			AND Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha())
+	IF (@MontoTranferenciasRecibidaas IS NULL)
+	BEGIN
+		SET @MontoTranferenciasRecibidaas = 0
+	END
+	RETURN @MontoTranferenciasRecibidaas 
+END
+GO
+
+
+/****************************************************************
+ *					obtenerMontoTransferenciasRealizadas
+ ****************************************************************/
+CREATE FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoTransferenciasRealizadas(@Cuenta_Numero numeric(18,0))
+	RETURNS numeric(18,2)
+AS
+BEGIN
+	DECLARE @MontoTranferenciasRealizadas numeric(18,2)
+	SET @MontoTranferenciasRealizadas= (SELECT SUM(Tranf_Importe) FROM LA_MAQUINA_DE_HUMO.Transferencia
+		WHERE Tranf_Cuenta_Origen_Numero = @Cuenta_Numero
+			AND Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha())
+	IF (@MontoTranferenciasRealizadas IS NULL)
+	BEGIN
+		SET @MontoTranferenciasRealizadas = 0
+	END
+	RETURN @MontoTranferenciasRealizadas 
+END
+GO
+
+
+/****************************************************************
+ *					obtenerMontoRetiros
+ ****************************************************************/
+CREATE FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoRetiros(@Cuenta_Numero numeric(18,0))
+	RETURNS numeric(18,2)
+AS
+BEGIN
+	DECLARE @MontoRetiros numeric(18,2)
+	SET @MontoRetiros=(SELECT SUM(Retiro_Importe) FROM LA_MAQUINA_DE_HUMO.Retiro
+		WHERE Numero_Cuenta = @Cuenta_Numero
+			AND Retiro_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha())
+	
+	IF (@MontoRetiros IS NULL)
+	BEGIN
+		SET @MontoRetiros= 0
+	END
+	RETURN @MontoRetiros
+END
+GO
 
 /****************************************************************
  *					obtenerSaldoDeCuenta
  ****************************************************************/
-CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerSaldoDeCuenta
-	@Cuenta_Numero numeric(18,0)
+/*CREATE FUNCTION [LA_MAQUINA_DE_HUMO].obtenerSaldoDeCuenta (@Cuenta_Numero numeric(18,0))
+	RETURNS numeric(18,0)
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+BEGIN
+	RETURN (obtenerMontoDepositos(@Cuenta_Numero)
+		+ obtenerMontoTransferenciasRecibidas(@Cuenta_Numero)
+		- obtenerMontoTransferenciasRealizadas(@Cuenta_Numero)
+		- obtenerMontoRetiros(@Cuenta_Numero)
+		- @obtenerMontoFacturaciones(@Cuenta_Numero))
+END
 GO
-
+*/
 
 
 /****************************************************************
@@ -1138,15 +1265,16 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Auditoria](
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta](
 	[Id_Tipo_Cuenta][int] PRIMARY KEY,
 	[Duracion][int],
-	[Costo_Suscripcion_Por_Dia][numeric] (18,2),
+	[Costo_Alta][numeric] (18,2),
+	[Costo_Modificacion][numeric] (18,2),
 	[Costo_Tranferencia][numeric] (18,2),
 	[Descripcion][varchar](255)
 )
 
-INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (1, 30, 0, 20, 'GRATUITA')
-INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (2, 30, 1, 15, 'BRONCE')
-INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (3, 30, 1.5, 10, 'PLATA')
-INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (4, 30, 1.75, 5, 'ORO')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (1, 30, 0, 0, 20, 'GRATUITA')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (2, 30, 10, 5,15, 'BRONCE')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (3, 30, 20, 10, 10, 'PLATA')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta] values (4, 30, 30, 20, 5, 'ORO')
 
 
 /****************************************************************
@@ -1157,11 +1285,25 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Moneda](
 	[Descripcion][varchar](255)
 )
 INSERT INTO [LA_MAQUINA_DE_HUMO].[Moneda] values ('DOLAR')
+/****************************************************************
+						ESTADO_CUENTA
+****************************************************************/
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[ESTADO_CUENTA](
+	[Estado_Cuenta_ID] [int] PRIMARY KEY,
+	[Estado_Cuenta_Descripcion] [varchar] (255))
 
-
+INSERT INTO LA_MAQUINA_DE_HUMO.ESTADO_CUENTA(Estado_Cuenta_ID, Estado_Cuenta_Descripcion)
+	VALUES (1, 'Pendiente de activacion')
+INSERT INTO LA_MAQUINA_DE_HUMO.ESTADO_CUENTA(Estado_Cuenta_ID, Estado_Cuenta_Descripcion)
+	VALUES (2, 'Habilitada')
+INSERT INTO LA_MAQUINA_DE_HUMO.ESTADO_CUENTA(Estado_Cuenta_ID, Estado_Cuenta_Descripcion)
+	VALUES (3, 'Inhabilitada')
+INSERT INTO LA_MAQUINA_DE_HUMO.ESTADO_CUENTA(Estado_Cuenta_ID, Estado_Cuenta_Descripcion)
+	VALUES (4, 'Cerrada')
 /****************************************************************
 						CUENTA
 *****************************************************************/
+
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Cuenta](
 	[Cuenta_Numero][numeric] (18,0) PRIMARY KEY IDENTITY(1,1),
 	[Cuenta_Pais][numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Pais(Pais_Codigo),
@@ -1170,7 +1312,7 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Cuenta](
 	[Id_Cliente][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Clientes(Id_Cliente),
 	[Id_Tipo_Cuenta][int]FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Tipo_Cuenta(Id_Tipo_Cuenta),
 	[Fecha_Cierre][datetime],
-	[Estado][varchar](255)
+	[Estado_ID] [int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Estado_Cuenta(Estado_Cuenta_ID),
 )
 GO
 
@@ -1185,7 +1327,8 @@ INSERT INTO LA_MAQUINA_DE_HUMO.Cuenta(
 	[Fecha_Creacion],
 	[Id_Cliente],
 	[Id_Tipo_Cuenta],
-	[Fecha_Cierre]
+	[Fecha_Cierre],
+	[Estado_ID]
 )
 SELECT DISTINCT
 	M.Cuenta_Numero,
@@ -1196,7 +1339,8 @@ SELECT DISTINCT
 		from LA_MAQUINA_DE_HUMO.Clientes as C 
 		where M.Cli_Nro_Doc = C.Cli_Nro_Doc),
 	1,
-	null			
+	null,
+	2			
  From gd_esquema.Maestra as M
 
 -- Prendo el identity para la creacion de nuevas cuentas
@@ -1207,7 +1351,7 @@ GO
 /****************************************************************
 						SUSCRIPCION
 *****************************************************************/
-CREATE TABLE LA_MAQUINA_DE_HUMO.Suscripcion(
+/*CREATE TABLE LA_MAQUINA_DE_HUMO.Suscripcion(
 	Id_Suscripcion int PRIMARY KEY IDENTITY (1,1),
 	Cuenta_Numero numeric(18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero),
 	Suscripcion_Fecha_Inicio datetime,
@@ -1215,13 +1359,14 @@ CREATE TABLE LA_MAQUINA_DE_HUMO.Suscripcion(
 	Suscripcion_costo_por_dia numeric (18,2),
 	Id_Tipo_Cuenta int FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Tipo_Cuenta(Id_Tipo_Cuenta)
 )
-GO
+GO*/
 
 
 
 /****************************************************************
 						ModificacionSuscripcion
 *****************************************************************/
+/*
 CREATE TABLE LA_MAQUINA_DE_HUMO.ModificacionSuscripcion(
 	Id_Modificacion_Suscripcion int PRIMARY KEY IDENTITY (1,1),
 	Id_Suscripcion int FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Suscripcion(Id_Suscripcion),
@@ -1230,7 +1375,7 @@ CREATE TABLE LA_MAQUINA_DE_HUMO.ModificacionSuscripcion(
 	Modificacion_Costo_Por_Dia numeric(18,2)
 )
 GO
-
+*/
 
 /****************************************************************
 						TARJETA
@@ -1389,17 +1534,38 @@ INSERT INTO LA_MAQUINA_DE_HUMO.Transferencia(
 )
 SELECT Cuenta_Dest_Numero,
 		Cuenta_Numero,
-		0,
+		Trans_Importe,
 		Transf_Fecha,
 		Cuenta_Dest_Estado
 	FROM gd_esquema.Maestra
 	WHERE Cuenta_Dest_Numero IS NOT NULL
 		AND Cuenta_Numero IS NOT NULL
 		
-		
+
+/****************************************************************
+						ALTA CUENTA
+*****************************************************************/
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Alta_Cuenta](
+	[Id_Alta_Cuenta] [int] PRIMARY KEY IDENTITY (1,1),
+	[Alta_Cuenta_Fecha_Inicio] [datetime],
+	[Alta_Cuenta_Fecha_Fin] [datetime],
+	[Cuenta_Numero][numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero)
+)
 
 
+/****************************************************************
+						MODIFICACION CUENTA
+*****************************************************************/
+CREATE TABLE [LA_MAQUINA_DE_HUMO].[Modificacion_Cuenta](
+	[Id_Modificacion_Cuenta] [int] PRIMARY KEY IDENTITY (1,1),
+	[Modificacion_Cuenta_Fecha] [datetime],
+	[Cuenta_Numero][numeric] (18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero)
+)
 
+
+/****************************************************************
+						ITEM
+*****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Item](
 	[Id_Item] [int] PRIMARY KEY IDENTITY (1,1),
 	[Item_Descripcion] [varchar](255)
@@ -1411,33 +1577,36 @@ INSERT INTO LA_MAQUINA_DE_HUMO.Item values ('Comisión por modificacion de cuenta
 
 
 
-
+/****************************************************************
+						FACTURA
+*****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Factura] (
 	[Factura_Numero] [numeric](18,0) PRIMARY KEY,
-	[Factura_Fecha] [datetime]
+	[Factura_Fecha] [datetime],
+	[Id_Cliente] [int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Clientes(Id_Cliente)
 )
 
 INSERT INTO  [LA_MAQUINA_DE_HUMO].[Factura] (
 	[Factura_Numero],
-	[Factura_Fecha]
+	[Factura_Fecha],
+	[Id_Cliente]
 )
-SELECT DISTINCT Factura_Numero, Factura_Fecha
-	FROM gd_esquema.Maestra
+SELECT DISTINCT Factura_Numero, Factura_Fecha, (select Id_Cliente from LA_MAQUINA_DE_HUMO.Clientes c where c.Cli_Nro_Doc = m.Cli_Nro_Doc)
+	FROM gd_esquema.Maestra m
 	WHERE Factura_Numero IS NOT NULL
 
 
 
-
-
-
-
-
+/****************************************************************
+						Transaccion
+*****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Transaccion] (
 	[Id_Transaccion] [int] PRIMARY KEY IDENTITY (1,1),
-	[Factura_Numero] [numeric](18,0) FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].[Factura](Factura_Numero), 
+	[Factura_Numero] [numeric](18,0),
 	[Id_Item] [int] FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].[Item](Id_Item),
 	[Id_Cliente] [int]  FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].[Clientes](Id_Cliente),
-	[Importe] [numeric](18,2)
+	[Importe] [numeric](18,2),
+	[Id_Evento] [int]
 )
 
 INSERT INTO  [LA_MAQUINA_DE_HUMO].[Transaccion] (
