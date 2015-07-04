@@ -918,21 +918,57 @@ END
 GO
 
 /****************************************************************
- *					obtenerSaldoDeCuenta
+ *					f_obtenerSaldoDeCuenta
  ****************************************************************/
-/*CREATE FUNCTION [LA_MAQUINA_DE_HUMO].obtenerSaldoDeCuenta (@Cuenta_Numero numeric(18,0))
-	RETURNS numeric(18,0)
+CREATE FUNCTION [LA_MAQUINA_DE_HUMO].f_obtenerSaldoDeCuenta (@Cuenta_Numero numeric(18,0))
+	RETURNS numeric(18,2)
 AS
 BEGIN
-	RETURN (obtenerMontoDepositos(@Cuenta_Numero)
-		+ obtenerMontoTransferenciasRecibidas(@Cuenta_Numero)
-		- obtenerMontoTransferenciasRealizadas(@Cuenta_Numero)
-		- obtenerMontoRetiros(@Cuenta_Numero)
-		- @obtenerMontoFacturaciones(@Cuenta_Numero))
+	DECLARE @saldoCuenta numeric(18,2)
+	
+	SET @saldoCuenta = LA_MAQUINA_DE_HUMO.obtenerMontoDepositos(@Cuenta_Numero)
+		+ LA_MAQUINA_DE_HUMO.obtenerMontoTransferenciasRecibidas(@Cuenta_Numero)
+		- LA_MAQUINA_DE_HUMO.obtenerMontoTransferenciasRealizadas(@Cuenta_Numero)
+		- LA_MAQUINA_DE_HUMO.obtenerMontoRetiros(@Cuenta_Numero)
+		- LA_MAQUINA_DE_HUMO.obtenerMontoFacturaciones(@Cuenta_Numero)
+		
+	RETURN @saldoCuenta
 END
 GO
-*/
 
+
+/****************************************************************
+ *					obtenerMontoFacturaciones
+ ****************************************************************/
+CREATE FUNCTION[LA_MAQUINA_DE_HUMO].obtenerMontoFacturaciones (@Cuenta_Numero numeric(18,0))
+	RETURNS numeric(18,2)
+AS
+BEGIN
+	
+	Declare @Importe numeric(18,2)
+	Set @Importe = (Select Sum(Importe) from factura F, transaccion T where Numero_Cuenta = @Cuenta_Numero and F.Factura_Numero = T.Factura_Numero 
+	and F.Factura_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()) 
+	
+	IF @importe is null 
+	BEGIN
+		SET @importe= 0
+	END
+	
+	return @Importe
+
+END
+GO
+
+
+
+/****************************************************************
+ *					obtenerSaldoDeCuenta
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerSaldoDeCuenta
+	@Cuenta_Numero numeric(18,2)
+AS
+	SELECT LA_MAQUINA_DE_HUMO.f_obtenerSaldoDeCuenta(@Cuenta_Numero) AS Saldo_Cuenta
+GO
 
 /****************************************************************
  *					obtenerUltimos5Depositos
@@ -1583,15 +1619,15 @@ INSERT INTO LA_MAQUINA_DE_HUMO.Item values ('Comisión por modificacion de cuenta
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Factura] (
 	[Factura_Numero] [numeric](18,0) PRIMARY KEY,
 	[Factura_Fecha] [datetime],
-	[Id_Cliente] [int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Clientes(Id_Cliente)
+	[Numero_Cuenta] [numeric](18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero)
 )
 
 INSERT INTO  [LA_MAQUINA_DE_HUMO].[Factura] (
 	[Factura_Numero],
 	[Factura_Fecha],
-	[Id_Cliente]
+	[Numero_Cuenta]
 )
-SELECT DISTINCT Factura_Numero, Factura_Fecha, (select Id_Cliente from LA_MAQUINA_DE_HUMO.Clientes c where c.Cli_Nro_Doc = m.Cli_Nro_Doc)
+SELECT DISTINCT Factura_Numero, Factura_Fecha, (select Cuenta_Numero from LA_MAQUINA_DE_HUMO.Cuenta c where c.Cuenta_Numero = m.Cuenta_Numero)
 	FROM gd_esquema.Maestra m
 	WHERE Factura_Numero IS NOT NULL
 
@@ -1621,6 +1657,6 @@ SELECT DISTINCT
 	(Select Id_Cliente
 		FROM LA_MAQUINA_DE_HUMO.Clientes as C
 		WHERE C.Cli_Nro_Doc = M.Cli_Nro_Doc),
-	Trans_Importe
+	Item_Factura_Importe
 	FROM gd_esquema.Maestra as M
 	WHERE Factura_Numero IS NOT NULL

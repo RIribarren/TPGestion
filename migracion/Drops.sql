@@ -37,8 +37,11 @@ DROP PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimos5Retiros
 DROP PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimas10Transferencias
 DROP PROCEDURE [LA_MAQUINA_DE_HUMO].guardarCuenta
 DROP FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoDepositos
+DROP FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoRetiros
 DROP FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoTransferenciasRecibidas
 DROP FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoTransferenciasRealizadas
+DROP FUNCTION[LA_MAQUINA_DE_HUMO].obtenerMontoFacturaciones 
+DROP FUNCTION [LA_MAQUINA_DE_HUMO].f_obtenerSaldoDeCuenta
 GO
 DROP TABLE [LA_MAQUINA_DE_HUMO].[FECHA_DEL_SISTEMA]
 GO
