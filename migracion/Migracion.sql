@@ -752,7 +752,7 @@ BEGIN TRANSACTION
 	END
 
 	
-	IF @Importe > LA_MAQUINA_DE_HUMO.saldoCuenta(@Numero_Cuenta_Origen)
+	IF @Importe > LA_MAQUINA_DE_HUMO.f_obtenerSaldoDeCuenta(@Numero_Cuenta_Origen)
 	BEGIN
 		RAISERROR('El monto a transferir es mayor al saldo de la cuenta', 16, 1)
 		ROLLBACK TRANSACTION
@@ -789,7 +789,22 @@ BEGIN TRANSACTION
 		@Numero_Cuenta_Origen,
 		@Importe,
 		LA_MAQUINA_DE_HUMO.obtenerFecha(),
-		LA_MAQUINA_DE_HUMO.estadoCuenta(@Numero_Cuenta_Destino)
+		(SELECT Estado_ID FROM Cuenta WHERE Cuenta_Numero = @Numero_Cuenta_Destino)
+	)
+	
+	DECLARE @Id_Transferencia int
+	SET @Id_Transferencia = (SELECT TOP 1 Id_Transferencia FROM Transferencia ORDER BY Id_Transferencia DESC)
+	
+	INSERT INTO Transaccion(
+		Id_Cliente,
+		Id_Evento,
+		Id_Item,
+		Importe
+	) VALUES (
+		@Cliente_Cuenta_Origen,
+		@Id_Transferencia,
+		1,
+		@Costo_Transferencia	
 	)
 COMMIT
 GO
@@ -813,26 +828,93 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerTransaccionesImpagasDeCliente
 	@Id_Cliente int
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1) 
+   select T.Importe Importe, I.Item_Descripcion Descripcion, Tranf_Fecha Fecha from LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Item I, Transferencia
+	where Id_Cliente = @Id_Cliente and Factura_Numero is null 
+	and T.Id_Item = I.Id_Item
+	and T.Id_Item = 1
+	and Id_Transferencia = Id_Evento
+	and Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+   UNION ALL
+	select T.Importe Importe, I.Item_Descripcion Descripcion, Alta_Cuenta_Fecha_Inicio Fecha from LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Item I, Alta_Cuenta
+	where Id_Cliente = @Id_Cliente and Factura_Numero is null 
+	and T.Id_Item = I.Id_Item
+	and T.Id_Item = 2
+	and Id_Alta_Cuenta = Id_Evento
+	and Alta_Cuenta_Fecha_Inicio <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+   UNION ALL
+	select T.Importe Importe, I.Item_Descripcion Descripcion, Modificacion_Cuenta_Fecha Fecha from LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Item I, Modificacion_Cuenta
+	where Id_Cliente = @Id_Cliente and Factura_Numero is null 
+	and T.Id_Item = I.Id_Item
+	and T.Id_Item = 3
+	and Id_Modificacion_Cuenta = Id_Evento
+	and Modificacion_Cuenta_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
 GO
-
-
 
 /****************************************************************
  *					facturar
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].facturar
-	@Id_Cliente int
+	@Id_Cliente int,
+	@Cuenta_Numero numeric(18,0)
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+	CREATE TABLE #A_FACTURAR
+	(
+		Importe numeric(18,0),
+		Descripcion varchar(255),
+		Fecha datetime
+	)
+	
+	INSERT INTO #A_FACTURAR
+		EXEC LA_MAQUINA_DE_HUMO.obtenerTransaccionesImpagasDeCliente @Id_Cliente
+		
+	DECLARE @Monto_Total numeric(18,2)
+	SET @Monto_Total = (SELECT SUM(Importe) FROM #A_FACTURAR)
+	
+	IF LA_MAQUINA_DE_HUMO.f_obtenerSaldoDeCuenta(@Cuenta_Numero) < @Monto_Total
+	BEGIN
+		RAISERROR('La cuenta no tiene suficientes fondos', 16, 1)
+		RETURN
+	END
+
+BEGIN TRANSACTION
+	INSERT INTO LA_MAQUINA_DE_HUMO.Factura(
+		Factura_Fecha,
+		Numero_Cuenta
+	)VALUES(
+		LA_MAQUINA_DE_HUMO.obtenerFecha(),
+		@Cuenta_Numero
+	)
+	
+	DECLARE @Numero_Factura numeric(18,0)
+	SET @Numero_Factura = (SELECT TOP 1 Factura_Numero 
+								FROM LA_MAQUINA_DE_HUMO.Factura
+								WHERE Numero_Cuenta = @Cuenta_Numero
+								ORDER BY Factura_Numero DESC)
+	
+	UPDATE LA_MAQUINA_DE_HUMO.Transaccion
+		SET Factura_Numero = @Numero_Factura
+		FROM LA_MAQUINA_DE_HUMO.Transaccion 
+			JOIN LA_MAQUINA_DE_HUMO.Transferencia ON Id_Evento = Id_Transferencia
+		WHERE Factura_Numero IS NULL
+			AND Id_Cliente = @Id_Cliente
+			AND Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+			
+	UPDATE LA_MAQUINA_DE_HUMO.Transaccion
+		SET Factura_Numero = @Numero_Factura
+		FROM LA_MAQUINA_DE_HUMO.Transaccion 
+			JOIN LA_MAQUINA_DE_HUMO.Alta_Cuenta ON Id_Evento = Id_Alta_Cuenta
+		WHERE Factura_Numero IS NULL
+			AND Id_Cliente = @Id_Cliente
+			AND Alta_Cuenta_Fecha_Inicio <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+			
+	UPDATE LA_MAQUINA_DE_HUMO.Transaccion
+		SET Factura_Numero = @Numero_Factura
+		FROM LA_MAQUINA_DE_HUMO.Transaccion 
+			JOIN LA_MAQUINA_DE_HUMO.Modificacion_Cuenta ON Id_Evento = Id_Modificacion_Cuenta
+		WHERE Factura_Numero IS NULL
+			AND Id_Cliente = @Id_Cliente
+			AND Modificacion_Cuenta_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+COMMIT
 GO
 
 
@@ -976,11 +1058,10 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimos5Depositos
 	@Cuenta_Numero numeric(18,0)
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+	SELECT TOP 5 * FROM Deposito
+		WHERE Numero_Cuenta = @Cuenta_Numero
+			AND Deposito_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+		ORDER BY Deposito_Fecha DESC
 GO
 
 
@@ -991,11 +1072,10 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimos5Retiros
 	@Cuenta_Numero numeric(18,0)
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+	SELECT TOP 5 * FROM Retiro
+		WHERE Numero_Cuenta = @Cuenta_Numero
+			AND Retiro_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+		ORDER BY Retiro_Fecha DESC
 GO
 
 
@@ -1006,11 +1086,27 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimas10Transferencias
 	@Cuenta_Numero numeric(18,0)
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-Cuenta_Numero: ' + CONVERT(varchar, @Cuenta_Numero) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+	SELECT TOP 10 * FROM Transferencia
+		WHERE Tranf_Cuenta_Origen_Numero = @Cuenta_Numero
+			AND Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+		ORDER BY Tranf_Fecha DESC
+
+GO
+
+
+
+/****************************************************************
+ *					ClientesConMayorCantidadDeTransferenciasPropias
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].ClientesConMayorCantidadDeTransferenciasPropias
+AS
+	SELECT Cli.Id_Cliente, Cli_Nombre, Cli_Apellido, COUNT(Id_Transferencia)
+		FROM Clientes Cli, Transferencia T, Cuenta Cu
+		WHERE Cli.Id_Cliente = Cu.Id_Cliente
+			AND Cu.Cuenta_Numero = T.Tranf_Cuenta_Origen_Numero
+			AND Cu.Cuenta_Numero = T.Tranf_Cuenta_Dest_Numero
+		GROUP BY Cli.Id_Cliente, Cli_Nombre, Cli_Apellido
+		ORDER BY COUNT(Id_Transferencia) DESC
 GO
 
 
@@ -1617,11 +1713,12 @@ INSERT INTO LA_MAQUINA_DE_HUMO.Item values ('Comisión por modificacion de cuenta
 						FACTURA
 *****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Factura] (
-	[Factura_Numero] [numeric](18,0) PRIMARY KEY,
+	[Factura_Numero] [numeric](18,0) PRIMARY KEY IDENTITY(1,1),
 	[Factura_Fecha] [datetime],
 	[Numero_Cuenta] [numeric](18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero)
 )
 
+SET IDENTITY_INSERT LA_MAQUINA_DE_HUMO.Factura ON
 INSERT INTO  [LA_MAQUINA_DE_HUMO].[Factura] (
 	[Factura_Numero],
 	[Factura_Fecha],
@@ -1630,7 +1727,7 @@ INSERT INTO  [LA_MAQUINA_DE_HUMO].[Factura] (
 SELECT DISTINCT Factura_Numero, Factura_Fecha, (select Cuenta_Numero from LA_MAQUINA_DE_HUMO.Cuenta c where c.Cuenta_Numero = m.Cuenta_Numero)
 	FROM gd_esquema.Maestra m
 	WHERE Factura_Numero IS NOT NULL
-
+SET IDENTITY_INSERT LA_MAQUINA_DE_HUMO.Factura OFF
 
 
 /****************************************************************

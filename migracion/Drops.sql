@@ -42,6 +42,7 @@ DROP FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoTransferenciasRecibidas
 DROP FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoTransferenciasRealizadas
 DROP FUNCTION[LA_MAQUINA_DE_HUMO].obtenerMontoFacturaciones 
 DROP FUNCTION [LA_MAQUINA_DE_HUMO].f_obtenerSaldoDeCuenta
+DROP PROCEDURE [LA_MAQUINA_DE_HUMO].ClientesConMayorCantidadDeTransferenciasPropias
 GO
 DROP TABLE [LA_MAQUINA_DE_HUMO].[FECHA_DEL_SISTEMA]
 GO
