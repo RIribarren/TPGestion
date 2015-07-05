@@ -944,8 +944,7 @@ GO
  *					facturar
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].facturar
-	@Id_Cliente int,
-	@Cuenta_Numero numeric(18,0)
+	@Id_Cliente int
 AS
 	CREATE TABLE #A_FACTURAR
 	(
@@ -957,35 +956,21 @@ AS
 	INSERT INTO #A_FACTURAR
 		EXEC LA_MAQUINA_DE_HUMO.obtenerTransaccionesImpagasDeCliente @Id_Cliente
 		
-	DECLARE @Monto_Total numeric(18,2)
-	SET @Monto_Total = (SELECT SUM(Importe) FROM #A_FACTURAR)
-	
 	IF (SELECT COUNT(*) FROM #A_FACTURAR) = 0
 	BEGIN
 		RAISERROR('No hay elementos a facturar', 16, 1)
 		RETURN
 	END
-	
-	IF LA_MAQUINA_DE_HUMO.f_obtenerSaldoDeCuenta(@Cuenta_Numero) < @Monto_Total
-	BEGIN
-		RAISERROR('La cuenta no tiene suficientes fondos', 16, 1)
-		RETURN
-	END
 
 BEGIN TRANSACTION
 	INSERT INTO LA_MAQUINA_DE_HUMO.Factura(
-		Factura_Fecha,
-		Numero_Cuenta
+		Factura_Fecha
 	)VALUES(
-		LA_MAQUINA_DE_HUMO.obtenerFecha(),
-		@Cuenta_Numero
+		LA_MAQUINA_DE_HUMO.obtenerFecha()
 	)
 	
 	DECLARE @Numero_Factura numeric(18,0)
-	SET @Numero_Factura = (SELECT TOP 1 Factura_Numero 
-								FROM LA_MAQUINA_DE_HUMO.Factura
-								WHERE Numero_Cuenta = @Cuenta_Numero
-								ORDER BY Factura_Numero DESC)
+	SET @Numero_Factura = (SELECT TOP 1 Factura_Numero FROM LA_MAQUINA_DE_HUMO.Factura ORDER BY Factura_Numero DESC)
 	
 	UPDATE LA_MAQUINA_DE_HUMO.Transaccion
 		SET Factura_Numero = @Numero_Factura
@@ -1010,6 +995,13 @@ BEGIN TRANSACTION
 		WHERE Factura_Numero IS NULL
 			AND Id_Cliente = @Id_Cliente
 			AND Modificacion_Cuenta_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+	
+	-- Habilito las cuentas inhabilitadas del cliente		
+	UPDATE Cuenta
+		SET Estado_ID = 2
+		WHERE Id_Cliente = @Id_Cliente
+			AND Estado_ID = 3
+	
 COMMIT
 GO
 
@@ -1108,7 +1100,6 @@ BEGIN
 		+ LA_MAQUINA_DE_HUMO.obtenerMontoTransferenciasRecibidas(@Cuenta_Numero)
 		- LA_MAQUINA_DE_HUMO.obtenerMontoTransferenciasRealizadas(@Cuenta_Numero)
 		- LA_MAQUINA_DE_HUMO.obtenerMontoRetiros(@Cuenta_Numero)
-		- LA_MAQUINA_DE_HUMO.obtenerMontoFacturaciones(@Cuenta_Numero)
 		
 	RETURN @saldoCuenta
 END
@@ -1960,17 +1951,15 @@ INSERT INTO LA_MAQUINA_DE_HUMO.Item values ('Comisión por modificacion de cuenta
 *****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Factura] (
 	[Factura_Numero] [numeric](18,0) PRIMARY KEY IDENTITY(1,1),
-	[Factura_Fecha] [datetime],
-	[Numero_Cuenta] [numeric](18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero)
+	[Factura_Fecha] [datetime]
 )
 
 SET IDENTITY_INSERT LA_MAQUINA_DE_HUMO.Factura ON
 INSERT INTO  [LA_MAQUINA_DE_HUMO].[Factura] (
 	[Factura_Numero],
-	[Factura_Fecha],
-	[Numero_Cuenta]
+	[Factura_Fecha]
 )
-SELECT DISTINCT Factura_Numero, Factura_Fecha, (select Cuenta_Numero from LA_MAQUINA_DE_HUMO.Cuenta c where c.Cuenta_Numero = m.Cuenta_Numero)
+SELECT DISTINCT Factura_Numero, Factura_Fecha
 	FROM gd_esquema.Maestra m
 	WHERE Factura_Numero IS NOT NULL
 SET IDENTITY_INSERT LA_MAQUINA_DE_HUMO.Factura OFF
