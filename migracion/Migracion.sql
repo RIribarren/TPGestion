@@ -640,18 +640,33 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearTarjeta
 	@Tarjeta_Fecha_Vencimiento datetime,
 	@Tarjeta_Codigo_Seg varchar(255)
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
-Tarjeta_Numero: ' + CONVERT(varchar, @Tarjeta_Numero) + '
-Tarjeta_Emisor_Descripcion: ' + CONVERT(varchar, @Tarjeta_Emisor_Descripcion) + '
-Tarjeta_Fecha_Emision: ' + CONVERT(varchar, @Tarjeta_Fecha_Emision) + '
-Tarjeta_Fecha_Vencimiento: ' + CONVERT(varchar, @Tarjeta_Fecha_Vencimiento) + '
-Tarjeta_Codigo_Seg: ' + CONVERT(varchar, @Tarjeta_Codigo_Seg) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+BEGIN TRANSACTION
+	BEGIN TRY
+		INSERT INTO Tarjeta(
+			[Id_Cliente],
+			[Tarjeta_Numero],
+			[Tarjeta_Emisor_Descripcion],
+			[Tarjeta_Fecha_Emision],
+			[Tarjeta_Fecha_Vencimiento],
+			[Tarjeta_Codigo_Seg],
+			[Habilitado]
+		) VALUES (
+			@Id_Cliente,
+			@Tarjeta_Numero,
+			@Tarjeta_Emisor_Descripcion,
+			@Tarjeta_Fecha_Emision,
+			@Tarjeta_Fecha_Vencimiento,
+			@Tarjeta_Codigo_Seg,
+			's'
+		)	
+	END TRY
+	BEGIN CATCH
+		RAISERROR('Ya existe una tarjeta con ese numero', 16, 1)
+		ROLLBACK
+		RETURN		
+	END	CATCH	
+COMMIT
 GO
-
 
 
 /****************************************************************
@@ -664,19 +679,27 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].guardarTarjeta
 	@Tarjeta_Emisor_Descripcion varchar(255),
 	@Tarjeta_Fecha_Emision datetime,
 	@Tarjeta_Fecha_Vencimiento datetime,
-	@Tarjeta_Codigo_Seg varchar(255)
+	@Tarjeta_Codigo_Seg varchar(255),
+	@Habilitado char(1)
 AS
-	DECLARE @mensajeError varchar(2048)
-	SET @mensajeError = OBJECT_NAME(@@PROCID) + ': Recibi estos parametros:
-Id_Tarjeta: ' + CONVERT(varchar, @Id_Tarjeta) + '
-Id_Cliente: ' + CONVERT(varchar, @Id_Cliente) + '
-Tarjeta_Numero: ' + CONVERT(varchar, @Tarjeta_Numero) + '
-Tarjeta_Emisor_Descripcion: ' + CONVERT(varchar, @Tarjeta_Emisor_Descripcion) + '
-Tarjeta_Fecha_Emision: ' + CONVERT(varchar, @Tarjeta_Fecha_Emision) + '
-Tarjeta_Fecha_Vencimiento: ' + CONVERT(varchar, @Tarjeta_Fecha_Vencimiento) + '
-Tarjeta_Codigo_Seg: ' + CONVERT(varchar, @Tarjeta_Codigo_Seg) + '
-Falta implementar este stored!'
-	RAISERROR(@mensajeError, 16, 1)
+BEGIN TRANSACTION
+	BEGIN TRY
+		UPDATE Tarjeta
+			SET Id_Cliente = @Id_Cliente,
+			Tarjeta_Numero = @Tarjeta_Numero,
+			Tarjeta_Emisor_Descripcion = @Tarjeta_Emisor_Descripcion,
+			Tarjeta_Fecha_Emision = @Tarjeta_Fecha_Emision,
+			Tarjeta_Fecha_Vencimiento = @Tarjeta_Fecha_Vencimiento,
+			Tarjeta_Codigo_Seg = @Tarjeta_Codigo_Seg,
+			Habilitado = @Habilitado
+		WHERE Id_Tarjeta = @Id_Tarjeta
+	END TRY
+	BEGIN CATCH
+		RAISERROR('Ya existe una tarjeta con ese numero', 16, 1)
+		ROLLBACK
+		RETURN		
+	END	CATCH	
+COMMIT
 GO
 
 
@@ -1732,41 +1755,12 @@ GO
 
 
 /****************************************************************
-						SUSCRIPCION
-*****************************************************************/
-/*CREATE TABLE LA_MAQUINA_DE_HUMO.Suscripcion(
-	Id_Suscripcion int PRIMARY KEY IDENTITY (1,1),
-	Cuenta_Numero numeric(18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero),
-	Suscripcion_Fecha_Inicio datetime,
-	Suscripcion_Fecha_Fin datetime,
-	Suscripcion_costo_por_dia numeric (18,2),
-	Id_Tipo_Cuenta int FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Tipo_Cuenta(Id_Tipo_Cuenta)
-)
-GO*/
-
-
-
-/****************************************************************
-						ModificacionSuscripcion
-*****************************************************************/
-/*
-CREATE TABLE LA_MAQUINA_DE_HUMO.ModificacionSuscripcion(
-	Id_Modificacion_Suscripcion int PRIMARY KEY IDENTITY (1,1),
-	Id_Suscripcion int FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Suscripcion(Id_Suscripcion),
-	Id_Nuevo_Tipo_Cuenta int FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Tipo_Cuenta(Id_Tipo_Cuenta),
-	Modificacion_Fecha_Inicio Datetime,
-	Modificacion_Costo_Por_Dia numeric(18,2)
-)
-GO
-*/
-
-/****************************************************************
 						TARJETA
 *****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Tarjeta](
 	[Id_Tarjeta][int] PRIMARY KEY IDENTITY (1,1),
 	[Id_Cliente][int] FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Clientes(Id_Cliente),
-	[Tarjeta_Numero] [varchar](16),
+	[Tarjeta_Numero] [varchar](16) UNIQUE,
 	[Tarjeta_Emisor_Descripcion] [varchar](35),
 	[Tarjeta_Fecha_Emision] [datetime],
 	[Tarjeta_Fecha_Vencimiento] [datetime],
