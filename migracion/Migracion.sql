@@ -375,8 +375,50 @@ GO
 
 
 
+/****************************************************************
+ *					actualizarEstadoCuenta
+ ****************************************************************/
+CREATE PROCEDURE LA_MAQUINA_DE_HUMO.actualizarEstadoCuenta
+	@Cuenta_Numero numeric(18,0)
+AS
+BEGIN TRANSACTION
+	DECLARE @Transferencias_No_Pagas int
+	SET @Transferencias_No_Pagas = (SELECT COUNT(*)
+			FROM LA_MAQUINA_DE_HUMO.Transaccion, LA_MAQUINA_DE_HUMO.Transferencia
+			WHERE Id_Evento = Id_Transferencia
+				AND Factura_Numero IS NULL
+				AND Tranf_Cuenta_Origen_Numero = @Cuenta_Numero)
 
-
+	DECLARE @Altas_No_Pagas int
+	SET @Altas_No_Pagas = (SELECT COUNT(*)
+			FROM LA_MAQUINA_DE_HUMO.Transaccion, LA_MAQUINA_DE_HUMO.Alta_Cuenta
+			WHERE Id_Evento = Id_Alta_Cuenta
+				AND Factura_Numero IS NULL
+				AND Cuenta_Numero = @Cuenta_Numero)
+				
+	DECLARE @Modificaciones_No_Pagas int
+	SET @Modificaciones_No_Pagas = (SELECT COUNT(*)
+			FROM LA_MAQUINA_DE_HUMO.Transaccion, LA_MAQUINA_DE_HUMO.Modificacion_Cuenta
+			WHERE Id_Evento = Id_Modificacion_Cuenta
+				AND Factura_Numero IS NULL
+				AND Cuenta_Numero = @Cuenta_Numero)
+				
+	IF @Transferencias_No_Pagas + @Altas_No_Pagas + @Modificaciones_No_Pagas > 5
+	BEGIN
+		UPDATE LA_MAQUINA_DE_HUMO.Cuenta
+			SET Estado_ID = 3
+			WHERE Cuenta_Numero = @Cuenta_Numero
+			
+		INSERT INTO LA_MAQUINA_DE_HUMO.Inhabilitaciones(
+			Fecha_Inhabilitacion,
+			Cuenta_Numero
+		) VALUES (
+			LA_MAQUINA_DE_HUMO.obtenerFecha(),
+			@Cuenta_Numero
+		)
+	END
+COMMIT
+GO
 
 
 
@@ -442,12 +484,24 @@ BEGIN TRANSACTION
 	DECLARE @Importe numeric(18,2)
 	SET @Importe = (SELECT Costo_Alta FROM LA_MAQUINA_DE_HUMO.Tipo_Cuenta WHERE Id_Tipo_Cuenta = @Id_Tipo_Cuenta)
 	
-	INSERT INTO LA_MAQUINA_DE_HUMO.Transaccion(
-		Id_Item,
-		Id_Cliente,
-		Importe,
-		Id_Evento)
-		SELECT TOP(@Cantidad_Suscripciones) 2, @Id_Cliente, @Importe, Id_Alta_Cuenta FROM LA_MAQUINA_DE_HUMO.Alta_Cuenta ORDER BY Id_Alta_Cuenta DESC
+	IF @Importe > 0
+	BEGIN
+		INSERT INTO LA_MAQUINA_DE_HUMO.Transaccion(
+			Id_Item,
+			Id_Cliente,
+			Importe,
+			Id_Tipo_Cuenta,
+			Fecha_Transaccion,
+			Id_Evento)
+			SELECT TOP(@Cantidad_Suscripciones)
+					2,
+					@Id_Cliente,
+					@Importe,
+					@Id_Tipo_Cuenta,
+					LA_MAQUINA_DE_HUMO.obtenerFecha(),
+					Id_Alta_Cuenta
+				FROM LA_MAQUINA_DE_HUMO.Alta_Cuenta ORDER BY Id_Alta_Cuenta DESC
+	END
 COMMIT
 GO
 
@@ -472,6 +526,8 @@ BEGIN TRANSACTION
 		RETURN
 	END
 
+	DECLARE @Tipo_Cuenta_Anterior int
+	SET @Tipo_Cuenta_Anterior = (SELECT Id_Tipo_Cuenta FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero)
 
 	UPDATE LA_MAQUINA_DE_HUMO.Cuenta
 		SET Id_Moneda = @Id_Moneda, Cuenta_Pais = @Cuenta_Pais, Id_Tipo_Cuenta = @Id_Tipo_Cuenta
@@ -485,10 +541,7 @@ BEGIN TRANSACTION
 		@Cuenta_Numero
 	)
 
-	DECLARE @Tipo_Cuenta_Anterior int
-	SET @Tipo_Cuenta_Anterior = (SELECT Id_Tipo_Cuenta FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero)
-
-	IF @Tipo_Cuenta_Anterior = @Id_Tipo_Cuenta
+	IF @Tipo_Cuenta_Anterior < @Id_Tipo_Cuenta
 	BEGIN
 		DECLARE @Id_Cliente int
 		SET @Id_Cliente = (SELECT Id_Cliente FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Cuenta_Numero) 
@@ -500,9 +553,13 @@ BEGIN TRANSACTION
 			Id_Item,
 			Id_Cliente,
 			Importe,
+			Id_Tipo_Cuenta,
+			Fecha_Transaccion,
 			Id_Evento)
-			SELECT TOP(1) 3, @Id_Cliente, @Importe, Id_Modificacion_Cuenta FROM LA_MAQUINA_DE_HUMO.Modificacion_Cuenta
+			SELECT TOP(1) 3, @Id_Cliente, @Importe, @Id_Tipo_Cuenta, LA_MAQUINA_DE_HUMO.obtenerFecha(), Id_Modificacion_Cuenta FROM LA_MAQUINA_DE_HUMO.Modificacion_Cuenta
 	END
+	
+	EXEC LA_MAQUINA_DE_HUMO.actualizarEstadoCuenta @Cuenta_Numero
 COMMIT
 GO
 
@@ -791,25 +848,35 @@ BEGIN TRANSACTION
 		LA_MAQUINA_DE_HUMO.obtenerFecha(),
 		(SELECT Estado_ID FROM Cuenta WHERE Cuenta_Numero = @Numero_Cuenta_Destino)
 	)
+
+	IF @Costo_Transferencia > 0
+	BEGIN	
+		DECLARE @Id_Transferencia int
+		SET @Id_Transferencia = (SELECT TOP 1 Id_Transferencia FROM Transferencia ORDER BY Id_Transferencia DESC)
+
+		DECLARE @Id_Tipo_Cuenta_Origen int
+		SET @Id_Tipo_Cuenta_Origen = (SELECT TOP 1 Id_Tipo_Cuenta FROM Cuenta WHERE Cuenta_Numero = @Numero_Cuenta_Origen)
+		
+		INSERT INTO Transaccion(
+			Id_Cliente,
+			Id_Evento,
+			Id_Item,
+			Id_Tipo_Cuenta,
+			Importe,
+			Fecha_Transaccion
+		) VALUES (
+			@Cliente_Cuenta_Origen,
+			@Id_Transferencia,
+			1,
+			@Id_Tipo_Cuenta_Origen,		
+			@Costo_Transferencia,
+			LA_MAQUINA_DE_HUMO.obtenerFecha()
+		)
+	END
 	
-	DECLARE @Id_Transferencia int
-	SET @Id_Transferencia = (SELECT TOP 1 Id_Transferencia FROM Transferencia ORDER BY Id_Transferencia DESC)
-	
-	INSERT INTO Transaccion(
-		Id_Cliente,
-		Id_Evento,
-		Id_Item,
-		Importe
-	) VALUES (
-		@Cliente_Cuenta_Origen,
-		@Id_Transferencia,
-		1,
-		@Costo_Transferencia	
-	)
+	EXEC LA_MAQUINA_DE_HUMO.actualizarEstadoCuenta @Numero_Cuenta_Origen
 COMMIT
 GO
-
-
 
 
 /****************************************************************
@@ -869,6 +936,12 @@ AS
 		
 	DECLARE @Monto_Total numeric(18,2)
 	SET @Monto_Total = (SELECT SUM(Importe) FROM #A_FACTURAR)
+	
+	IF (SELECT COUNT(*) FROM #A_FACTURAR) = 0
+	BEGIN
+		RAISERROR('No hay elementos a facturar', 16, 1)
+		RETURN
+	END
 	
 	IF LA_MAQUINA_DE_HUMO.f_obtenerSaldoDeCuenta(@Cuenta_Numero) < @Monto_Total
 	BEGIN
@@ -1052,6 +1125,7 @@ AS
 	SELECT LA_MAQUINA_DE_HUMO.f_obtenerSaldoDeCuenta(@Cuenta_Numero) AS Saldo_Cuenta
 GO
 
+
 /****************************************************************
  *					obtenerUltimos5Depositos
  ****************************************************************/
@@ -1063,7 +1137,6 @@ AS
 			AND Deposito_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
 		ORDER BY Deposito_Fecha DESC
 GO
-
 
 
 /****************************************************************
@@ -1079,7 +1152,6 @@ AS
 GO
 
 
-
 /****************************************************************
  *					obtenerUltimas10Transferencias
  ****************************************************************/
@@ -1090,24 +1162,202 @@ AS
 		WHERE Tranf_Cuenta_Origen_Numero = @Cuenta_Numero
 			AND Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
 		ORDER BY Tranf_Fecha DESC
-
 GO
 
+
+/****************************************************************
+ *					obtenerFechaInicioTrimestre
+ ****************************************************************/
+CREATE FUNCTION [LA_MAQUINA_DE_HUMO].obtenerFechaInicioTrimestre (@anio int, @trimestre int)
+	RETURNS datetime
+AS
+BEGIN
+	RETURN CAST(
+		CAST(@anio AS varchar(4))
+		+ RIGHT('0' + CAST((@trimestre - 1) * 3 + 1 AS varchar(2)), 2)
+		+ '01'
+		AS DATETIME)
+END
+GO
+
+
+/****************************************************************
+ *					obtenerFechaFinTrimestre
+ ****************************************************************/
+CREATE FUNCTION [LA_MAQUINA_DE_HUMO].obtenerFechaFinTrimestre (@anio int, @trimestre int) RETURNS datetime
+AS
+BEGIN
+	DECLARE @FechaFin datetime
+	IF @trimestre = 4
+	BEGIN
+		SET @FechaFin = CAST(CAST(@anio as varchar(4)) + '1231' AS datetime)
+	END
+	ELSE
+	BEGIN
+		SET @FechaFin = CAST(
+			CAST(@anio AS varchar(4))
+			+ RIGHT('0' + CAST(@trimestre * 3 + 1 AS varchar(2)), 2)
+			+ '01'
+			AS DATETIME) - 1
+	END
+	
+	RETURN @FechaFin
+END
+GO
 
 
 /****************************************************************
  *					ClientesConMayorCantidadDeTransferenciasPropias
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].ClientesConMayorCantidadDeTransferenciasPropias
+	@anio int,
+	@trimestre int
 AS
-	SELECT Cli.Id_Cliente, Cli_Nombre, Cli_Apellido, COUNT(Id_Transferencia)
+	
+	IF LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre) > LA_MAQUINA_DE_HUMO.obtenerFecha()
+	BEGIN
+		RAISERROR('El trimestre seleccionado se encuentra en el futuro', 16, 1)
+		RETURN
+	END
+
+	SELECT TOP 5 Cli.Id_Cliente, Cli_Nombre, Cli_Apellido, COUNT(Id_Transferencia)
 		FROM Clientes Cli, Transferencia T, Cuenta Cu
 		WHERE Cli.Id_Cliente = Cu.Id_Cliente
 			AND Cu.Cuenta_Numero = T.Tranf_Cuenta_Origen_Numero
 			AND Cu.Cuenta_Numero = T.Tranf_Cuenta_Dest_Numero
+			AND Tranf_Fecha >= LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre)
+			AND Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFechaFinTrimestre(@anio, @trimestre)
 		GROUP BY Cli.Id_Cliente, Cli_Nombre, Cli_Apellido
 		ORDER BY COUNT(Id_Transferencia) DESC
 GO
+
+
+/****************************************************************
+ *					ClientesConMayorCantidadDeComisionesFacturadas
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].ClientesConMayorCantidadDeComisionesFacturadas
+	@anio int,
+	@trimestre int
+AS
+	
+	IF LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre) > LA_MAQUINA_DE_HUMO.obtenerFecha()
+	BEGIN
+		RAISERROR('El trimestre seleccionado se encuentra en el futuro', 16, 1)
+		RETURN
+	END
+
+	SELECT TOP 5 T.Id_Cliente, C.Cli_Nombre, C.Cli_Apellido, D.Doc_Desc, C.Cli_Nro_Doc, COUNT(*) AS Comisiones_Facturadas
+		FROM LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Clientes C, LA_MAQUINA_DE_HUMO.Factura F, LA_MAQUINA_DE_HUMO.Documento D
+		WHERE T.Id_Cliente = C.Id_Cliente
+			AND C.Cli_Tipo_Doc_Cod = D.Doc_Codigo
+			AND T.Factura_Numero = F.Factura_Numero
+			AND Id_Item = 1
+			AND F.Factura_Fecha >= LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre)
+			AND F.Factura_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFechaFinTrimestre(@anio, @trimestre)
+		GROUP BY T.Id_Cliente, C.Cli_Nombre, C.Cli_Apellido, D.Doc_Desc, C.Cli_Nro_Doc
+		ORDER BY COUNT(*) DESC
+GO
+
+
+/****************************************************************
+ *					PaisesConMayorCantidadDeMovimientos
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].PaisesConMayorCantidadDeMovimientos
+	@anio int,
+	@trimestre int
+AS
+	IF LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre) > LA_MAQUINA_DE_HUMO.obtenerFecha()
+	BEGIN
+		RAISERROR('El trimestre seleccionado se encuentra en el futuro', 16, 1)
+		RETURN
+	END
+
+	CREATE TABLE #EGRESOS_PAIS(
+		Pais_Codigo numeric(18,0) PRIMARY KEY,
+		Egresos int	
+	)
+
+	INSERT INTO #EGRESOS_PAIS(
+		Pais_Codigo,
+		Egresos
+	)
+		SELECT CO.Cuenta_Pais, COUNT(T.Id_Transferencia)
+			FROM LA_MAQUINA_DE_HUMO.Transferencia T,
+						LA_MAQUINA_DE_HUMO.Cuenta CO,
+						LA_MAQUINA_DE_HUMO.Cuenta CD
+					WHERE T.Tranf_Cuenta_Origen_Numero = CO.Cuenta_Numero
+						AND T.Tranf_Cuenta_Dest_Numero = CD.Cuenta_Numero
+						AND CO.Cuenta_Pais != CD.Cuenta_Pais
+						AND T.Tranf_Fecha >= LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre)
+						AND T.Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFechaFinTrimestre(@anio, @trimestre)
+					GROUP BY CO.Cuenta_Pais
+
+	CREATE TABLE #INGRESOS_PAIS(
+		Pais_Codigo numeric(18,0) PRIMARY KEY,
+		Ingresos int	
+	)
+
+	INSERT INTO #INGRESOS_PAIS(
+		Pais_Codigo,
+		Ingresos
+	)
+		SELECT CD.Cuenta_Pais, COUNT(T.Id_Transferencia)
+			FROM LA_MAQUINA_DE_HUMO.Transferencia T,
+						LA_MAQUINA_DE_HUMO.Cuenta CO,
+						LA_MAQUINA_DE_HUMO.Cuenta CD
+					WHERE T.Tranf_Cuenta_Origen_Numero = CO.Cuenta_Numero
+						AND T.Tranf_Cuenta_Dest_Numero = CD.Cuenta_Numero
+						AND CO.Cuenta_Pais != CD.Cuenta_Pais
+						AND T.Tranf_Fecha >= LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre)
+						AND T.Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFechaFinTrimestre(@anio, @trimestre)
+					GROUP BY CD.Cuenta_Pais
+
+
+	SELECT Pais_Desc, Ingresos, Egresos
+		FROM #INGRESOS_PAIS E, #EGRESOS_PAIS I, LA_MAQUINA_DE_HUMO.Pais P
+		WHERE E.Pais_Codigo = I.Pais_Codigo
+			AND E.Pais_Codigo = P.Pais_Codigo
+		ORDER BY Ingresos + Egresos DESC
+GO
+
+
+/****************************************************************
+ *					TotalFacturadoTiposCuenta
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].TotalFacturadoTiposCuenta
+	@anio int,
+	@trimestre int
+AS
+	SELECT Descripcion,
+			(SELECT ISNULL(SUM(Importe), 0)
+				FROM LA_MAQUINA_DE_HUMO.Transaccion TR
+				WHERE TR.Id_Tipo_Cuenta = TC.Id_Tipo_Cuenta
+					AND Fecha_Transaccion >= LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre)
+					AND Fecha_Transaccion <= LA_MAQUINA_DE_HUMO.obtenerFechaFinTrimestre(@anio, @trimestre)
+					AND Factura_Numero IS NOT NULL) AS Total_Facturado
+		FROM LA_MAQUINA_DE_HUMO.Tipo_Cuenta TC
+GO
+
+
+/****************************************************************
+ *					InhabilitacionesDeClientes
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].InhabilitacionesDeClientes
+	@anio int,
+	@trimestre int
+AS
+	SELECT TOP 5 CLI.Id_Cliente, Cli_Nombre, Cli_Apellido, COUNT(Id_Inhabilitacion) AS Inhabilitaciones
+		FROM LA_MAQUINA_DE_HUMO.Clientes CLI, LA_MAQUINA_DE_HUMO.Inhabilitaciones I, LA_MAQUINA_DE_HUMO.Cuenta CU
+		WHERE I.Cuenta_Numero = CU.Cuenta_Numero
+			AND CU.Id_Cliente = CLI.Id_Cliente
+			AND Fecha_Inhabilitacion >= LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre)
+			AND Fecha_Inhabilitacion <= LA_MAQUINA_DE_HUMO.obtenerFechaFinTrimestre(@anio, @trimestre)
+		GROUP BY CLI.Id_Cliente, Cli_Nombre, Cli_Apellido
+		ORDER BY COUNT(Id_Inhabilitacion)
+GO
+
+
+
 
 
 /***********************************************************************
@@ -1125,12 +1375,11 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[FECHA_DEL_SISTEMA](
 	[Fecha][DateTime] PRIMARY KEY
 )
 
-/* Cargo fecha actual para realizar la migracion.
- * La app va a actualizar esta fecha cada vez que sea ejecutada
- * de acuerdo al archivo de configuracion
- */
-INSERT INTO [LA_MAQUINA_DE_HUMO].FECHA_DEL_SISTEMA ([Fecha]) VALUES (GETDATE())
-
+-- Cargo la fecha en la que inicia el sistema
+DECLARE @fecha datetime
+SET @fecha = CAST('20170101' AS datetime)
+EXEC LA_MAQUINA_DE_HUMO.SetFecha @fecha
+GO
 
 
 /****************************************************************/
@@ -1417,6 +1666,8 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Moneda](
 	[Descripcion][varchar](255)
 )
 INSERT INTO [LA_MAQUINA_DE_HUMO].[Moneda] values ('DOLAR')
+
+
 /****************************************************************
 						ESTADO_CUENTA
 ****************************************************************/
@@ -1672,6 +1923,7 @@ SELECT Cuenta_Dest_Numero,
 	FROM gd_esquema.Maestra
 	WHERE Cuenta_Dest_Numero IS NOT NULL
 		AND Cuenta_Numero IS NOT NULL
+		AND Factura_Numero IS NOT NULL
 		
 
 /****************************************************************
@@ -1738,7 +1990,9 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Transaccion] (
 	[Factura_Numero] [numeric](18,0),
 	[Id_Item] [int] FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].[Item](Id_Item),
 	[Id_Cliente] [int]  FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].[Clientes](Id_Cliente),
+	[Id_Tipo_Cuenta] [int]  FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].[Tipo_Cuenta](Id_Tipo_Cuenta),
 	[Importe] [numeric](18,2),
+	[Fecha_Transaccion] [datetime],
 	[Id_Evento] [int]
 )
 
@@ -1746,7 +2000,10 @@ INSERT INTO  [LA_MAQUINA_DE_HUMO].[Transaccion] (
 	[Factura_Numero],
 	[Id_Item],
 	[Id_Cliente],
-	[Importe]
+	[Id_Tipo_Cuenta],
+	[Importe],
+	[Fecha_Transaccion],
+	[Id_Evento]
 )
 SELECT DISTINCT
 	Factura_Numero,
@@ -1754,6 +2011,18 @@ SELECT DISTINCT
 	(Select Id_Cliente
 		FROM LA_MAQUINA_DE_HUMO.Clientes as C
 		WHERE C.Cli_Nro_Doc = M.Cli_Nro_Doc),
-	Item_Factura_Importe
+	1,
+	Item_Factura_Importe,
+	Transf_Fecha,
+	1
 	FROM gd_esquema.Maestra as M
 	WHERE Factura_Numero IS NOT NULL
+
+/****************************************************************
+						Inhabilitaciones
+*****************************************************************/
+CREATE TABLE LA_MAQUINA_DE_HUMO.Inhabilitaciones(
+	Id_Inhabilitacion int IDENTITY(1,1) PRIMARY KEY,
+	Fecha_Inhabilitacion datetime,
+	Cuenta_Numero numeric(18,0) FOREIGN KEY REFERENCES LA_MAQUINA_DE_HUMO.Cuenta(Cuenta_Numero)
+)

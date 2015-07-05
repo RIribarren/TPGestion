@@ -43,6 +43,13 @@ DROP FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoTransferenciasRealizadas
 DROP FUNCTION[LA_MAQUINA_DE_HUMO].obtenerMontoFacturaciones 
 DROP FUNCTION [LA_MAQUINA_DE_HUMO].f_obtenerSaldoDeCuenta
 DROP PROCEDURE [LA_MAQUINA_DE_HUMO].ClientesConMayorCantidadDeTransferenciasPropias
+DROP FUNCTION LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre
+DROP FUNCTION LA_MAQUINA_DE_HUMO.obtenerFechaFinTrimestre
+DROP PROCEDURE [LA_MAQUINA_DE_HUMO].ClientesConMayorCantidadDeComisionesFacturadas
+DROP PROCEDURE [LA_MAQUINA_DE_HUMO].PaisesConMayorCantidadDeMovimientos
+DROP PROCEDURE [LA_MAQUINA_DE_HUMO].TotalFacturadoTiposCuenta
+DROP PROCEDURE [LA_MAQUINA_DE_HUMO].actualizarEstadoCuenta
+DROP PROCEDURE [LA_MAQUINA_DE_HUMO].InhabilitacionesDeClientes
 GO
 DROP TABLE [LA_MAQUINA_DE_HUMO].[FECHA_DEL_SISTEMA]
 GO
@@ -67,6 +74,8 @@ GO
 DROP TABLE [LA_MAQUINA_DE_HUMO].[Alta_Cuenta]
 GO
 DROP TABLE [LA_MAQUINA_DE_HUMO].[Modificacion_Cuenta]
+GO
+DROP TABLE [LA_MAQUINA_DE_HUMO].[Inhabilitaciones]
 GO
 DROP TABLE [LA_MAQUINA_DE_HUMO].[Cuenta]
 GO
