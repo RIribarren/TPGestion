@@ -30,10 +30,14 @@ namespace PagoElectronico.ABM_Cliente
             }
         }
 
-        public Rol obtenerRol()
+        public List<Rol> obtenerRoles()
         {
+            List<Rol> rolesSeleccionados = new List<Rol>();
             if (esValido())
-                return roles.ElementAt(celdaSeleccionada.RowIndex);
+            {
+                rolesSeleccionados.Add(roles.ElementAt(celdaSeleccionada.RowIndex));
+                return rolesSeleccionados;
+            }
 
             return null;
         }

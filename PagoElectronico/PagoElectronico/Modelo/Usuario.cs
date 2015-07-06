@@ -11,7 +11,7 @@ namespace PagoElectronico.Modelo
         public String username;
         public String preguntaSecreta;
         public String respuestaSecreta;
-        public Rol rol;
+        public List<Rol> roles;
         public Cliente cliente;
         private String passwordEncriptado;
         public String password
@@ -26,7 +26,7 @@ namespace PagoElectronico.Modelo
             String password,
             String preguntaSecreta,
             String respuestaSecreta,
-            Rol rol,
+            List<Rol> roles,
             Cliente cliente)
         {
             this.id = id;
@@ -34,7 +34,7 @@ namespace PagoElectronico.Modelo
             this.password = password;
             this.preguntaSecreta = preguntaSecreta;
             this.respuestaSecreta = respuestaSecreta;
-            this.rol = rol;
+            this.roles = roles;
             this.cliente = cliente;
         }
 
@@ -50,7 +50,7 @@ namespace PagoElectronico.Modelo
 
         internal bool esAdmin()
         {
-            return rol.id == 1;
+            return roles.Any(r => r.id == 1);
         }
     }
 }

@@ -337,7 +337,7 @@ namespace PagoElectronico.ConexionDB
                     reader["Password"].ToString(),
                     reader["Pregunta_Secreta"].ToString(),
                     reader["Respuesta_Secreta"].ToString(),
-                    getRoles().Find(r => r.id == int.Parse(reader["Id_Rol"].ToString())),
+                    getRolesUsuario(int.Parse(reader["Id_Usuario"].ToString())),
                     obtenerClieteDeUsuario(int.Parse(reader["Id_Usuario"].ToString())));
                 storedLogin.Connection.Close();
             } catch (SqlException excepcion) {
@@ -345,6 +345,32 @@ namespace PagoElectronico.ConexionDB
             }
 
             return usuario;
+        }
+
+        private List<Rol> getRolesUsuario(int idUsuario)
+        {
+            SqlCommand sp = obtenerStoredProcedure("obtenerRolesDeUsuario");
+            sp.Parameters.Add("@Id_Usuario", SqlDbType.Int).Value = idUsuario;
+
+            List<Rol> rolesDeUsuario = new List<Rol>();
+            SqlDataReader reader;
+
+            try
+            {
+                reader = sp.ExecuteReader();
+                while (reader.Read())
+                    rolesDeUsuario.Add(new Rol(
+                        int.Parse(reader["Id_Rol"].ToString()),
+                        reader["Rol_Nombre"].ToString(),
+                        obtenerFuncionalidadesDeRol(int.Parse(reader["Id_Rol"].ToString())),
+                        reader["Habilitado"].ToString() == "s"));
+            }
+            catch (SqlException excepcion)
+            {
+                throw new ErrorEnRepositorioException(excepcion.Message);
+            }
+
+            return rolesDeUsuario;
         }
 
         private Cliente obtenerClieteDeUsuario(int Id_Usuario)
@@ -784,7 +810,7 @@ namespace PagoElectronico.ConexionDB
             spCrearClienteYUsuario.Parameters.Add("@Password", SqlDbType.VarChar).Value = nuevoUsuario.password;
             spCrearClienteYUsuario.Parameters.Add("@PreguntaSecreta", SqlDbType.VarChar).Value = nuevoUsuario.preguntaSecreta;
             spCrearClienteYUsuario.Parameters.Add("@RespuestaSecreta", SqlDbType.VarChar).Value = nuevoUsuario.respuestaSecreta;
-            spCrearClienteYUsuario.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = nuevoUsuario.rol.id;
+            //spCrearClienteYUsuario.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = nuevoUsuario.rol.id;
             spCrearClienteYUsuario.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = nuevoCliente.nombre;
             spCrearClienteYUsuario.Parameters.Add("@Apellido", SqlDbType.VarChar).Value = nuevoCliente.Apellido;
             spCrearClienteYUsuario.Parameters.Add("@NroDocumento", SqlDbType.Decimal).Value = Convert.ToDecimal(nuevoCliente.nroIdentificacion);

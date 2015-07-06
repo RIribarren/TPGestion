@@ -22,16 +22,18 @@ namespace PagoElectronico.Menu
     public partial class MenuPrincipal : Ventana
     {
         private Usuario usuario;
+        private Rol rolAUsar;
 
-        public MenuPrincipal(Usuario usuario)
+        public MenuPrincipal(Usuario usuario, Rol rolAUsar)
         {
             InitializeComponent();
             this.usuario = usuario;
+            this.rolAUsar = rolAUsar;
         }
 
         protected override void cargarDatos()
         {
-            foreach (Funcionalidad funcionalidad in usuario.rol.funcionalidades)
+            foreach (Funcionalidad funcionalidad in rolAUsar.funcionalidades)
             {
                 Funcionalidades.Items.Add(funcionalidad.nombre);
             }
@@ -53,7 +55,7 @@ namespace PagoElectronico.Menu
 
         private Ventana obtenerVentanaDeFuncionalidad()
         {
-            Funcionalidad funcionalidadElegida = usuario.rol.funcionalidades.ElementAt(Funcionalidades.SelectedIndex);
+            Funcionalidad funcionalidadElegida = rolAUsar.funcionalidades.ElementAt(Funcionalidades.SelectedIndex);
 
             if (funcionalidadElegida.id == Funcionalidad.ABMROL)
                 return new ABMRol();

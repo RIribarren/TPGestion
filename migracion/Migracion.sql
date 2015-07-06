@@ -50,6 +50,7 @@ AS
 					FROM Usuario
 					WHERE Username = @Username)
 			RAISERROR('El usuario se encuentra bloqueado por acumulacion de intentos fallidos', 16, 1)
+			RETURN
 		END
 		-- Logueo login satisfactorio
 		INSERT INTO Auditoria ([Id_Usuario], [Fecha], [Resultado], [Nro_Intento])
@@ -78,6 +79,7 @@ AS
 					(SELECT Cantidad_Intentos_Fallidos + 1
 						FROM Usuario u
 						WHERE u.Username = @Username)
+				WHERE Username = @Username
 			
 			-- Logueo el evento
 			INSERT INTO Auditoria ([Id_Usuario], [Fecha], [Resultado], [Nro_Intento])
@@ -93,12 +95,25 @@ GO
 
 
 /****************************************************************
- *							ObtenerRol
+ *							ObtenerRoles
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerRoles
 AS
 	SELECT Id_Rol, Rol_Nombre, Habilitado
 		FROM Rol
+GO
+
+
+/****************************************************************
+ *							obtenerRolesDeUsuario
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerRolesDeUsuario
+	@Id_Usuario int
+AS
+	SELECT R.Id_Rol, Rol_Nombre, Habilitado
+		FROM Rol R, Usuario_Rol UR
+		WHERE UR.Id_Usuario = @Id_Usuario
+			AND UR.Id_Rol = R.Id_Rol
 GO
 
 
@@ -1420,8 +1435,6 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Funcionalidad](
 )
 
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(1, 'ABM de Rol')
---INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(2, 'Login y seguridad')
---INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(3, 'ABM de Usuario')
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(4, 'ABM de Cliente')
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(5, 'ABM de Cuenta')
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(6, 'Depósitos')
@@ -1478,10 +1491,6 @@ UNION
 		WHERE Cli_Pais_Codigo NOT IN (SELECT Cuenta_Pais_Codigo
 										FROM gd_esquema.Maestra)
 
-/*
-	SELECT DISTINCT Cli_Pais_Codigo, Cli_Pais_Desc
-		FROM gd_esquema.Maestra
-*/
 GO
 
 
@@ -1489,16 +1498,23 @@ GO
 --						DOCUMENTO
 /****************************************************************/
 CREATE TABLE [LA_MAQUINA_DE_HUMO].[Documento](
-	[Doc_Codigo][numeric](18,0) PRIMARY KEY,
+	[Doc_Codigo][numeric](18,0) IDENTITY(1,1) PRIMARY KEY,
 	[Doc_Desc][varchar](255) NOT NULL
 )
 
+SET IDENTITY_INSERT LA_MAQUINA_DE_HUMO.Documento ON
 INSERT INTO [LA_MAQUINA_DE_HUMO].[Documento](
 	[Doc_Codigo],
 	[Doc_Desc]
 )
 SELECT DISTINCT Cli_Tipo_Doc_Cod, Cli_Tipo_Doc_Desc
 		FROM gd_esquema.Maestra
+SET IDENTITY_INSERT LA_MAQUINA_DE_HUMO.Documento OFF
+
+		
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Documento]([Doc_Desc]) VALUES ('DNI')
+INSERT INTO [LA_MAQUINA_DE_HUMO].[Documento]([Doc_Desc]) VALUES ('Cedula')
+
 GO
 
 
@@ -1514,8 +1530,7 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Usuario](
 	[Fecha_Creacion][datetime] NOT NULL,
 	[Fecha_Ultima_Modificacion][datetime] NOT NULL,
 	[Pregunta_Secreta][varchar](255),
-	[Respuesta_Secreta][varchar](255),
-	[Id_Rol][int] FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].Rol(Id_Rol) 
+	[Respuesta_Secreta][varchar](255)
 )
 
 /* Creacion de 2 usuarios administradores pedidos por el enunciado */
@@ -1527,14 +1542,12 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 	[Fecha_Creacion],
 	[Fecha_Ultima_Modificacion],
 	[Pregunta_Secreta],
-	[Respuesta_Secreta],
-	[Id_Rol]
+	[Respuesta_Secreta]
 ) VALUES (
 	0, 'admin1',
 	'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', --SHA256 de "w23e"
 	's', GETDATE(), GETDATE(), 'Pregunta secreta de admin',
-	'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f', --SHA256 de "default"
-	1
+	'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f' --SHA256 de "default"
 )
 
 INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
@@ -1545,14 +1558,12 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 	[Fecha_Creacion],
 	[Fecha_Ultima_Modificacion],
 	[Pregunta_Secreta],
-	[Respuesta_Secreta],
-	[Id_Rol]
+	[Respuesta_Secreta]
 ) VALUES (
 	0, 'admin2',
 	'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', --SHA256 de "w23e"
 	's', GETDATE(), GETDATE(), 'Pregunta secreta de admin',
-	'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f', --SHA256 de "default"
-	1
+	'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f' --SHA256 de "default"
 )
 
 /* Creacion de usuarios de los clientes de la tabla maestra */
@@ -1564,8 +1575,7 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 	[Fecha_Creacion],
 	[Fecha_Ultima_Modificacion],
 	[Pregunta_Secreta],
-	[Respuesta_Secreta],
-	[Id_Rol]
+	[Respuesta_Secreta]
 )
 	SELECT DISTINCT
 		0,
@@ -1575,11 +1585,31 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 		GETDATE(),
 		GETDATE(),
 		'Pregunta secreta default',
-		'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f', --SHA256 de "default"
-		2
+		'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f' --SHA256 de "default"
 		FROM gd_esquema.Maestra
 GO
 
+
+/****************************************************************
+						USUARIO_ROL
+*****************************************************************/
+CREATE TABLE LA_MAQUINA_DE_HUMO.Usuario_Rol(
+	[Id_Usuario][int] FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].Usuario(Id_Usuario)  NOT NULL,
+	[Id_Rol][int] FOREIGN KEY REFERENCES [LA_MAQUINA_DE_HUMO].Rol(Id_Rol) NOT NULL
+	
+	CONSTRAINT [PK_Usuario_Rol] PRIMARY KEY CLUSTERED 
+	(
+		[Id_Usuario],
+		[Id_Rol]
+	)
+)
+	INSERT INTO LA_MAQUINA_DE_HUMO.Usuario_Rol(
+		Id_Usuario,
+		Id_Rol
+	)
+		SELECT Id_Usuario, CASE WHEN Id_Usuario <= 2 THEN 1 ELSE 2 END
+			FROM LA_MAQUINA_DE_HUMO.Usuario
+			
 
 /****************************************************************/
 --						CLIENTES

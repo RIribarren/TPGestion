@@ -35,8 +35,13 @@ namespace PagoElectronico
             {
                 Usuario usuario = RepositorioDeDatos.getInstance().login(Username.Text, Password.Text);
 
-                if (usuario.rol.estaActivo)
-                    abrirVentanaHija(new MenuPrincipal(usuario));
+                if (usuario.roles.Any(r => r.estaActivo))
+                {
+                    Rol rolAUsar = obtenerRolAUsar(usuario);
+
+                    if (rolAUsar != null)
+                        abrirVentanaHija(new MenuPrincipal(usuario, rolAUsar));
+                }
                 else
                     mostrarError("El rol del usuario no está habilitado");
 
@@ -46,6 +51,18 @@ namespace PagoElectronico
             {
                 mostrarError(excepcion.mensaje);
             }
+        }
+
+        private Rol obtenerRolAUsar(Usuario usuario)
+        {
+            if (usuario.roles.FindAll(r => r.estaActivo).Count == 1)
+                return usuario.roles.Find(r => r.estaActivo);
+
+            EleccionRol eleccionRol = new EleccionRol(usuario);
+            abrirVentanaHija(eleccionRol);
+
+            Rol rolAUsar = eleccionRol.rolElegido;
+            return rolAUsar;
         }
     }
 }
