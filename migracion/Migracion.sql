@@ -996,11 +996,12 @@ BEGIN TRANSACTION
 			AND Id_Cliente = @Id_Cliente
 			AND Modificacion_Cuenta_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
 	
-	-- Habilito las cuentas inhabilitadas del cliente		
+	-- Habilito las cuentas inhabilitadas y pendientes del cliente		
 	UPDATE Cuenta
 		SET Estado_ID = 2
 		WHERE Id_Cliente = @Id_Cliente
 			AND Estado_ID = 3
+			OR Estado_ID = 1
 	
 COMMIT
 GO
