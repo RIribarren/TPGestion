@@ -228,7 +228,7 @@ GO
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearClienteYUsuario
 	@Username varchar(255), @Password varchar(255), @PreguntaSecreta varchar(255),
-	@RespuestaSecreta varchar(255), @Id_Rol int,
+	@RespuestaSecreta varchar(255),
 	@Nombre varchar(255), @Apellido varchar(255), @NroDocumento numeric(18,0),
 	@Id_TipoDocumento int, @Mail varchar(255), @Id_Pais int, @Dom_Nro int,
 	@Dom_Calle varchar(255), @Dom_Piso int = NULL, @Dom_Depto varchar(255) = NULL,
@@ -238,10 +238,10 @@ BEGIN TRANSACTION
 	BEGIN TRY
 		INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario([Cantidad_Intentos_Fallidos], [Username],
 				[Password],[Habilitado],[Fecha_Creacion],[Fecha_Ultima_Modificacion],
-				[Pregunta_Secreta],[Respuesta_Secreta],[Id_Rol])
+				[Pregunta_Secreta],[Respuesta_Secreta])
 			VALUES (0, @Username, @Password, 's',
 				LA_MAQUINA_DE_HUMO.obtenerFecha(), LA_MAQUINA_DE_HUMO.obtenerFecha(),
-				@PreguntaSecreta, @RespuestaSecreta, @Id_Rol)
+				@PreguntaSecreta, @RespuestaSecreta)
 	END TRY
 	BEGIN CATCH
 		ROLLBACK
@@ -267,6 +267,23 @@ BEGIN TRANSACTION
 		RAISERROR('Ya existe un cliente con esa identificacion y/o email', 16, 1)
 		RETURN
 	END CATCH
+	
+	SELECT TOP 1 Id_Cliente, Id_Usuario
+		FROM Clientes
+		ORDER BY Id_Cliente DESC
+COMMIT
+GO
+
+
+/****************************************************************
+ *					agregarRolAUsuario
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].agregarRolAUsuario
+	@Id_Usuario int,
+	@Id_Rol int
+AS
+BEGIN TRANSACTION
+	INSERT INTO LA_MAQUINA_DE_HUMO.Usuario_Rol(Id_Usuario, Id_Rol) VALUES (@Id_Usuario, @Id_Rol)
 COMMIT
 GO
 

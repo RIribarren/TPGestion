@@ -810,7 +810,6 @@ namespace PagoElectronico.ConexionDB
             spCrearClienteYUsuario.Parameters.Add("@Password", SqlDbType.VarChar).Value = nuevoUsuario.password;
             spCrearClienteYUsuario.Parameters.Add("@PreguntaSecreta", SqlDbType.VarChar).Value = nuevoUsuario.preguntaSecreta;
             spCrearClienteYUsuario.Parameters.Add("@RespuestaSecreta", SqlDbType.VarChar).Value = nuevoUsuario.respuestaSecreta;
-            //spCrearClienteYUsuario.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = nuevoUsuario.rol.id;
             spCrearClienteYUsuario.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = nuevoCliente.nombre;
             spCrearClienteYUsuario.Parameters.Add("@Apellido", SqlDbType.VarChar).Value = nuevoCliente.Apellido;
             spCrearClienteYUsuario.Parameters.Add("@NroDocumento", SqlDbType.Decimal).Value = Convert.ToDecimal(nuevoCliente.nroIdentificacion);
@@ -828,6 +827,16 @@ namespace PagoElectronico.ConexionDB
             try
             {
                 var reader = spCrearClienteYUsuario.ExecuteReader();
+                reader.Read();
+                int Id_Usuario = int.Parse(reader["Id_Usuario"].ToString());
+
+                foreach (Rol rol in nuevoUsuario.roles)
+                {
+                    SqlCommand sp = obtenerStoredProcedure("agregarRolAUsuario");
+                    sp.Parameters.Add("@Id_Usuario", SqlDbType.Int).Value = Id_Usuario;
+                    sp.Parameters.Add("@Id_Rol", SqlDbType.Int).Value = rol.id;
+                    sp.ExecuteNonQuery();
+                }
             }
             catch (SqlException ex)
             {

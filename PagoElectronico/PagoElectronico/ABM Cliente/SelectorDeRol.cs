@@ -11,7 +11,7 @@ using PagoElectronico.WidgetsGUI;
 
 namespace PagoElectronico.ABM_Cliente
 {
-    public partial class SelectorDeRol : GridCheckBox
+    public partial class SelectorDeRol : DataGridView, Limpiable, Validable
     {
         protected List<Rol> roles;
         
@@ -35,11 +35,34 @@ namespace PagoElectronico.ABM_Cliente
             List<Rol> rolesSeleccionados = new List<Rol>();
             if (esValido())
             {
-                rolesSeleccionados.Add(roles.ElementAt(celdaSeleccionada.RowIndex));
-                return rolesSeleccionados;
+                foreach (DataGridViewRow fila in this.Rows)
+                    foreach (var celda in fila.Cells.OfType<DataGridViewCheckBoxCell>())
+                        if (Boolean.Parse(celda.Value.ToString()) == true)
+                            rolesSeleccionados.Add(roles.ElementAt(fila.Index));
             }
 
-            return null;
+            return rolesSeleccionados;
+        }
+
+        public void limpiar()
+        {
+            foreach (DataGridViewRow fila in this.Rows)
+                foreach (var celda in fila.Cells.OfType<DataGridViewCheckBoxCell>())
+                    celda.Value = false;
+        }
+
+        public bool esValido()
+        {
+            foreach (DataGridViewRow fila in this.Rows)
+                if (fila.Cells.OfType<DataGridViewCheckBoxCell>().Any(c => Convert.ToBoolean(c.Value) == true))
+                    return true;
+
+            return false;
+        }
+
+        public string obtenerMensajeDeError()
+        {
+            return "Debe seleccionar al menos un elemento de la lista " + Name;
         }
     }
 }
