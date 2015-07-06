@@ -15,6 +15,8 @@ namespace PagoElectronico.ABM_Cliente
         public DatosTarjeta()
         {
             InitializeComponent();
+            Numero.cantidadCaracteres = 16;
+            CodigoDeSeguridad.cantidadCaracteres = 3;
         }
 
         private void button1_Click(object sender, EventArgs e)

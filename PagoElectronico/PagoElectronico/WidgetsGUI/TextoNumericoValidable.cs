@@ -11,6 +11,8 @@ namespace PagoElectronico.WidgetsGUI
 {
     public partial class TextoNumericoValidable : TextoNumerico, Validable, Limpiable
     {
+        public int cantidadCaracteres = -1;
+        
         public TextoNumericoValidable()
         {
             InitializeComponent();
@@ -18,11 +20,20 @@ namespace PagoElectronico.WidgetsGUI
 
         public bool esValido()
         {
-            return Text != "";
+            if (Text == "")
+                return false;
+
+            if (cantidadCaracteres > 0)
+                return Text.Length == cantidadCaracteres;
+
+            return true;
         }
 
         public String obtenerMensajeDeError()
         {
+            if (cantidadCaracteres > 0)
+                return "El campo " + Name + " debe tener " + cantidadCaracteres.ToString() + " digitos";
+
             return "El campo " + Name + " no puede estar vacío";
         }
     }
