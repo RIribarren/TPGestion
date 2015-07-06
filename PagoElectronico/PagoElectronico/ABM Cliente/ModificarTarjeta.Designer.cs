@@ -28,9 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // ModificarTarjeta
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "ModificarTarjeta";
+            this.ClientSize = new System.Drawing.Size(367, 217);
+            this.Name = "ModificarTarjeta";
+            this.Text = "Pago Electrónico - Modificación de tarjeta";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

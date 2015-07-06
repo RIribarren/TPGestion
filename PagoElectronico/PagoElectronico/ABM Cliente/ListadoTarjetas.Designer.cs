@@ -41,17 +41,17 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.gBox2 = new PagoElectronico.WidgetsGUI.GBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textoNumero = new PagoElectronico.WidgetsGUI.TextoNumerico();
-            this.textoCodigo = new PagoElectronico.WidgetsGUI.TextoNumerico();
-            this.textoEmisor = new PagoElectronico.WidgetsGUI.Texto();
-            this.FechaEmision = new PagoElectronico.WidgetsGUI.Fecha();
             this.FechaVencimiento = new PagoElectronico.WidgetsGUI.Fecha();
+            this.FechaEmision = new PagoElectronico.WidgetsGUI.Fecha();
+            this.textoEmisor = new PagoElectronico.WidgetsGUI.Texto();
+            this.textoCodigo = new PagoElectronico.WidgetsGUI.TextoNumerico();
+            this.textoNumero = new PagoElectronico.WidgetsGUI.TextoNumerico();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
             this.gBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TarjetasDeCliente)).BeginInit();
             this.gBox2.SuspendLayout();
@@ -181,51 +181,40 @@
             this.gBox2.TabStop = false;
             this.gBox2.Text = "Filtros de búsqueda";
             // 
-            // button5
+            // FechaVencimiento
             // 
-            this.button5.Location = new System.Drawing.Point(598, 121);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Buscar";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.FechaVencimiento.Location = new System.Drawing.Point(467, 42);
+            this.FechaVencimiento.Name = "FechaVencimiento";
+            this.FechaVencimiento.Size = new System.Drawing.Size(182, 27);
+            this.FechaVencimiento.TabIndex = 9;
             // 
-            // label1
+            // FechaEmision
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Número";
+            this.FechaEmision.Location = new System.Drawing.Point(467, 14);
+            this.FechaEmision.Name = "FechaEmision";
+            this.FechaEmision.Size = new System.Drawing.Size(182, 27);
+            this.FechaEmision.TabIndex = 8;
             // 
-            // label2
+            // textoEmisor
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(349, 21);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Fecha de emisión";
+            this.textoEmisor.Location = new System.Drawing.Point(116, 71);
+            this.textoEmisor.Name = "textoEmisor";
+            this.textoEmisor.Size = new System.Drawing.Size(100, 20);
+            this.textoEmisor.TabIndex = 7;
             // 
-            // label3
+            // textoCodigo
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(349, 49);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(112, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Fecha de vencimiento";
+            this.textoCodigo.Location = new System.Drawing.Point(116, 45);
+            this.textoCodigo.Name = "textoCodigo";
+            this.textoCodigo.Size = new System.Drawing.Size(100, 20);
+            this.textoCodigo.TabIndex = 6;
             // 
-            // label4
+            // textoNumero
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 49);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(104, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Código de seguridad";
+            this.textoNumero.Location = new System.Drawing.Point(116, 19);
+            this.textoNumero.Name = "textoNumero";
+            this.textoNumero.Size = new System.Drawing.Size(100, 20);
+            this.textoNumero.TabIndex = 5;
             // 
             // label5
             // 
@@ -236,40 +225,51 @@
             this.label5.TabIndex = 4;
             this.label5.Text = "Emisor";
             // 
-            // textoNumero
+            // label4
             // 
-            this.textoNumero.Location = new System.Drawing.Point(116, 19);
-            this.textoNumero.Name = "textoNumero";
-            this.textoNumero.Size = new System.Drawing.Size(100, 20);
-            this.textoNumero.TabIndex = 5;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 49);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(104, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Código de seguridad";
             // 
-            // textoCodigo
+            // label3
             // 
-            this.textoCodigo.Location = new System.Drawing.Point(116, 45);
-            this.textoCodigo.Name = "textoCodigo";
-            this.textoCodigo.Size = new System.Drawing.Size(100, 20);
-            this.textoCodigo.TabIndex = 6;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(349, 49);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(112, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Fecha de vencimiento";
             // 
-            // textoEmisor
+            // label2
             // 
-            this.textoEmisor.Location = new System.Drawing.Point(116, 71);
-            this.textoEmisor.Name = "textoEmisor";
-            this.textoEmisor.Size = new System.Drawing.Size(100, 20);
-            this.textoEmisor.TabIndex = 7;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(349, 21);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(90, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Fecha de emisión";
             // 
-            // FechaEmision
+            // label1
             // 
-            this.FechaEmision.Location = new System.Drawing.Point(467, 14);
-            this.FechaEmision.Name = "FechaEmision";
-            this.FechaEmision.Size = new System.Drawing.Size(182, 27);
-            this.FechaEmision.TabIndex = 8;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(44, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Número";
             // 
-            // FechaVencimiento
+            // button5
             // 
-            this.FechaVencimiento.Location = new System.Drawing.Point(467, 42);
-            this.FechaVencimiento.Name = "FechaVencimiento";
-            this.FechaVencimiento.Size = new System.Drawing.Size(182, 27);
-            this.FechaVencimiento.TabIndex = 9;
+            this.button5.Location = new System.Drawing.Point(598, 121);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 7;
+            this.button5.Text = "Buscar";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // ListadoTarjetas
             // 
@@ -284,7 +284,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.gBox1);
             this.Name = "ListadoTarjetas";
-            this.Text = "ListadoTarjetas";
+            this.Text = "Pago Electrónico - Selección de tarjeta";
             this.gBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TarjetasDeCliente)).EndInit();
             this.gBox2.ResumeLayout(false);

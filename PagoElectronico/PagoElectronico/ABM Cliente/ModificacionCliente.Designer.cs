@@ -359,7 +359,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "ModificacionCliente";
-            this.Text = "ModificacionCliente";
+            this.Text = "Pago Electrónico - Modificación de Cliente";
             this.gBox1.ResumeLayout(false);
             this.gBox1.PerformLayout();
             this.ResumeLayout(false);

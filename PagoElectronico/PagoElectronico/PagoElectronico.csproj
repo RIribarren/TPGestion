@@ -273,6 +273,12 @@
     <EmbeddedResource Include="ABM Cliente\AltaCliente.resx">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\AltaTarjeta.resx">
+      <DependentUpon>AltaTarjeta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\BajaCliente.resx">
+      <DependentUpon>BajaCliente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\DatosTarjeta.resx">
       <DependentUpon>DatosTarjeta.cs</DependentUpon>
     </EmbeddedResource>
@@ -287,6 +293,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\ModificacionCliente.resx">
       <DependentUpon>ModificacionCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ABM Cliente\ModificarTarjeta.resx">
+      <DependentUpon>ModificarTarjeta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ABM Cliente\SelectorDeRol.resx">
       <DependentUpon>SelectorDeRol.cs</DependentUpon>

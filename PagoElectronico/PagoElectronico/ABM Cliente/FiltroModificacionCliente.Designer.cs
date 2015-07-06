@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(669, 333);
             this.Name = "FiltroModificacionCliente";
-            this.Text = "FiltroModificacionCliente";
+            this.Text = "Pago Electrónico - Selección de cliente";
             this.ResumeLayout(false);
 
         }

@@ -848,7 +848,7 @@ namespace PagoElectronico.ConexionDB
         {
             SqlCommand sp = obtenerStoredProcedure("crearTarjeta");
             sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = nuevaTarjeta.cliente.id;
-            sp.Parameters.Add("@Tarjeta_Numero", SqlDbType.Decimal).Value = nuevaTarjeta.numero;
+            sp.Parameters.Add("@Tarjeta_Numero", SqlDbType.VarChar).Value = nuevaTarjeta.numero.ToString();
             sp.Parameters.Add("@Tarjeta_Emisor_Descripcion", SqlDbType.VarChar).Value = nuevaTarjeta.emisor;
             sp.Parameters.Add("@Tarjeta_Fecha_Emision", SqlDbType.DateTime).Value = nuevaTarjeta.fechaEmision;
             sp.Parameters.Add("@Tarjeta_Fecha_Vencimiento", SqlDbType.DateTime).Value = nuevaTarjeta.fechaVencimiento;
@@ -869,11 +869,12 @@ namespace PagoElectronico.ConexionDB
             SqlCommand sp = obtenerStoredProcedure("guardarTarjeta");
             sp.Parameters.Add("@Id_Tarjeta", SqlDbType.Int).Value = tarjetaModificada.id;
             sp.Parameters.Add("@Id_Cliente", SqlDbType.Int).Value = tarjetaModificada.cliente.id;
-            sp.Parameters.Add("@Tarjeta_Numero", SqlDbType.Decimal).Value = tarjetaModificada.numero;
+            sp.Parameters.Add("@Tarjeta_Numero", SqlDbType.VarChar).Value = tarjetaModificada.numero.ToString();
             sp.Parameters.Add("@Tarjeta_Emisor_Descripcion", SqlDbType.VarChar).Value = tarjetaModificada.emisor;
             sp.Parameters.Add("@Tarjeta_Fecha_Emision", SqlDbType.DateTime).Value = tarjetaModificada.fechaEmision;
             sp.Parameters.Add("@Tarjeta_Fecha_Vencimiento", SqlDbType.DateTime).Value = tarjetaModificada.fechaVencimiento;
             sp.Parameters.Add("@Tarjeta_Codigo_Seg", SqlDbType.VarChar).Value = tarjetaModificada.codigoSeguridad;
+            sp.Parameters.Add("@Habilitado", SqlDbType.Char).Value = tarjetaModificada.habilitada ? 's' : 'n';
 
             try
             {

@@ -172,7 +172,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.gBox1);
             this.Name = "DatosTarjeta";
-            this.Text = "AltaTarjeta";
+            this.Text = "Pago Electrónico - Alta de tarjeta";
             this.gBox1.ResumeLayout(false);
             this.gBox1.PerformLayout();
             this.ResumeLayout(false);

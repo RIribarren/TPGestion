@@ -237,7 +237,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.gBox1);
             this.Name = "FiltroCliente";
-            this.Text = "FiltroCliente";
+            this.Text = "Pago Electrónico - Selección de cliente";
             this.gBox1.ResumeLayout(false);
             this.gBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

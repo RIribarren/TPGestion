@@ -472,7 +472,7 @@
             this.Controls.Add(this.buttonGuardar);
             this.Controls.Add(this.buttonLimpiar);
             this.Name = "AltaCliente";
-            this.Text = "Alta de Cliente";
+            this.Text = "Pago Electrónico - Alta de Cliente";
             this.gBox1.ResumeLayout(false);
             this.gBox1.PerformLayout();
             this.gBox2.ResumeLayout(false);

@@ -666,14 +666,14 @@ GO
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].crearTarjeta
 	@Id_Cliente int,
-	@Tarjeta_Numero numeric(18,0),
+	@Tarjeta_Numero varchar(16),
 	@Tarjeta_Emisor_Descripcion varchar(255),
 	@Tarjeta_Fecha_Emision datetime,
 	@Tarjeta_Fecha_Vencimiento datetime,
-	@Tarjeta_Codigo_Seg varchar(255)
+	@Tarjeta_Codigo_Seg varchar(3)
 AS
 BEGIN TRANSACTION
-	BEGIN TRY
+--	BEGIN TRY
 		INSERT INTO Tarjeta(
 			[Id_Cliente],
 			[Tarjeta_Numero],
@@ -691,12 +691,12 @@ BEGIN TRANSACTION
 			@Tarjeta_Codigo_Seg,
 			's'
 		)	
-	END TRY
+/*	END TRY
 	BEGIN CATCH
 		RAISERROR('Ya existe una tarjeta con ese numero', 16, 1)
 		ROLLBACK
 		RETURN		
-	END	CATCH	
+	END	CATCH	*/
 COMMIT
 GO
 
@@ -707,11 +707,11 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].guardarTarjeta
 	@Id_Tarjeta int,
 	@Id_Cliente int,
-	@Tarjeta_Numero numeric(18,0),
+	@Tarjeta_Numero varchar(16),
 	@Tarjeta_Emisor_Descripcion varchar(255),
 	@Tarjeta_Fecha_Emision datetime,
 	@Tarjeta_Fecha_Vencimiento datetime,
-	@Tarjeta_Codigo_Seg varchar(255),
+	@Tarjeta_Codigo_Seg varchar(3),
 	@Habilitado char(1)
 AS
 BEGIN TRANSACTION
