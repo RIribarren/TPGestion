@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             this.gBox1 = new PagoElectronico.WidgetsGUI.GBox();
-            this.comboMoneda1 = new PagoElectronico.WidgetsGUI.ComboMoneda();
-            this.textoNumericoValidable1 = new PagoElectronico.WidgetsGUI.TextoNumericoValidable();
-            this.comboCuentas1 = new PagoElectronico.WidgetsGUI.ComboCuentas();
+            this.Moneda = new PagoElectronico.WidgetsGUI.ComboMoneda();
+            this.Importe = new PagoElectronico.WidgetsGUI.TextoNumericoValidable();
+            this.Cuentas = new PagoElectronico.WidgetsGUI.ComboCuentas();
+            this.gBox2 = new PagoElectronico.WidgetsGUI.GBox();
+            this.Tarjetas_Disponibles = new PagoElectronico.WidgetsGUI.GridTarjetas();
+            this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FechaEmision = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FechaVencimiento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CodigoSeguridad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Emisor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Seleccionar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.gridTarjetas1 = new PagoElectronico.WidgetsGUI.GridTarjetas();
-            this.Seleccionar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Emisor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CodigoSeguridad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FechaVencimiento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FechaEmision = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.gBox2 = new PagoElectronico.WidgetsGUI.GBox();
             this.gBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridTarjetas1)).BeginInit();
             this.gBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Tarjetas_Disponibles)).BeginInit();
             this.SuspendLayout();
             // 
             // gBox1
             // 
-            this.gBox1.Controls.Add(this.comboMoneda1);
-            this.gBox1.Controls.Add(this.textoNumericoValidable1);
-            this.gBox1.Controls.Add(this.comboCuentas1);
+            this.gBox1.Controls.Add(this.Moneda);
+            this.gBox1.Controls.Add(this.Importe);
+            this.gBox1.Controls.Add(this.Cuentas);
             this.gBox1.Controls.Add(this.gBox2);
             this.gBox1.Controls.Add(this.label3);
             this.gBox1.Controls.Add(this.label2);
@@ -66,28 +66,91 @@
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Datos de depósito";
             // 
-            // comboMoneda1
+            // Moneda
             // 
-            this.comboMoneda1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboMoneda1.Location = new System.Drawing.Point(76, 72);
-            this.comboMoneda1.Name = "comboMoneda1";
-            this.comboMoneda1.Size = new System.Drawing.Size(121, 21);
-            this.comboMoneda1.TabIndex = 6;
+            this.Moneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Moneda.Location = new System.Drawing.Point(76, 72);
+            this.Moneda.Name = "Moneda";
+            this.Moneda.Size = new System.Drawing.Size(121, 21);
+            this.Moneda.TabIndex = 6;
             // 
-            // textoNumericoValidable1
+            // Importe
             // 
-            this.textoNumericoValidable1.Location = new System.Drawing.Point(76, 46);
-            this.textoNumericoValidable1.Name = "textoNumericoValidable1";
-            this.textoNumericoValidable1.Size = new System.Drawing.Size(100, 20);
-            this.textoNumericoValidable1.TabIndex = 5;
+            this.Importe.Location = new System.Drawing.Point(76, 46);
+            this.Importe.Name = "Importe";
+            this.Importe.Size = new System.Drawing.Size(100, 20);
+            this.Importe.TabIndex = 5;
             // 
-            // comboCuentas1
+            // Cuentas
             // 
-            this.comboCuentas1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboCuentas1.Location = new System.Drawing.Point(76, 19);
-            this.comboCuentas1.Name = "comboCuentas1";
-            this.comboCuentas1.Size = new System.Drawing.Size(121, 21);
-            this.comboCuentas1.TabIndex = 4;
+            this.Cuentas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Cuentas.Location = new System.Drawing.Point(76, 19);
+            this.Cuentas.Name = "Cuentas";
+            this.Cuentas.Size = new System.Drawing.Size(121, 21);
+            this.Cuentas.TabIndex = 4;
+            // 
+            // gBox2
+            // 
+            this.gBox2.Controls.Add(this.Tarjetas_Disponibles);
+            this.gBox2.Location = new System.Drawing.Point(9, 99);
+            this.gBox2.Name = "gBox2";
+            this.gBox2.Size = new System.Drawing.Size(719, 189);
+            this.gBox2.TabIndex = 3;
+            this.gBox2.TabStop = false;
+            this.gBox2.Text = "Tarjeta";
+            // 
+            // Tarjetas_Disponibles
+            // 
+            this.Tarjetas_Disponibles.AllowUserToAddRows = false;
+            this.Tarjetas_Disponibles.AllowUserToDeleteRows = false;
+            this.Tarjetas_Disponibles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.Tarjetas_Disponibles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Tarjetas_Disponibles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Numero,
+            this.FechaEmision,
+            this.FechaVencimiento,
+            this.CodigoSeguridad,
+            this.Emisor,
+            this.Seleccionar});
+            this.Tarjetas_Disponibles.Location = new System.Drawing.Point(6, 19);
+            this.Tarjetas_Disponibles.Name = "Tarjetas_Disponibles";
+            this.Tarjetas_Disponibles.Size = new System.Drawing.Size(707, 164);
+            this.Tarjetas_Disponibles.TabIndex = 0;
+            // 
+            // Numero
+            // 
+            this.Numero.HeaderText = "Numero";
+            this.Numero.Name = "Numero";
+            this.Numero.ReadOnly = true;
+            // 
+            // FechaEmision
+            // 
+            this.FechaEmision.HeaderText = "Fecha de emisión";
+            this.FechaEmision.Name = "FechaEmision";
+            this.FechaEmision.ReadOnly = true;
+            // 
+            // FechaVencimiento
+            // 
+            this.FechaVencimiento.HeaderText = "Fecha de vencimiento";
+            this.FechaVencimiento.Name = "FechaVencimiento";
+            this.FechaVencimiento.ReadOnly = true;
+            // 
+            // CodigoSeguridad
+            // 
+            this.CodigoSeguridad.HeaderText = "Código de seguridad";
+            this.CodigoSeguridad.Name = "CodigoSeguridad";
+            this.CodigoSeguridad.ReadOnly = true;
+            // 
+            // Emisor
+            // 
+            this.Emisor.HeaderText = "Emisor";
+            this.Emisor.Name = "Emisor";
+            this.Emisor.ReadOnly = true;
+            // 
+            // Seleccionar
+            // 
+            this.Seleccionar.HeaderText = "Seleccionar";
+            this.Seleccionar.Name = "Seleccionar";
             // 
             // label3
             // 
@@ -136,69 +199,6 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // gridTarjetas1
-            // 
-            this.gridTarjetas1.AllowUserToAddRows = false;
-            this.gridTarjetas1.AllowUserToDeleteRows = false;
-            this.gridTarjetas1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.gridTarjetas1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gridTarjetas1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Numero,
-            this.FechaEmision,
-            this.FechaVencimiento,
-            this.CodigoSeguridad,
-            this.Emisor,
-            this.Seleccionar});
-            this.gridTarjetas1.Location = new System.Drawing.Point(6, 19);
-            this.gridTarjetas1.Name = "gridTarjetas1";
-            this.gridTarjetas1.Size = new System.Drawing.Size(707, 164);
-            this.gridTarjetas1.TabIndex = 0;
-            // 
-            // Seleccionar
-            // 
-            this.Seleccionar.HeaderText = "Seleccionar";
-            this.Seleccionar.Name = "Seleccionar";
-            // 
-            // Emisor
-            // 
-            this.Emisor.HeaderText = "Emisor";
-            this.Emisor.Name = "Emisor";
-            this.Emisor.ReadOnly = true;
-            // 
-            // CodigoSeguridad
-            // 
-            this.CodigoSeguridad.HeaderText = "Código de seguridad";
-            this.CodigoSeguridad.Name = "CodigoSeguridad";
-            this.CodigoSeguridad.ReadOnly = true;
-            // 
-            // FechaVencimiento
-            // 
-            this.FechaVencimiento.HeaderText = "Fecha de vencimiento";
-            this.FechaVencimiento.Name = "FechaVencimiento";
-            this.FechaVencimiento.ReadOnly = true;
-            // 
-            // FechaEmision
-            // 
-            this.FechaEmision.HeaderText = "Fecha de emisión";
-            this.FechaEmision.Name = "FechaEmision";
-            this.FechaEmision.ReadOnly = true;
-            // 
-            // Numero
-            // 
-            this.Numero.HeaderText = "Numero";
-            this.Numero.Name = "Numero";
-            this.Numero.ReadOnly = true;
-            // 
-            // gBox2
-            // 
-            this.gBox2.Controls.Add(this.gridTarjetas1);
-            this.gBox2.Location = new System.Drawing.Point(9, 99);
-            this.gBox2.Name = "gBox2";
-            this.gBox2.Size = new System.Drawing.Size(719, 189);
-            this.gBox2.TabIndex = 3;
-            this.gBox2.TabStop = false;
-            this.gBox2.Text = "Tarjeta";
-            // 
             // FDepositos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -208,11 +208,11 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.gBox1);
             this.Name = "FDepositos";
-            this.Text = "Form1";
+            this.Text = "PAgo Electrónico - Depositos";
             this.gBox1.ResumeLayout(false);
             this.gBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridTarjetas1)).EndInit();
             this.gBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Tarjetas_Disponibles)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -223,13 +223,13 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private PagoElectronico.WidgetsGUI.ComboMoneda comboMoneda1;
-        private PagoElectronico.WidgetsGUI.TextoNumericoValidable textoNumericoValidable1;
-        private PagoElectronico.WidgetsGUI.ComboCuentas comboCuentas1;
+        private PagoElectronico.WidgetsGUI.ComboMoneda Moneda;
+        private PagoElectronico.WidgetsGUI.TextoNumericoValidable Importe;
+        private PagoElectronico.WidgetsGUI.ComboCuentas Cuentas;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private PagoElectronico.WidgetsGUI.GBox gBox2;
-        private PagoElectronico.WidgetsGUI.GridTarjetas gridTarjetas1;
+        private PagoElectronico.WidgetsGUI.GridTarjetas Tarjetas_Disponibles;
         private System.Windows.Forms.DataGridViewTextBoxColumn Numero;
         private System.Windows.Forms.DataGridViewTextBoxColumn FechaEmision;
         private System.Windows.Forms.DataGridViewTextBoxColumn FechaVencimiento;

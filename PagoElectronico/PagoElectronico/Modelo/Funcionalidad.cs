@@ -9,7 +9,7 @@ namespace PagoElectronico.Modelo
     {
         public static int ABMROL = 1;
         public static int LOGIN = 2;
-        public static int ABRUSUARIO = 3;
+        public static int ABMTARJETA = 3;
         public static int ABMCLIENTE = 4;
         public static int ABMCUENTA = 5;
         public static int DEPOSITOS = 6;

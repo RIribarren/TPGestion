@@ -570,12 +570,14 @@ namespace PagoElectronico.ConexionDB
             }
         }
 
-        public override void retirar(Cuenta cuenta, decimal p, Moneda moneda)
+        public override void retirar(Cuenta cuenta, decimal p, Moneda moneda, Decimal nroDocumento, Decimal bancoCodigo)
         {
             SqlCommand sp = obtenerStoredProcedure("retirar");
             sp.Parameters.Add("@Cuenta_Numero", SqlDbType.Decimal).Value = cuenta.Numero;
             sp.Parameters.Add("@Importe", SqlDbType.Decimal).Value = p;
             sp.Parameters.Add("@Id_Moneda", SqlDbType.Decimal).Value = moneda.id;
+            sp.Parameters.Add("@Nro_Doc", SqlDbType.Decimal).Value = nroDocumento;
+            sp.Parameters.Add("@Banco_Codigo", SqlDbType.Decimal).Value = bancoCodigo;
 
             try
             {
@@ -897,6 +899,27 @@ namespace PagoElectronico.ConexionDB
             {
                 throw new ErrorEnRepositorioException(ex.Message);
             }
+        }
+
+        public override List<Banco> obtenerBancos()
+        {
+            SqlCommand sp = obtenerStoredProcedure("obtenerBancos");
+            List<Banco> bancos = new List<Banco>();
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    bancos.Add(new Banco(
+                        Decimal.Parse(reader["Banco_Codigo"].ToString()),
+                        reader["Banco_Nomber"].ToString()));
+            }
+            catch (SqlException excepcion)
+            {
+                throw new ErrorEnRepositorioException(excepcion.Message);
+            }
+
+            return bancos;
         }
     }
 }

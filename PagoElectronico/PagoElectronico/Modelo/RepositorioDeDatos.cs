@@ -123,7 +123,7 @@ namespace PagoElectronico.Modelo
 
         public abstract void depositar(Cuenta cuenta, decimal p, Moneda moneda, Tarjeta tarjeta);
 
-        public abstract void retirar(Cuenta cuenta, decimal p, Moneda moneda);
+        public abstract void retirar(Cuenta cuenta, decimal p, Moneda moneda, Decimal nroDocumento, Decimal bancoCodigo);
 
         public abstract List<Cuenta> obtenerCuentas();
 
@@ -140,5 +140,7 @@ namespace PagoElectronico.Modelo
         public abstract List<Deposito> obtenerUltimos5Depositos(Cuenta cuenta);
 
         public abstract Decimal obtenerSaldoDeCuenta(Cuenta cuenta);
+
+        public abstract List<Banco> obtenerBancos();
     }
 }

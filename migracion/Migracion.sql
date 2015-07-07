@@ -358,6 +358,15 @@ AS
 GO
 
 
+/****************************************************************
+ *					obtenerBancos
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerBancos
+AS
+	SELECT * FROM LA_MAQUINA_DE_HUMO.Banco
+GO
+
+
 
 /****************************************************************
  *					obtenerTiposCuenta
@@ -485,7 +494,7 @@ BEGIN TRANSACTION
 		@Id_Cliente,
 		@Id_Tipo_Cuenta,
 		NULL,
-		1
+		CASE WHEN @Id_Tipo_Cuenta = 1 THEN 2 ELSE 1 END  -- Si el tipo de cuenta es gratuita comienza habilitada, ya que no genera costo
 	)
 
 	-- Creo las suscripciones
@@ -601,7 +610,11 @@ GO
  ****************************************************************/
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentas
 AS
-	SELECT DISTINCT * FROM LA_MAQUINA_DE_HUMO.Cuenta
+	SELECT DISTINCT Cuenta_Numero, Cuenta_Pais, Id_Moneda, Fecha_Creacion, Id_Tipo_Cuenta, Estado_Cuenta_Descripcion as Estado
+	FROM LA_MAQUINA_DE_HUMO.Cuenta, LA_MAQUINA_DE_HUMO.ESTADO_CUENTA
+		WHERE Estado_ID = Estado_Cuenta_ID
+			AND Estado_ID != 1
+			AND Estado_ID != 4
 GO
 
 
@@ -814,7 +827,7 @@ BEGIN TRANSACTION
 	END
 	
 	-- Verificar que haya saldo
-	IF @Importe > LA_MAQUINA_DE_HUMO.saldoCuenta(@Cuenta_Numero)
+	IF @Importe > LA_MAQUINA_DE_HUMO.f_obtenerSaldoDeCuenta(@Cuenta_Numero)
 	BEGIN
 		RAISERROR('El monto a retirar es mayor al saldo de la cuenta', 16, 1)
 		ROLLBACK TRANSACTION
@@ -847,7 +860,6 @@ COMMIT
 GO
 
 
-
 /****************************************************************
  *					transferir
  ****************************************************************/
@@ -857,6 +869,13 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].transferir
 	@Importe numeric(18,2)
 AS
 BEGIN TRANSACTION
+	IF (SELECT Estado_ID FROM Cuenta WHERE Cuenta_Numero = @Numero_Cuenta_Origen) != 2
+	BEGIN
+		RAISERROR('La cuenta origen no se encuentra habilitada', 16, 1)
+		ROLLBACK
+		RETURN
+	END
+
 	DECLARE @Estado_Cuenta int
 	SET @Estado_Cuenta = (SELECT Estado_ID FROM LA_MAQUINA_DE_HUMO.Cuenta WHERE Cuenta_Numero = @Numero_Cuenta_Destino)
 	IF @Estado_Cuenta != 2 AND @Estado_Cuenta != 3
@@ -1483,12 +1502,12 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Rol_Funcionalidad](
 INSERT INTO [LA_MAQUINA_DE_HUMO].Rol_Funcionalidad(Id_Rol , Id_Funcionalidad) 
 	SELECT 1,Id_Funcionalidad
 	FROM [LA_MAQUINA_DE_HUMO].Funcionalidad
-	WHERE Id_Funcionalidad IN (1,2,3,4,5,9,11) -- Cargar con las correspondientes funcionalidades
+	WHERE Id_Funcionalidad IN (1,2,4,5,9,11) -- Cargar con las correspondientes funcionalidades
 
 INSERT INTO [LA_MAQUINA_DE_HUMO].Rol_Funcionalidad(Id_Rol , Id_Funcionalidad) 
 	SELECT 2,Id_Funcionalidad
 	FROM [LA_MAQUINA_DE_HUMO].Funcionalidad
-	WHERE Id_Funcionalidad IN (2,5,6,7,8,9,10) -- Cargar con las correspondientes funcionalidades
+	WHERE Id_Funcionalidad IN (2,5,3,6,7,8,9,10) -- Cargar con las correspondientes funcionalidades
 
 GO
 

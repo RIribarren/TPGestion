@@ -43,8 +43,10 @@ namespace PagoElectronico.Retiros
                 RepositorioDeDatos.getInstance().retirar(
                     cuenta,
                     Convert.ToDecimal(textoImporte.Text),
-                    comboMoneda1.obtenerMoneda());
-
+                    comboMoneda1.obtenerMoneda(),
+                    Decimal.Parse(textoNumericoValidable1.Text),
+                    comboBancos1.obtenerBanco().id);
+                
                 volverDeOperacionExitosa("Se realizó el retiro");
             }
             catch (ErrorEnRepositorioException excepcion)

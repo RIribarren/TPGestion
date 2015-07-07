@@ -19,12 +19,13 @@ namespace PagoElectronico.Transferencias
         {
             InitializeComponent();
             this.cliente = cliente;
+            Importe.mayorOIgualA = 1;
         }
 
         protected override void cargarDatos()
         {
-            comboCuentas1.cargarCuentas(RepositorioDeDatos.getInstance().obtenerCuentasDeCliente(cliente));
-            comboCuentas2.cargarCuentas(RepositorioDeDatos.getInstance().obtenerCuentas());
+            Cuenta_Origen.cargarCuentas(RepositorioDeDatos.getInstance().obtenerCuentasDeCliente(cliente));
+            Cuenta_Destino.cargarCuentas(RepositorioDeDatos.getInstance().obtenerCuentas());
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -39,9 +40,9 @@ namespace PagoElectronico.Transferencias
             try
             {
                 RepositorioDeDatos.getInstance().transferir(
-                    comboCuentas1.obtenerCuenta(),
-                    comboCuentas2.obtenerCuenta(),
-                    Convert.ToDecimal(textoNumericoValidable1.Text));
+                    Cuenta_Origen.obtenerCuenta(),
+                    Cuenta_Destino.obtenerCuenta(),
+                    Convert.ToDecimal(Importe.Text));
 
                 volverDeOperacionExitosa("La transferencia se realizó exitosamente");
                 

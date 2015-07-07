@@ -61,20 +61,37 @@ namespace PagoElectronico.Menu
                 return new ABMRol();
             else if (funcionalidadElegida.id == Funcionalidad.ABMCLIENTE)
                 return new ABMCliente();
+            else if (funcionalidadElegida.id == Funcionalidad.ABMTARJETA)
+                return new ListadoTarjetas(usuario.cliente);
             else if (funcionalidadElegida.id == Funcionalidad.ABMCUENTA)
                 return new ABMCuenta(usuario, rolAUsar);
             else if (funcionalidadElegida.id == Funcionalidad.DEPOSITOS)
-                return new FDepositos(usuario.cliente);
+            {
+                if (! usuario.cliente.habilitado)
+                        mostrarError("El cliente se encuentra inhabilitado, no puede realizar depósitos");
+                else
+                    return new FDepositos(usuario.cliente);
+            }
             else if (funcionalidadElegida.id == Funcionalidad.RETIROEFECTIVO)
-                return new FRetiro(usuario.cliente);
+            {
+                if (!usuario.cliente.habilitado)
+                    mostrarError("El cliente se encuentra inhabilitado, no puede realizar retiros");
+                else
+                    return new FRetiro(usuario.cliente);
+            }
             else if (funcionalidadElegida.id == Funcionalidad.TRANSFERENCIA)
-                return new FTransferencias(usuario.cliente);
+            {
+                if (! usuario.cliente.habilitado)
+                    mostrarError("El cliente se encuentra inhabilitado, no puede realizar transferencias");
+                else
+                    return new FTransferencias(usuario.cliente);
+            }
             else if (funcionalidadElegida.id == Funcionalidad.FACTURACION)
                 return obtenerVentanaFacturacion();
             else if (funcionalidadElegida.id == Funcionalidad.SALDOS)
                 return obtenerVentanaSaldos();
 
-            throw new NotImplementedException();
+            return null;
         }
 
         private Ventana obtenerVentanaSaldos()

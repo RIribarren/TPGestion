@@ -241,6 +241,7 @@
     <Compile Include="Menu\MenuPrincipal.Designer.cs">
       <DependentUpon>MenuPrincipal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modelo\Banco.cs" />
     <Compile Include="Modelo\Cliente.cs" />
     <Compile Include="Modelo\Cuenta.cs" />
     <Compile Include="Modelo\Deposito.cs" />
@@ -420,6 +421,12 @@
     </Compile>
     <Compile Include="WidgetsGUI\CBox.Designer.cs">
       <DependentUpon>CBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetsGUI\ComboBancos.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WidgetsGUI\ComboBancos.Designer.cs">
+      <DependentUpon>ComboBancos.cs</DependentUpon>
     </Compile>
     <Compile Include="WidgetsGUI\ComboCuentas.cs">
       <SubType>Component</SubType>

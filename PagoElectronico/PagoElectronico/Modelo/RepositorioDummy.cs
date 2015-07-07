@@ -7,6 +7,11 @@ namespace PagoElectronico.Modelo
 {
     class RepositorioDummy: RepositorioDeDatos
     {
+        public override List<Banco> obtenerBancos()
+        {
+            return new List<Banco>();
+        }
+
         public override void bajaRol(Rol rol)
         {
         }
@@ -101,7 +106,7 @@ namespace PagoElectronico.Modelo
         {
         }
 
-        public override void retirar(Cuenta cuenta, decimal p, Moneda moneda)
+        public override void retirar(Cuenta cuenta, decimal p, Moneda moneda, Decimal nroDocumento, Decimal bancoCodigo)
         {
         }
 

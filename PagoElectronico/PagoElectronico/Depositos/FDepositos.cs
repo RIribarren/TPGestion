@@ -20,6 +20,7 @@ namespace PagoElectronico.Depositos
         {
             InitializeComponent();
             this.cliente = cliente;
+            Importe.mayorOIgualA = 1;
         }
 
         protected override void cargarDatos()
@@ -27,14 +28,14 @@ namespace PagoElectronico.Depositos
             tarjetas = RepositorioDeDatos.getInstance().obtenerTarjetasHabilitadasDeCliente(cliente);
             mostrarTarjetas(tarjetas);
 
-            comboCuentas1.cargarCuentas(RepositorioDeDatos.getInstance().obtenerCuentasDeCliente(cliente));
+            Cuentas.cargarCuentas(RepositorioDeDatos.getInstance().obtenerCuentasDeCliente(cliente));
         }
 
         private void mostrarTarjetas(List<Tarjeta> tarjetas)
         {
             foreach (Tarjeta t in tarjetas)
             {
-                gridTarjetas1.Rows.Add(
+                Tarjetas_Disponibles.Rows.Add(
                     soloLos4UltimosNumeros(t.numero),
                     t.fechaEmision.ToShortDateString(),
                     t.fechaVencimiento.ToShortDateString(),
@@ -61,14 +62,14 @@ namespace PagoElectronico.Depositos
             if (noEsValidoYMuestraMensaje())
                 return;
 
-            Cuenta cuenta = comboCuentas1.obtenerCuenta();
+            Cuenta cuenta = Cuentas.obtenerCuenta();
 
             try
             {
                 RepositorioDeDatos.getInstance().depositar(
                     cuenta,
-                    Convert.ToDecimal(textoNumericoValidable1.Text),
-                    comboMoneda1.obtenerMoneda(),
+                    Convert.ToDecimal(Importe.Text),
+                    Moneda.obtenerMoneda(),
                     obtenerTarjeta());
                 volverDeOperacionExitosa("Se realizó el depósito");
             }
@@ -80,7 +81,7 @@ namespace PagoElectronico.Depositos
 
         private Tarjeta obtenerTarjeta()
         {
-            foreach (DataGridViewRow fila in gridTarjetas1.Rows)
+            foreach (DataGridViewRow fila in Tarjetas_Disponibles.Rows)
             {
                 if (Convert.ToBoolean(fila.Cells[5].Value) == true)
                     return tarjetas.ElementAt(fila.Index);
