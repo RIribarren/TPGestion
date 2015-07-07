@@ -62,7 +62,7 @@ namespace PagoElectronico.Menu
             else if (funcionalidadElegida.id == Funcionalidad.ABMCLIENTE)
                 return new ABMCliente();
             else if (funcionalidadElegida.id == Funcionalidad.ABMCUENTA)
-                return new ABMCuenta(usuario);
+                return new ABMCuenta(usuario, rolAUsar);
             else if (funcionalidadElegida.id == Funcionalidad.DEPOSITOS)
                 return new FDepositos(usuario.cliente);
             else if (funcionalidadElegida.id == Funcionalidad.RETIROEFECTIVO)

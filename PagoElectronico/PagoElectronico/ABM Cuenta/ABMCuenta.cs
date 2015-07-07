@@ -14,11 +14,13 @@ namespace PagoElectronico.ABM_Cuenta
     public partial class ABMCuenta : Ventana
     {
         private Usuario usuario;
+        private Rol rol;
 
-        public ABMCuenta(Usuario usuario)
+        public ABMCuenta(Usuario usuario, Rol rol)
         {
             InitializeComponent();
             this.usuario = usuario;
+            this.rol = rol;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -33,7 +35,7 @@ namespace PagoElectronico.ABM_Cuenta
 
         private Cliente obtenerCliente()
         {
-            if (usuario.esAdmin())
+            if (rol.id == 1)
             {
                 EleccionCliente eleccionCliente = new EleccionCliente();
                 abrirVentanaHija(eleccionCliente);
