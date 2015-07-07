@@ -536,7 +536,20 @@ namespace PagoElectronico.ConexionDB
 
         public override void guardarCuenta(Cuenta cuentaModificada)
         {
-            throw new NotImplementedException();
+            SqlCommand sp = obtenerStoredProcedure("guardarCuenta");
+            sp.Parameters.Add("@Cuenta_Numero", SqlDbType.Decimal).Value = cuentaModificada.Numero;
+            sp.Parameters.Add("@Id_Tipo_Cuenta", SqlDbType.Int).Value = cuentaModificada.tipoCuenta.id;
+            sp.Parameters.Add("@Id_Moneda", SqlDbType.Int).Value = cuentaModificada.moneda.id;
+            sp.Parameters.Add("@Cuenta_Pais", SqlDbType.Decimal).Value = cuentaModificada.pais.id;
+
+            try
+            {
+                sp.ExecuteNonQuery();
+            }
+            catch (SqlException excepcion)
+            {
+                throw new ErrorEnRepositorioException(excepcion.Message);
+            }
         }
 
         public override void depositar(Cuenta cuenta, decimal p, Moneda moneda, Tarjeta tarjeta)

@@ -612,8 +612,11 @@ GO
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerCuentasCliente
 	@Id_Cliente int
 AS
-     SELECT DISTINCT * FROM LA_MAQUINA_DE_HUMO.Cuenta 
-	     WHERE Id_Cliente = @Id_Cliente
+     SELECT DISTINCT Cuenta_Numero, Cuenta_Pais, Id_Moneda, Fecha_Creacion, Id_Tipo_Cuenta, E.Estado_Cuenta_Descripcion as Estado
+		FROM LA_MAQUINA_DE_HUMO.Cuenta C, ESTADO_CUENTA E
+	    WHERE Estado_ID = E.Estado_Cuenta_ID
+			AND Id_Cliente = @Id_Cliente
+			AND Estado_ID != 4
 GO
 
 
@@ -1452,6 +1455,7 @@ CREATE TABLE [LA_MAQUINA_DE_HUMO].[Funcionalidad](
 )
 
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(1, 'ABM de Rol')
+INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(3, 'Asociar/Desasociar tarjetas de crédito')
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(4, 'ABM de Cliente')
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(5, 'ABM de Cuenta')
 INSERT INTO [LA_MAQUINA_DE_HUMO].Funcionalidad Values(6, 'Depósitos')
@@ -1563,7 +1567,7 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 ) VALUES (
 	0, 'admin1',
 	'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', --SHA256 de "w23e"
-	's', GETDATE(), GETDATE(), 'Pregunta secreta de admin',
+	's', LA_MAQUINA_DE_HUMO.obtenerFecha(), LA_MAQUINA_DE_HUMO.obtenerFecha(), 'Pregunta secreta de admin',
 	'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f' --SHA256 de "default"
 )
 
@@ -1579,7 +1583,7 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 ) VALUES (
 	0, 'admin2',
 	'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', --SHA256 de "w23e"
-	's', GETDATE(), GETDATE(), 'Pregunta secreta de admin',
+	's', LA_MAQUINA_DE_HUMO.obtenerFecha(), LA_MAQUINA_DE_HUMO.obtenerFecha(), 'Pregunta secreta de admin',
 	'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f' --SHA256 de "default"
 )
 
@@ -1599,8 +1603,8 @@ INSERT INTO [LA_MAQUINA_DE_HUMO].Usuario(
 		'usuario' + RIGHT(CONVERT(varchar(18),Cli_Nro_Doc),18),
 		'5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', --SHA256 de "password"
 		's',
-		GETDATE(),
-		GETDATE(),
+		LA_MAQUINA_DE_HUMO.obtenerFecha(),
+		LA_MAQUINA_DE_HUMO.obtenerFecha(),
 		'Pregunta secreta default',
 		'37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f' --SHA256 de "default"
 		FROM gd_esquema.Maestra
