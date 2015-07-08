@@ -12,6 +12,8 @@ namespace PagoElectronico.Modelo
 
         protected RepositorioDeDatos() {}
 
+        public abstract DateTime obtenerFechaDelSistema();
+
         static public RepositorioDeDatos getInstance()
         {
             if (Instancia == null)
@@ -144,5 +146,15 @@ namespace PagoElectronico.Modelo
         public abstract List<Banco> obtenerBancos();
 
         public abstract List<Transferencia> obtenerUltimas10TransferenciasRecibidas(Cuenta cuenta);
+
+        public abstract List<Inhabilitacion> obtenerInhabilitacionesDeCliente(int anio, int trimestre);
+
+        public abstract List<Comision> obtenerClientesConMayoresComisionesFacturadas(int anio, int trimestre);
+
+        public abstract List<TransferenciasRealizadas> obtenerClientesConMayoresTransferenciasPropias(int anio, int trimestre);
+
+        public abstract List<Pais> obtenerPaisesConMasMovimientos(int anio, int trimestre);
+
+        public abstract List<TipoCuenta> obtenerTotalFacturadoTipoCuentas(int anio, int trimestre);
     }
 }

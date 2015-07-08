@@ -7,6 +7,36 @@ namespace PagoElectronico.Modelo
 {
     class RepositorioDummy: RepositorioDeDatos
     {
+        public override List<TipoCuenta> obtenerTotalFacturadoTipoCuentas(int anio, int trimestre)
+        {
+            return new List<TipoCuenta>();
+        }
+
+        public override List<Pais> obtenerPaisesConMasMovimientos(int anio, int trimestre)
+        {
+            return new List<Pais>();
+        }
+
+        public override List<TransferenciasRealizadas> obtenerClientesConMayoresTransferenciasPropias(int anio, int trimestre)
+        {
+            return new List<TransferenciasRealizadas>();
+        }
+
+        public override List<Comision> obtenerClientesConMayoresComisionesFacturadas(int anio, int trimestre)
+        {
+            return new List<Comision>();
+        }
+
+        public override DateTime obtenerFechaDelSistema()
+        {
+            return new DateTime();
+        }
+
+        public override List<Inhabilitacion> obtenerInhabilitacionesDeCliente(int anio, int trimestre)
+        {
+            return new List<Inhabilitacion>();
+        }
+
         public override List<Transferencia> obtenerUltimas10TransferenciasRecibidas(Cuenta cuenta)
         {
             return new List<Transferencia>();

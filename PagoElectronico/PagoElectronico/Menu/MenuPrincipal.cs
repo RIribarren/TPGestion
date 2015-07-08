@@ -16,6 +16,7 @@ using PagoElectronico.Retiros;
 using PagoElectronico.Transferencias;
 using PagoElectronico.Facturacion;
 using PagoElectronico.Consulta_Saldos;
+using PagoElectronico.Listados;
 
 namespace PagoElectronico.Menu
 {
@@ -67,8 +68,8 @@ namespace PagoElectronico.Menu
                 return new ABMCuenta(usuario, rolAUsar);
             else if (funcionalidadElegida.id == Funcionalidad.DEPOSITOS)
             {
-                if (! usuario.cliente.habilitado)
-                        mostrarError("El cliente se encuentra inhabilitado, no puede realizar depósitos");
+                if (!usuario.cliente.habilitado)
+                    mostrarError("El cliente se encuentra inhabilitado, no puede realizar depósitos");
                 else
                     return new FDepositos(usuario.cliente);
             }
@@ -81,7 +82,7 @@ namespace PagoElectronico.Menu
             }
             else if (funcionalidadElegida.id == Funcionalidad.TRANSFERENCIA)
             {
-                if (! usuario.cliente.habilitado)
+                if (!usuario.cliente.habilitado)
                     mostrarError("El cliente se encuentra inhabilitado, no puede realizar transferencias");
                 else
                     return new FTransferencias(usuario.cliente);
@@ -90,6 +91,8 @@ namespace PagoElectronico.Menu
                 return obtenerVentanaFacturacion();
             else if (funcionalidadElegida.id == Funcionalidad.SALDOS)
                 return obtenerVentanaSaldos();
+            else if (funcionalidadElegida.id == Funcionalidad.LISTADO)
+                return new ListadosEstadisticos();
 
             return null;
         }

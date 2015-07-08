@@ -211,11 +211,11 @@
     <Compile Include="Facturacion\FFacturacion.Designer.cs">
       <DependentUpon>FFacturacion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Listados\Form1.cs">
+    <Compile Include="Listados\ListadosEstadisticos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Listados\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Listados\ListadosEstadisticos.Designer.cs">
+      <DependentUpon>ListadosEstadisticos.cs</DependentUpon>
     </Compile>
     <Compile Include="Login\Form1.cs">
       <SubType>Form</SubType>
@@ -243,10 +243,12 @@
     </Compile>
     <Compile Include="Modelo\Banco.cs" />
     <Compile Include="Modelo\Cliente.cs" />
+    <Compile Include="Modelo\Comision.cs" />
     <Compile Include="Modelo\Cuenta.cs" />
     <Compile Include="Modelo\Deposito.cs" />
     <Compile Include="Modelo\ErrorEnRepositorioException.cs" />
     <Compile Include="Modelo\Funcionalidad.cs" />
+    <Compile Include="Modelo\Inhabilitacion.cs" />
     <Compile Include="Modelo\RepositorioDummy.cs" />
     <Compile Include="Modelo\Retiro.cs" />
     <Compile Include="Modelo\Transaccion.cs" />
@@ -258,6 +260,7 @@
     <Compile Include="Modelo\Tarjeta.cs" />
     <Compile Include="Modelo\TipoCuenta.cs" />
     <Compile Include="Modelo\TipoIdentificacion.cs" />
+    <Compile Include="Modelo\TransaccionesRealizadas.cs" />
     <Compile Include="Modelo\Transferencia.cs" />
     <Compile Include="Modelo\Usuario.cs" />
     <Compile Include="PantallaLogin.cs">
@@ -336,6 +339,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Facturacion\FFacturacion.resx">
       <DependentUpon>FFacturacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listados\ListadosEstadisticos.resx">
+      <DependentUpon>ListadosEstadisticos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu\EleccionRol.resx">
       <DependentUpon>EleccionRol.cs</DependentUpon>

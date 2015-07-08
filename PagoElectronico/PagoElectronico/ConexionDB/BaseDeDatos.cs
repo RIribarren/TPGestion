@@ -15,6 +15,11 @@ namespace PagoElectronico.ConexionDB
         private DateTime fechaDeSistema;
         private String esquema;
 
+        public override DateTime obtenerFechaDelSistema()
+        {
+            return fechaDeSistema;
+        }
+
         public BaseDeDatos()
         {
             parametrosConexionDB = "Server=" + ConfigurationSettings.AppSettings["server"] + ";"
@@ -948,6 +953,133 @@ namespace PagoElectronico.ConexionDB
             }
 
             return bancos;
+        }
+
+        public override List<Inhabilitacion> obtenerInhabilitacionesDeCliente(int anio, int trimestre)
+        {
+            List<Inhabilitacion> inhabilitaciones = new List<Inhabilitacion>();
+            SqlCommand sp = obtenerStoredProcedure("InhabilitacionesDeClientes");
+            sp.Parameters.Add("@anio", SqlDbType.Int).Value = anio;
+            sp.Parameters.Add("@trimestre", SqlDbType.Int).Value = trimestre;
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    inhabilitaciones.Add(new Inhabilitacion(
+                        reader["Cli_Nombre"].ToString(),
+                        reader["Cli_Apellido"].ToString(),
+                        reader["Cli_Nro_Doc"].ToString(),
+                        reader["Inhabilitaciones"].ToString()));
+
+            }
+            catch(SqlException excepcion)
+            {
+                throw new ErrorEnRepositorioException(excepcion.Message);
+            }
+
+            return inhabilitaciones;
+        }
+
+        public override List<Comision> obtenerClientesConMayoresComisionesFacturadas(int anio, int trimestre)
+        {
+            List<Comision> comisiones = new List<Comision>();
+            SqlCommand sp = obtenerStoredProcedure("ClientesConMayorCantidadDeComisionesFacturadas");
+            sp.Parameters.Add("@anio", SqlDbType.Int).Value = anio;
+            sp.Parameters.Add("@trimestre", SqlDbType.Int).Value = trimestre;
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    comisiones.Add(new Comision(
+                        reader["Cli_Nombre"].ToString(),
+                        reader["Cli_Apellido"].ToString(),
+                        reader["Cli_Nro_Doc"].ToString(),
+                        reader["Comisiones_Facturadas"].ToString()));
+
+            }
+            catch (SqlException excepcion)
+            {
+                throw new ErrorEnRepositorioException(excepcion.Message);
+            }
+
+            return comisiones;
+        }
+
+        public override List<TransferenciasRealizadas> obtenerClientesConMayoresTransferenciasPropias(int anio, int trimestre)
+        {
+            List<TransferenciasRealizadas> transferencias = new List<TransferenciasRealizadas>();
+            SqlCommand sp = obtenerStoredProcedure("ClientesConMayorCantidadDeTransferenciasPropias");
+            sp.Parameters.Add("@anio", SqlDbType.Int).Value = anio;
+            sp.Parameters.Add("@trimestre", SqlDbType.Int).Value = trimestre;
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    transferencias.Add(new TransferenciasRealizadas(
+                        reader["Cli_Nombre"].ToString(),
+                        reader["Cli_Apellido"].ToString(),
+                        reader["Cli_Nro_Doc"].ToString(),
+                        reader["Transferencias_Realizadas"].ToString()));
+
+            }
+            catch (SqlException excepcion)
+            {
+                throw new ErrorEnRepositorioException(excepcion.Message);
+            }
+
+            return transferencias;
+        }
+
+        public override List<Pais> obtenerPaisesConMasMovimientos(int anio, int trimestre)
+        {
+            List<Pais> paises = new List<Pais>();
+            SqlCommand sp = obtenerStoredProcedure("PaisesConMayorCantidadDeMovimientos");
+            sp.Parameters.Add("@anio", SqlDbType.Int).Value = anio;
+            sp.Parameters.Add("@trimestre", SqlDbType.Int).Value = trimestre;
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    paises.Add(new Pais(
+                        reader["Pais_Desc"].ToString(),
+                        reader["Ingresos"].ToString(),
+                        reader["Egresos"].ToString()));
+
+            }
+            catch (SqlException excepcion)
+            {
+                throw new ErrorEnRepositorioException(excepcion.Message);
+            }
+
+            return paises;
+        }
+
+        public override List<TipoCuenta> obtenerTotalFacturadoTipoCuentas(int anio, int trimestre)
+        {
+            List<TipoCuenta> tiposCuenta = new List<TipoCuenta>();
+            SqlCommand sp = obtenerStoredProcedure("TotalFacturadoTiposCuenta");
+            sp.Parameters.Add("@anio", SqlDbType.Int).Value = anio;
+            sp.Parameters.Add("@trimestre", SqlDbType.Int).Value = trimestre;
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    tiposCuenta.Add(new TipoCuenta(
+                        reader["Descripcion"].ToString(),
+                        reader["Total_Facturado"].ToString()));
+
+            }
+            catch (SqlException excepcion)
+            {
+                throw new ErrorEnRepositorioException(excepcion.Message);
+            }
+
+            return tiposCuenta;
         }
     }
 }

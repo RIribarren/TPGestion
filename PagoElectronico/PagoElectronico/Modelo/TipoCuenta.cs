@@ -9,11 +9,19 @@ namespace PagoElectronico.Modelo
     {
         public int id;
         public String nombre;
+        public String totalFacturado;
 
         public TipoCuenta(int id, String nombre)
         {
             this.id = id;
             this.nombre = nombre;
         }
+
+        public TipoCuenta(String nombre, String totalFacturado)
+        {
+            this.nombre = nombre;
+            this.totalFacturado = totalFacturado;
+        }
+
     }
 }

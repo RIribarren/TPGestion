@@ -1316,14 +1316,15 @@ AS
 		RETURN
 	END
 
-	SELECT TOP 5 Cli.Id_Cliente, Cli_Nombre, Cli_Apellido, COUNT(Id_Transferencia)
-		FROM Clientes Cli, Transferencia T, Cuenta Cu
-		WHERE Cli.Id_Cliente = Cu.Id_Cliente
-			AND Cu.Cuenta_Numero = T.Tranf_Cuenta_Origen_Numero
-			AND Cu.Cuenta_Numero = T.Tranf_Cuenta_Dest_Numero
+	SELECT TOP 5 Cli_Nro_Doc, Cli_Nombre, Cli_Apellido, COUNT(Id_Transferencia) AS Transferencias_Realizadas
+		FROM Clientes Cli, Transferencia T, Cuenta Cuo, Cuenta Cud
+		WHERE Cli.Id_Cliente = Cuo.Id_Cliente
+			AND Cli.Id_Cliente = Cud.Id_Cliente
+			AND Cuo.Cuenta_Numero = T.Tranf_Cuenta_Origen_Numero
+			AND Cud.Cuenta_Numero = T.Tranf_Cuenta_Dest_Numero
 			AND Tranf_Fecha >= LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre)
 			AND Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFechaFinTrimestre(@anio, @trimestre)
-		GROUP BY Cli.Id_Cliente, Cli_Nombre, Cli_Apellido
+		GROUP BY Cli.Id_Cliente, Cli_Nombre, Cli_Apellido, Cli_Nro_Doc
 		ORDER BY COUNT(Id_Transferencia) DESC
 GO
 
@@ -1342,7 +1343,7 @@ AS
 		RETURN
 	END
 
-	SELECT TOP 5 T.Id_Cliente, C.Cli_Nombre, C.Cli_Apellido, D.Doc_Desc, C.Cli_Nro_Doc, COUNT(*) AS Comisiones_Facturadas
+	SELECT TOP 5 C.Cli_Nombre, C.Cli_Apellido, C.Cli_Nro_Doc, COUNT(*) AS Comisiones_Facturadas
 		FROM LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Clientes C, LA_MAQUINA_DE_HUMO.Factura F, LA_MAQUINA_DE_HUMO.Documento D
 		WHERE T.Id_Cliente = C.Id_Cliente
 			AND C.Cli_Tipo_Doc_Cod = D.Doc_Codigo
@@ -1409,7 +1410,7 @@ AS
 					GROUP BY CD.Cuenta_Pais
 
 
-	SELECT Pais_Desc, Ingresos, Egresos
+	SELECT TOP 5 Pais_Desc, Ingresos, Egresos
 		FROM #INGRESOS_PAIS E, #EGRESOS_PAIS I, LA_MAQUINA_DE_HUMO.Pais P
 		WHERE E.Pais_Codigo = I.Pais_Codigo
 			AND E.Pais_Codigo = P.Pais_Codigo
@@ -1442,13 +1443,13 @@ CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].InhabilitacionesDeClientes
 	@anio int,
 	@trimestre int
 AS
-	SELECT TOP 5 CLI.Id_Cliente, Cli_Nombre, Cli_Apellido, COUNT(Id_Inhabilitacion) AS Inhabilitaciones
+	SELECT TOP 5 Cli_Nombre, Cli_Apellido, Cli_Nro_Doc, COUNT(Id_Inhabilitacion) AS Inhabilitaciones
 		FROM LA_MAQUINA_DE_HUMO.Clientes CLI, LA_MAQUINA_DE_HUMO.Inhabilitaciones I, LA_MAQUINA_DE_HUMO.Cuenta CU
 		WHERE I.Cuenta_Numero = CU.Cuenta_Numero
 			AND CU.Id_Cliente = CLI.Id_Cliente
 			AND Fecha_Inhabilitacion >= LA_MAQUINA_DE_HUMO.obtenerFechaInicioTrimestre(@anio, @trimestre)
 			AND Fecha_Inhabilitacion <= LA_MAQUINA_DE_HUMO.obtenerFechaFinTrimestre(@anio, @trimestre)
-		GROUP BY CLI.Id_Cliente, Cli_Nombre, Cli_Apellido
+		GROUP BY CLI.Id_Cliente, Cli_Nombre, Cli_Apellido, Cli_Nro_Doc
 		ORDER BY COUNT(Id_Inhabilitacion)
 GO
 

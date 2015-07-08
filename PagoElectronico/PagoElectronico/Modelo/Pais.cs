@@ -9,11 +9,20 @@ namespace PagoElectronico.Modelo
     {
         public int id;
         public String nombre;
+        public String ingresos;
+        public String egresos;
 
         public Pais(int id, String nombre)
         {
             this.id = id;
             this.nombre = nombre;
+        }
+
+        public Pais(String nombre, String ingresos, String egresos)
+        {
+            this.nombre = nombre;
+            this.ingresos = ingresos;
+            this.egresos = egresos;
         }
     }
 }
