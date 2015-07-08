@@ -38,6 +38,7 @@ DROP PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerSaldoDeCuenta
 DROP PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimos5Depositos
 DROP PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimos5Retiros
 DROP PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimas10Transferencias
+DROP PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimas10TransferenciasRecibidas
 DROP PROCEDURE [LA_MAQUINA_DE_HUMO].guardarCuenta
 DROP FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoDepositos
 DROP FUNCTION [LA_MAQUINA_DE_HUMO].obtenerMontoRetiros

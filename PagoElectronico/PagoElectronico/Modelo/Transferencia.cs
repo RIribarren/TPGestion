@@ -9,14 +9,14 @@ namespace PagoElectronico.Modelo
     {
         public Decimal monto;
         public DateTime fecha;
-        public Cuenta cuentaDestino;
+        public Cuenta cuenta;
 
 
         public Transferencia(Decimal monto, DateTime fecha, Cuenta cuentaDestino)
         {
             this.monto = monto;
             this.fecha = fecha;
-            this.cuentaDestino = cuentaDestino;
+            this.cuenta = cuentaDestino;
         }
     }
 }

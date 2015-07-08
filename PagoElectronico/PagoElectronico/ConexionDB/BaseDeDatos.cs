@@ -645,6 +645,8 @@ namespace PagoElectronico.ConexionDB
                 var reader = sp.ExecuteReader();
                 while (reader.Read())
                     transacciones.Add(new Transaccion(
+                        DateTime.Parse(reader["Fecha"].ToString()),
+                        Decimal.Parse(reader["Cuenta"].ToString()),
                         reader["Descripcion"].ToString(),
                         decimal.Parse(reader["Importe"].ToString())));
 
@@ -688,6 +690,32 @@ namespace PagoElectronico.ConexionDB
                         DateTime.Parse(reader["Tranf_Fecha"].ToString()),
                         new Cuenta(decimal.Parse(reader["Tranf_Cuenta_Dest_Numero"].ToString()), null,null, new DateTime()
                             ,null,null,null)));
+
+                sp.Connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                throw new ErrorEnRepositorioException(ex.Message);
+            }
+
+            return transferencias;
+        }
+
+        public override List<Transferencia> obtenerUltimas10TransferenciasRecibidas(Cuenta cuenta)
+        {
+            SqlCommand sp = obtenerStoredProcedure("obtenerUltimas10TransferenciasRecibidas");
+            sp.Parameters.Add("@Cuenta_Numero", SqlDbType.Decimal).Value = cuenta.Numero;
+            List<Transferencia> transferencias = new List<Transferencia>();
+
+            try
+            {
+                var reader = sp.ExecuteReader();
+                while (reader.Read())
+                    transferencias.Add(new Transferencia(
+                        decimal.Parse(reader["Tranf_Importe"].ToString()),
+                        DateTime.Parse(reader["Tranf_Fecha"].ToString()),
+                        new Cuenta(decimal.Parse(reader["Tranf_Cuenta_Origen_Numero"].ToString()), null, null, new DateTime()
+                            , null, null, null)));
 
                 sp.Connection.Close();
             }

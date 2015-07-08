@@ -24,7 +24,6 @@ namespace PagoElectronico.Facturacion
 
         protected override void cargarDatos()
         {
-            comboCuentas1.cargarCuentas(RepositorioDeDatos.getInstance().obtenerCuentasDeCliente(cliente));
             cargarTransaccionesPendientes();
         }
 
@@ -33,16 +32,11 @@ namespace PagoElectronico.Facturacion
             List<Transaccion> transaccionesPendientes = RepositorioDeDatos.getInstance().obtenerTransaccionesImpagasDeCliente(cliente);
             foreach (Transaccion transaccion in transaccionesPendientes)
             {
-                dataGridView1.Rows.Add(transaccion.descripcion, transaccion.importe);
+                dataGridView1.Rows.Add(transaccion.fecha, transaccion.cuenta, transaccion.descripcion, transaccion.importe);
             }
 
             Decimal total = transaccionesPendientes.Aggregate<Transaccion,Decimal>(0, (sum, t) => sum + t.importe);
             textBox1.Text = total.ToString();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            limpiar();
         }
 
         private void button1_Click(object sender, EventArgs e)

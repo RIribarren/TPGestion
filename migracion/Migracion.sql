@@ -959,39 +959,51 @@ GO
 /****************************************************************
  *					obtenerTransaccionesImpagasDeCliente
  ****************************************************************/
- /* NOTA: este stored tiene que devolver como minimo 2 columnas (en cualquier
-	orden) que se llamen: Importe y Descripcion
-	
-	Algo asi:   	
-	select Importe as Importe, Item_Descripcion as Descripcion
-		from LA_MAQUINA_DE_HUMO.Transaccion t, LA_MAQUINA_DE_HUMO.Item i
-		where t.Id_Item = i.Id_Item
-			AND ...
-		...
- */
 CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerTransaccionesImpagasDeCliente
 	@Id_Cliente int
 AS
-   select T.Importe Importe, I.Item_Descripcion Descripcion, Tranf_Fecha Fecha from LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Item I, Transferencia
-	where Id_Cliente = @Id_Cliente and Factura_Numero is null 
-	and T.Id_Item = I.Id_Item
-	and T.Id_Item = 1
-	and Id_Transferencia = Id_Evento
-	and Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
-   UNION ALL
-	select T.Importe Importe, I.Item_Descripcion Descripcion, Alta_Cuenta_Fecha_Inicio Fecha from LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Item I, Alta_Cuenta
-	where Id_Cliente = @Id_Cliente and Factura_Numero is null 
-	and T.Id_Item = I.Id_Item
-	and T.Id_Item = 2
-	and Id_Alta_Cuenta = Id_Evento
-	and Alta_Cuenta_Fecha_Inicio <= LA_MAQUINA_DE_HUMO.obtenerFecha()
-   UNION ALL
-	select T.Importe Importe, I.Item_Descripcion Descripcion, Modificacion_Cuenta_Fecha Fecha from LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Item I, Modificacion_Cuenta
-	where Id_Cliente = @Id_Cliente and Factura_Numero is null 
-	and T.Id_Item = I.Id_Item
-	and T.Id_Item = 3
-	and Id_Modificacion_Cuenta = Id_Evento
-	and Modificacion_Cuenta_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+	SELECT
+		T.Importe as Importe,
+		TR.Tranf_Cuenta_Origen_Numero as Cuenta,
+		I.Item_Descripcion + ' Destino: ' + CAST(TR.Tranf_Cuenta_Dest_Numero AS varchar(255)) as Descripcion,
+		T.Fecha_Transaccion as Fecha
+	FROM LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Item I, LA_MAQUINA_DE_HUMO.Transferencia TR
+	WHERE Id_Cliente = @Id_Cliente
+		AND Factura_Numero IS NULL
+		AND T.Id_Item = I.Id_Item
+		AND T.Id_Item = 1
+		AND Id_Transferencia = Id_Evento
+		AND T.Fecha_Transaccion <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+	
+	UNION ALL
+	
+	SELECT 
+		T.Importe AS Importe,
+		A.Cuenta_Numero AS Cuenta,
+		I.Item_Descripcion + ' Período: ' + CAST(A.Alta_Cuenta_Fecha_Inicio AS varchar(255)) + ' hasta ' + CAST(A.Alta_Cuenta_Fecha_Fin AS varchar(255)) AS Descripcion,
+		T.Fecha_Transaccion AS Fecha
+	FROM LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Item I, LA_MAQUINA_DE_HUMO.Alta_Cuenta A
+	WHERE Id_Cliente = @Id_Cliente 
+		AND Factura_Numero IS NULL
+		AND T.Id_Item = I.Id_Item
+		AND T.Id_Item = 2
+		AND Id_Alta_Cuenta = Id_Evento
+		AND T.Fecha_Transaccion <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+   
+	UNION ALL
+
+	SELECT 
+		T.Importe AS Importe,
+		Cuenta_Numero AS Cuenta,
+		I.Item_Descripcion AS Descripcion,
+		T.Fecha_Transaccion AS Fecha
+	FROM LA_MAQUINA_DE_HUMO.Transaccion T, LA_MAQUINA_DE_HUMO.Item I, LA_MAQUINA_DE_HUMO.Modificacion_Cuenta
+	WHERE Id_Cliente = @Id_Cliente
+		AND Factura_Numero IS NULL
+		AND T.Id_Item = I.Id_Item
+		AND T.Id_Item = 3
+		AND Id_Modificacion_Cuenta = Id_Evento
+		AND T.Fecha_Transaccion <= LA_MAQUINA_DE_HUMO.obtenerFecha()
 GO
 
 /****************************************************************
@@ -1003,6 +1015,7 @@ AS
 	CREATE TABLE #A_FACTURAR
 	(
 		Importe numeric(18,0),
+		Cuenta numeric(18,0),
 		Descripcion varchar(255),
 		Fecha datetime
 	)
@@ -1232,6 +1245,20 @@ AS
 			AND Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
 		ORDER BY Tranf_Fecha DESC
 GO
+
+
+/****************************************************************
+ *					obtenerUltimas10TransferenciasRecibidas
+ ****************************************************************/
+CREATE PROCEDURE [LA_MAQUINA_DE_HUMO].obtenerUltimas10TransferenciasRecibidas
+	@Cuenta_Numero numeric(18,0)
+AS
+	SELECT TOP 10 * FROM Transferencia
+		WHERE Tranf_Cuenta_Dest_Numero = @Cuenta_Numero
+			AND Tranf_Fecha <= LA_MAQUINA_DE_HUMO.obtenerFecha()
+		ORDER BY Tranf_Fecha DESC
+GO
+
 
 
 /****************************************************************

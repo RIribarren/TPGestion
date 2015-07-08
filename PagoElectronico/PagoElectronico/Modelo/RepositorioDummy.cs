@@ -7,6 +7,11 @@ namespace PagoElectronico.Modelo
 {
     class RepositorioDummy: RepositorioDeDatos
     {
+        public override List<Transferencia> obtenerUltimas10TransferenciasRecibidas(Cuenta cuenta)
+        {
+            return new List<Transferencia>();
+        }
+
         public override List<Banco> obtenerBancos()
         {
             return new List<Banco>();

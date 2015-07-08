@@ -142,5 +142,7 @@ namespace PagoElectronico.Modelo
         public abstract Decimal obtenerSaldoDeCuenta(Cuenta cuenta);
 
         public abstract List<Banco> obtenerBancos();
+
+        public abstract List<Transferencia> obtenerUltimas10TransferenciasRecibidas(Cuenta cuenta);
     }
 }

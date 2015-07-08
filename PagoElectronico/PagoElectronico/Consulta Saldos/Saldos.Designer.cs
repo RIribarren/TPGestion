@@ -47,6 +47,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.comboCuentas1 = new PagoElectronico.WidgetsGUI.ComboCuentas();
+            this.gBox5 = new PagoElectronico.WidgetsGUI.GBox();
+            this.dataGridView4 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gBox1.SuspendLayout();
             this.gBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -54,10 +59,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.gBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.gBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.SuspendLayout();
             // 
             // gBox1
             // 
+            this.gBox1.Controls.Add(this.gBox5);
             this.gBox1.Controls.Add(this.gBox3);
             this.gBox1.Controls.Add(this.textBox1);
             this.gBox1.Controls.Add(this.gBox4);
@@ -65,7 +73,7 @@
             this.gBox1.Controls.Add(this.label2);
             this.gBox1.Location = new System.Drawing.Point(12, 39);
             this.gBox1.Name = "gBox1";
-            this.gBox1.Size = new System.Drawing.Size(707, 401);
+            this.gBox1.Size = new System.Drawing.Size(847, 428);
             this.gBox1.TabIndex = 1;
             this.gBox1.TabStop = false;
             this.gBox1.Text = "Saldo de cuenta";
@@ -73,9 +81,9 @@
             // gBox3
             // 
             this.gBox3.Controls.Add(this.dataGridView2);
-            this.gBox3.Location = new System.Drawing.Point(356, 51);
+            this.gBox3.Location = new System.Drawing.Point(426, 51);
             this.gBox3.Name = "gBox3";
-            this.gBox3.Size = new System.Drawing.Size(341, 154);
+            this.gBox3.Size = new System.Drawing.Size(411, 178);
             this.gBox3.TabIndex = 2;
             this.gBox3.TabStop = false;
             this.gBox3.Text = "Últimos 5 retiros";
@@ -92,7 +100,7 @@
             this.dataGridView2.Location = new System.Drawing.Point(6, 19);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.Size = new System.Drawing.Size(329, 129);
+            this.dataGridView2.Size = new System.Drawing.Size(399, 153);
             this.dataGridView2.TabIndex = 1;
             // 
             // FechaRetiro
@@ -118,12 +126,12 @@
             // gBox4
             // 
             this.gBox4.Controls.Add(this.dataGridView3);
-            this.gBox4.Location = new System.Drawing.Point(9, 211);
+            this.gBox4.Location = new System.Drawing.Point(9, 235);
             this.gBox4.Name = "gBox4";
-            this.gBox4.Size = new System.Drawing.Size(688, 184);
+            this.gBox4.Size = new System.Drawing.Size(411, 184);
             this.gBox4.TabIndex = 3;
             this.gBox4.TabStop = false;
-            this.gBox4.Text = "Últimas 10 transferencias de fondos";
+            this.gBox4.Text = "Últimas 10 transferencias de fondos hechas";
             // 
             // dataGridView3
             // 
@@ -138,7 +146,7 @@
             this.dataGridView3.Location = new System.Drawing.Point(6, 19);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.ReadOnly = true;
-            this.dataGridView3.Size = new System.Drawing.Size(676, 159);
+            this.dataGridView3.Size = new System.Drawing.Size(399, 159);
             this.dataGridView3.TabIndex = 2;
             // 
             // FechaTransferencia
@@ -164,7 +172,7 @@
             this.gBox2.Controls.Add(this.dataGridView1);
             this.gBox2.Location = new System.Drawing.Point(9, 51);
             this.gBox2.Name = "gBox2";
-            this.gBox2.Size = new System.Drawing.Size(341, 154);
+            this.gBox2.Size = new System.Drawing.Size(411, 178);
             this.gBox2.TabIndex = 1;
             this.gBox2.TabStop = false;
             this.gBox2.Text = "Últimos 5 depósitos";
@@ -181,7 +189,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(6, 19);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(329, 129);
+            this.dataGridView1.Size = new System.Drawing.Size(399, 153);
             this.dataGridView1.TabIndex = 0;
             // 
             // Fecha
@@ -216,7 +224,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(644, 446);
+            this.button1.Location = new System.Drawing.Point(784, 473);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
@@ -234,17 +242,61 @@
             this.comboCuentas1.TabIndex = 5;
             this.comboCuentas1.SelectedIndexChanged += new System.EventHandler(this.comboCuentas1_SelectedIndexChanged);
             // 
+            // gBox5
+            // 
+            this.gBox5.Controls.Add(this.dataGridView4);
+            this.gBox5.Location = new System.Drawing.Point(426, 235);
+            this.gBox5.Name = "gBox5";
+            this.gBox5.Size = new System.Drawing.Size(411, 184);
+            this.gBox5.TabIndex = 4;
+            this.gBox5.TabStop = false;
+            this.gBox5.Text = "Últimas 10 transferencias de fondos recibidas";
+            // 
+            // dataGridView4
+            // 
+            this.dataGridView4.AllowUserToAddRows = false;
+            this.dataGridView4.AllowUserToDeleteRows = false;
+            this.dataGridView4.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3});
+            this.dataGridView4.Location = new System.Drawing.Point(6, 19);
+            this.dataGridView4.Name = "dataGridView4";
+            this.dataGridView4.ReadOnly = true;
+            this.dataGridView4.Size = new System.Drawing.Size(399, 159);
+            this.dataGridView4.TabIndex = 2;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Fecha";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Monto";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Cuenta Origen";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
             // Saldos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(729, 476);
+            this.ClientSize = new System.Drawing.Size(868, 508);
             this.Controls.Add(this.comboCuentas1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.gBox1);
             this.Name = "Saldos";
-            this.Text = "Form1";
+            this.Text = "Pago Electrónico - Consulta de saldos";
             this.gBox1.ResumeLayout(false);
             this.gBox1.PerformLayout();
             this.gBox3.ResumeLayout(false);
@@ -253,6 +305,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.gBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.gBox5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,6 +333,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Fecha;
         private System.Windows.Forms.DataGridViewTextBoxColumn Monto;
         private PagoElectronico.WidgetsGUI.ComboCuentas comboCuentas1;
+        private PagoElectronico.WidgetsGUI.GBox gBox5;
+        private System.Windows.Forms.DataGridView dataGridView4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
 
     }
 }

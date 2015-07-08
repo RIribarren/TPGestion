@@ -37,6 +37,7 @@ namespace PagoElectronico.Consulta_Saldos
             cargarUltimos5Depositos();
             cargarUltimos5Retiros();
             cargarUltimas10Transferencias();
+            cargarUltimas10TransferenciasRecibidas();
         }
 
         private void cargarSaldo()
@@ -52,7 +53,18 @@ namespace PagoElectronico.Consulta_Saldos
             List<Transferencia> ultimas10Transferencias = RepositorioDeDatos.getInstance().obtenerUltimas10Transferencias(cuenta);
             foreach (Transferencia t in ultimas10Transferencias)
             {
-                dataGridView3.Rows.Add(t.fecha, t.monto, t.cuentaDestino.Numero);
+                dataGridView3.Rows.Add(t.fecha, t.monto, t.cuenta.Numero);
+            }
+        }
+
+        private void cargarUltimas10TransferenciasRecibidas()
+        {
+            dataGridView4.Rows.Clear();
+            Cuenta cuenta = comboCuentas1.obtenerCuenta();
+            List<Transferencia> ultimas10Transferencias = RepositorioDeDatos.getInstance().obtenerUltimas10TransferenciasRecibidas(cuenta);
+            foreach (Transferencia t in ultimas10Transferencias)
+            {
+                dataGridView4.Rows.Add(t.fecha, t.monto, t.cuenta.Numero);
             }
         }
 

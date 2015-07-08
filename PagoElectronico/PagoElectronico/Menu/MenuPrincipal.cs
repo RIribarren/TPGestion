@@ -114,7 +114,7 @@ namespace PagoElectronico.Menu
 
         private Cliente obtenerCliente()
         {
-            if (usuario.esAdmin())
+            if (rolAUsar.id == 1)
             {
                 EleccionCliente eleccionCliente = new EleccionCliente();
                 abrirVentanaHija(eleccionCliente);
